@@ -32,7 +32,7 @@ module Ruvim
 			@window.setpos(1,0)
 			@window.addstr("Line #: #{ln}/#{lc}")
 			@window.setpos(2,0)
-			@window.addstr($ruvim.editor.buffer.data)
+			@window.addstr($ruvim.editor.buffer.data.ljust(@width))
 
 			@lastkey = k
 		end

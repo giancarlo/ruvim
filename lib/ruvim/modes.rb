@@ -22,15 +22,10 @@ module Ruvim
 
 	public
 		# Select the new mode to symbol newmode
-		# TODO yeah this looks ugly
 		def mode=(newmode)
-			if (@mode==:insert && newmode==:normal) then
-				back
-			end
 			@mode = newmode
 		end
 
-		# TODO this might be confusing
 		def mode
 			@modes[@mode]
 		end

@@ -149,8 +149,8 @@ module Ruvim
 
 		def cr
 			@buffer.insert Ruvim::API::CR
-			down
-			redraw_line(@cursor.y .. self.lines)
+			redraw_line(@cursor.y-1 .. self.lines)
+			down.goto_bol
 		end
 
 	end

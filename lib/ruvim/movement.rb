@@ -48,16 +48,13 @@ module Ruvim
 		end
 
 		def down
-			# This doesnt work because lines do not return correct line count if
-			# the text after the \n is empty
-			# if (row < lines-1) then 
-
 			if (@buffer.line.end < @buffer.size)
 				nls = @buffer.line.next.size
 				@cursor.x= (nls < @cursor.x) ? nls : @cursor.x
 				@cursor.down
 				@buffer.goto_eol.forward(@cursor.x+1)
 			end
+			self
 		end
 
 		def goto_bol

@@ -8,4 +8,5 @@ TODO--
 - FEATURE: Hex View Window
 - FEATURE: MultiUser Editing
 - FIX: Draw Tabs
+- FEATURE: Add Captions to windows.
 - BUG: File Open

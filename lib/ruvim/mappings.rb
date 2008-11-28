@@ -59,7 +59,7 @@ module Ruvim
 			map(Application::DELETE, :insert, :normal) { remove }
 
 			map(Application::BACKSPACE)  { back }
-			imap(Application::BACKSPACE) { back.remove }
+			imap(Application::BACKSPACE) { back.remove unless buffer.at_start? }
 			
 			imap(Application::RETURN) { cr }
 
