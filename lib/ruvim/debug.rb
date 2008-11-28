@@ -48,7 +48,7 @@ module Ruvim
 
 	end
 
-	Plugin.register(:debug, Debug.new)
+	Plugin::Application.register(:debug, Debug)
 
 end
 

@@ -2,7 +2,6 @@
 # Ruvim - Editor Class
 #
 require 'ruvim/window'
-require 'ruvim/lines'
 require 'ruvim/modes'
 require 'ruvim/bindings'
 require 'ruvim/buffer'
@@ -18,7 +17,11 @@ module Ruvim
 		attr_reader	:bindings
 		attr_reader :modes
 		attr_reader :page
-		attr_reader :linenumbers
+		attr_reader :plugins
+		
+		Plugins = Hash.new
+
+	public :eval
 	
 	private
 
@@ -27,7 +30,16 @@ module Ruvim
 		end
 
 		def initialize_plugins
-			@linenumbers = Ruvim::LineNumbers.new(self)
+			@plugins = Hash.new
+
+			Plugins.each do |name, klass|
+				@plugins[name] = klass.new(self)
+				klass.mappings(self) if klass.respond_to? :mappings
+			end
+
+			$ruvim.plugins.each do |name, k|
+				k.class.mappings(self) if k.class.respond_to? :mappings
+			end
 		end
 
 		def initialize_buffer
@@ -38,16 +50,16 @@ module Ruvim
 	public
 
 		def initialize
-			initialize_plugins
 			super
 			self.align=(:client)
+
 			initialize_modes
 			initialize_buffer
 			initialize_page
+			initialize_plugins
 		end
 
 		# Redraws screen
-		# TODO Optimize?
 		def redraw
 			@window.clear
 			@window.addstr(@buffer.data)
@@ -121,7 +133,7 @@ module Ruvim
 	
 		# Return max column
 		def column_max
-			@buffer.line_size #  - (@mode == :insert ? 0 : 1)
+			@buffer.line.size #  - (@mode == :insert ? 0 : 1)
 		end
 
 		# Return number of lines

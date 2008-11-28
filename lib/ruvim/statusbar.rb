@@ -50,15 +50,8 @@ module Ruvim
 			@statusbar.refresh
 		end
 
-		def update
-			print(@text)
-		end
-
 		# Displays message on panel
 		def display(msg)
-#			erase()
-#			l = length
-			#@text = (msg.size > l) ? msg[0...l] : msg
 			self.print(@text = msg)
 		end
 
@@ -75,11 +68,14 @@ module Ruvim
 			self.align= :bottom
 			
 			@panels		 = Hash.new
-			add_panel(:default, Panel.new(self, 1, 0.8, 20))
+			add_panel(:default, Panel.new(self, 1, 0.8, 20, "Ruvim #{Ruvim::Version}"))
+			add_panel :position, Panel.new(self, -16, 10, 10)
+			add_panel :mode, Panel.new(self, -2, 1, 1)
 		end
 
 		def update(k)
-			@panels.each_value { |k| k.update }
+			panels[:mode].display $ruvim.editor.mode.abbr
+			panels[:position].display("#{$ruvim.editor.cursor.y}, #{$ruvim.editor.cursor.x}")
 		end
 
 		def redraw
@@ -96,6 +92,6 @@ module Ruvim
 
 	end
 
-	Plugin.register(:statusbar, StatusBar.new)
+	Plugin::Application.register(:statusbar, StatusBar)
 
 end

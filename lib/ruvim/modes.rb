@@ -16,6 +16,8 @@ module Ruvim
 			}
 
 			@mode = :normal
+
+			default_mappings
 		end
 
 	public

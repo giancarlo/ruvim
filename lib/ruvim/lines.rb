@@ -8,11 +8,11 @@ module Ruvim
 		
 		# Show line numbers
 		def number
-			@editor.linenumbers.show
+			editor.linenumbers.show
 		end
 
 		def nonumber
-			@editor.linenumbers.hide
+			editor.linenumbers.hide
 		end
 
 	end
@@ -24,7 +24,7 @@ module Ruvim
 	public
 
 		def initialize(editor)
-			super()
+			super
 			@editor = editor
 			@width  = 4
 			self.align=(:left)
@@ -32,7 +32,6 @@ module Ruvim
 
 		def redraw
 			n = 0
-			#@window.clear
 
 			@editor.page.range.each do |k|
 				@window.setpos(n, 0)
@@ -52,5 +51,7 @@ module Ruvim
 		end
 
 	end
+
+	Plugin::Editor.register(:linenumbers, LineNumbers)
 
 end

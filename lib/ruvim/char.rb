@@ -2,14 +2,14 @@
 #	Char Class
 #
 
-require 'structures/linkedlist'
+#require 'structures/linkedlist'
 
 module Ruvim
 
 	#
 	# A Char 
 	#
-	class Char < Structures::LinkedList::Node
+	class Char # < Structures::LinkedList::Node
 	
 		# Byte Size
 		def size
@@ -17,9 +17,11 @@ module Ruvim
 		end
 	
 		# Physical Size
-		# TODO you know what to do.
 		def space
-			("\t") ? Curses.TABSIZE : 1
+			case @value
+			when "\t"	; Curses.TABSIZE
+			else		; 1
+			end
 		end
 
 	end

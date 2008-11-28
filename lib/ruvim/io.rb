@@ -45,7 +45,6 @@ module Ruvim
 			end
 			@editor.open(file)
 
-			default_mappings
 			@statusbar.message(Ruvim::Message::FILE_LOADED % file) if file
 		end
 

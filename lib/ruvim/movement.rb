@@ -16,7 +16,7 @@ module Ruvim
 				return self
 			end
 			
-			s = @buffer.previous_line.size
+			s = @buffer.line.previous.size
 			
 			if (s < @cursor.x) then
 				@cursor.x = s
@@ -39,11 +39,12 @@ module Ruvim
 		end
 
 		def forward
-			#unless [nil, Ruvim::API::CR].include? @buffer.char then
 			if (@cursor.x < column_max) then
 				@buffer.forward
 				@cursor.right
 			end
+
+			self
 		end
 
 		def down
@@ -51,8 +52,8 @@ module Ruvim
 			# the text after the \n is empty
 			# if (row < lines-1) then 
 
-			if (@buffer.line_end < @buffer.size)
-				nls = @buffer.next_line_size
+			if (@buffer.line.end < @buffer.size)
+				nls = @buffer.line.next.size
 				@cursor.x= (nls < @cursor.x) ? nls : @cursor.x
 				@cursor.down
 				@buffer.goto_eol.forward(@cursor.x+1)
@@ -60,11 +61,11 @@ module Ruvim
 		end
 
 		def goto_bol
-			(@buffer.index - @buffer.line_start).times { back }
+			(@buffer.index - @buffer.line.start).times { back }
 		end
 
 		def goto_eol
-			(@buffer.line_end - @buffer.index).times { forward }
+			(@buffer.line.end - @buffer.index).times { forward }
 		end
 
 	end

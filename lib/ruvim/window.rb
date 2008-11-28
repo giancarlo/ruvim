@@ -17,15 +17,20 @@ module Ruvim
 
 		# Refreshes all the windows
 		def self.refresh
+			Curses.curs_set(0)
 			@windows.each { |w| w.refresh if w.visible? }
+			Curses.curs_set(1)
 		end
 
 		def self.update(k)
+			Curses.curs_set(0)
 			@windows.each { |w| w.update(k) if w.visible? }
+			Curses.curs_set(1)
 		end
 
-		def self.register(w)
-			@windows << w
+		# Registers Windows. If after is provided is inserted after that window. after is a Window Object.
+		def self.register(w, after=nil)
+			(after) ? (@windows.insert(@windows.index(after), w)) : (@windows << w)
 		end
 
 		def self.unregister(w)
@@ -77,10 +82,10 @@ module Ruvim
 		attr_reader :x, :y, :width, :height
 		attr_reader :window, :cursor
 
-		def initialize
+		def initialize(parent=nil)
 			@window = Curses::Window.new(0,0,0,0)
 			@cursor = Ruvim::Cursor.new(@window)
-			Window.register(self)
+			Window.register(self, parent)
 			@visible= true
 		end
 

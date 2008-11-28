@@ -4,15 +4,6 @@
 
 module Ruvim
 
-	module API
-		
-		# Returns Current Buffer
-		def buffer
-			editor.buffer
-		end
-
-	end
-
 	class Buffer
 		
 		attr_reader :index, :data
@@ -32,12 +23,16 @@ module Ruvim
 			@index == size
 		end
 
-		def at_beginning?(pos=@index)
+		def at_start?(pos=@index)
 			pos == 0
 		end
 
 		def at_eol?
-			@index == line_end
+			at_end? || (char == "\n")
+		end
+
+		def at_bol?
+			at_start? || (@data[@index-1] == "\n")
 		end
 
 		#
@@ -45,14 +40,21 @@ module Ruvim
 		#
 
 		# Returns size of buffer
+		# TODO Optimize
 		def size
 			@data.size
 		end
 
+		# Returns Current Line
 		def line
 			@line
 		end
-		
+
+		# Returns EOF index
+		def eof
+			@data.size
+		end
+
 		# Return Line string at Index.
 		def line_index(i)
 			x = 0
@@ -62,38 +64,32 @@ module Ruvim
 				x += 1
 			end
 			
-			@data[x ... line_end(x)]
+			@data[x ... line.end(x)]
 		end
 
 		# TODO Optimize!
 		def next_line_size
-			next_line.size
+			line.next.size
 		end
 
 		# Returns string from index to end of line. Does not include CR
 		def to_eol
-			@data[@index.. line_end]
+			@data[@index.. line.end]
 		end
 
 		# Returns string from index to beggining of line.
 		def to_bol
-			@data[line_start ... @index]
+			@data[line.start ... @index]
+		end
+
+		def to_end
+			@data[@index .. size]
+		end
+
+		def to_start
+			@data[0 .. @index]
 		end
 		
-		def previous_line
-			e = line_start-1
-			return nil if e == -1
-			s = line_start(e)
-			@data[s ... e]
-		end
-
-		def next_line
-			s = line_end+1
-			return "" if s >= size
-			e = line_end(s)
-			@data[s ... e]			
-		end
-
 		# Returns current char
 		def char
 			@data[@index]
@@ -108,11 +104,11 @@ module Ruvim
 		end
 
 		def goto_eol
-			@index = line_end;	self
+			@index = line.end;	self
 		end
 
 		def goto_bol
-			@index = line_start; self
+			@index = line.start; self
 		end
 
 		# Goes back l spaces

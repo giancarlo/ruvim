@@ -34,7 +34,7 @@ module Ruvim
 		include Ruvim::API
 		include Curses::Key
 		
-		attr_reader :editor, :statusbar
+		attr_reader :editors, :editor, :plugins
 		
 		private
 
@@ -43,7 +43,6 @@ module Ruvim
 			path = File.expand_path("~/.ruvimrc")
 
 			if File.exists?(path) then
-				@statusbar.message "Loading Resources"
 				ruvimrc = File.new(path)
 				eval(ruvimrc.read)
 				ruvimrc.close
@@ -51,40 +50,16 @@ module Ruvim
 		end
 
 		def initialize_buffers
-			@statusbar.message "Initializing Buffers"
 			@buffers = Hash.new
 			@buffers[:copy] = Buffer.new
 		end
 
-		# Statusbar is created in ruvim/statusbar.rb
-		def initialize_statusbar
-			@statusbar 	= Plugin[:statusbar]
-
-			@statusbar.message "Setting up Status Bar"
-			@statusbar.add_panel :position, Panel.new(@statusbar, -16, 10, 10)
-			@statusbar.add_panel :mode, Panel.new(@statusbar, -2, 1, 1)
-			
-		end
-
-		def print_mode
-			@statusbar.panels[:mode].display @editor.mode.abbr
-		end
-
-		def print_position
-			@statusbar.panels[:position].display("#{@editor.cursor.y}, #{@editor.cursor.x}")
-		end
-
-		def restore_position
-			@editor.cursor.restore
+		def initialize_plugins
+			@plugins = Hash.new
 		end
 
 		def initialize_editors
 			@editors = Array.new
-		end
-
-		def initialize_widgets
-			@plugins = Hash.new
-			@command = Ruvim::Command.new(self)
 		end
 
 		public :eval, :instance_eval
@@ -96,18 +71,13 @@ module Ruvim
 			# this might be wrong but whatever
 			$ruvim = self
 
-			initialize_statusbar
+			initialize_plugins
 			initialize_buffers
 			initialize_editors
-			initialize_widgets
 
 			open
 
-			print_position
-			print_mode
-
 			initialize_resources
-			@statusbar.message "Ruvim #{Ruvim::Version}"
 
 		end
 
@@ -118,6 +88,7 @@ module Ruvim
 		def refresh
 			Curses.refresh
 			Ruvim::Window.refresh
+			editor.refresh
 		end
 
 		def update(k)
@@ -126,12 +97,12 @@ module Ruvim
 		end
 
 		def start
-			restore_position
+			editor.cursor.restore
 			refresh
 
 			while (k = Curses.getch)
 				update(k)
-				restore_position
+				editor.cursor.restore
 				refresh
 			end
 
@@ -148,5 +119,4 @@ module Ruvim
 end
 
 Ruvim::Application.new
-$ruvim.debug= true
 $ruvim.start
