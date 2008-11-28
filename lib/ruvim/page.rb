@@ -31,6 +31,15 @@ module Ruvim
 			(start .. self.end)
 		end
 
+		def scroll_up(n=1)
+			@start -= n
+			self
+		end
+
+		def scroll_down
+			scroll_up(-1)
+		end
+
 		# Returns current page number
 		def number
 #			@editor.lines 

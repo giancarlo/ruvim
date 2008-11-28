@@ -35,7 +35,7 @@ module Ruvim
 		include Ruvim::API
 		include Curses::Key
 		
-		attr_reader :editors, :editor, :plugins
+		attr_reader :editors, :editor, :plugins, :workspace
 		
 		private
 
@@ -65,7 +65,7 @@ module Ruvim
 
 		def initialize_window
 			@window  = Curses.stdscr
-			@client  = [0,0,Curses.cols, Curses.lines]
+			@client  = [@x = 0, @y = 0, @width = Curses.cols, @height = Curses.lines]
 			@windows = Array.new
 			@visible = true
 

@@ -8,17 +8,18 @@ module Ruvim
 
 		def initialize
 			super
-
+			@caption = "Debug"
 			@height = 14
 			self.align=(:bottom)
 		end
 
 		def redraw
 			update(@lastkey)
+			super
 		end
 
 		def update(k)
-			@window.setpos(0, 0)
+			@window.setpos(1, 0)
 			i = $ruvim.editor.buffer.index
 			le= $ruvim.editor.buffer.line.end
 			fs= $ruvim.editor.buffer.data.size
@@ -27,11 +28,13 @@ module Ruvim
 			lkc=@lastkey.bytes.next rescue ''
 			ln =$ruvim.editor.line_number
 			lc =$ruvim.editor.lines
+			ps = $ruvim.editor.page.start
+			pe = $ruvim.editor.page.end
 
 			@window.addstr("Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c})".ljust(50))
-			@window.setpos(1,0)
-			@window.addstr("Line #: #{ln}/#{lc}")
 			@window.setpos(2,0)
+			@window.addstr("Line #: #{ln}/#{lc}   Page: (#{ps}-#{pe})")
+			@window.setpos(3,0)
 			@window.addstr($ruvim.editor.buffer.data.ljust(@width))
 
 			@lastkey = k

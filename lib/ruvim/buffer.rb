@@ -55,18 +55,6 @@ module Ruvim
 			@data.size
 		end
 
-		# Return Line string at Index.
-		def line_index(i)
-			x = 0
-			i.times do
-				x = @data.index(Ruvim::API::CR, x)
-				return "" unless x
-				x += 1
-			end
-			
-			@data[x ... line.end(x)]
-		end
-
 		# TODO Optimize!
 		def next_line_size
 			line.next.size

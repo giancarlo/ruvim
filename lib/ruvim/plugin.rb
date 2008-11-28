@@ -17,6 +17,8 @@ module Ruvim
 				$ruvim.editors.each do |e|
 					klass.mappings(e) if klass.respond_to? :mappings
 				end
+
+				$ruvim.rearrange
 			end
 
 			def self.unregister(name)

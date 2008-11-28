@@ -51,6 +51,16 @@ module Ruvim
 			@x += unit
 		end
 
+		# At End of Window?
+		def at_eow?
+			@y == @window.maxy-1
+		end
+
+		# At Start of Window?
+		def at_sow?
+			@y == 0
+		end
+
 	end
 
 end

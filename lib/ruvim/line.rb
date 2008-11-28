@@ -27,6 +27,17 @@ module Ruvim
 			self.end - self.start
 		end
 
+		def index(i)
+			s = 0
+			i.times do
+				s = @buffer.data.index(Ruvim::API::CR, s)
+				return "" unless s
+				s += 1
+			end
+
+			@buffer.data[s ... self.end(s)]
+		end
+		
 		# Returns Line
 		def to_s
 			@buffer.data[self.start ... self.end]	

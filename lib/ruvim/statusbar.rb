@@ -55,6 +55,10 @@ module Ruvim
 			self.print(@text = msg)
 		end
 
+		def refresh
+			self.print(@text)
+		end
+
 	end
 
 	class StatusBar < Ruvim::Window
@@ -64,10 +68,11 @@ module Ruvim
 		def initialize
 			super
 
+			@panels		 = Hash.new
+
 			@height = 1
 			self.align= :bottom
 			
-			@panels		 = Hash.new
 			add_panel(:default, Panel.new(self, 1, 0.8, 20, "Ruvim #{Ruvim::Version}"))
 			add_panel :position, Panel.new(self, -16, 10, 10)
 			add_panel :mode, Panel.new(self, -2, 1, 1)

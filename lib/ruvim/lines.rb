@@ -43,17 +43,18 @@ module Ruvim
 				n += 1
 			end
 
-			if (n < @height-1) then		
+			if (n < @height) then		
 				@window.setpos(n, 0)
 				@window.addstr("~".ljust(@width))
 			end
 			@lines = @editor.lines
+			@start = @editor.page.start
 
 			@window.attroff(@color)
 		end
 
 		def update(k)
-			self.redraw if @editor.lines != @lines
+			self.redraw if @editor.lines != @lines || @editor.page.start != @start
 		end
 
 	end

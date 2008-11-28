@@ -8,8 +8,16 @@ module Ruvim
 
 		def up(col=nil)
 
-			return self if (@cursor.y == 0)
-			@cursor.up
+			if (@cursor.at_sow?)
+				if (@page.start > 0) then
+					@page.scroll_up
+					redraw_line(0 ... @height)
+				else
+					return self
+				end
+			else
+				@cursor.up
+			end
 
 			if col then
 				@cursor.x = col
@@ -49,9 +57,15 @@ module Ruvim
 
 		def down
 			if (@buffer.line.end < @buffer.size)
+				if (@cursor.at_eow?) then
+					@page.scroll_down
+					redraw_line(0...@height)
+				else
+					@cursor.down
+				end
+				
 				nls = @buffer.line.next.size
 				@cursor.x= (nls < @cursor.x) ? nls : @cursor.x
-				@cursor.down
 				@buffer.goto_eol.forward(@cursor.x+1)
 			end
 			self

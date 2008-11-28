@@ -37,7 +37,8 @@ module Ruvim
 		end
 
 		def reset_client
-			@client[0] = 0; @client[1] = 0; @client[2] = @width; @client[3] = @height
+			@client[0] = 0; @client[1] = (@caption ? 1 : 0);
+			@client[2] = @width; @client[3] = @height
 		end
 
 		def rearrange
@@ -135,6 +136,14 @@ module Ruvim
 			end
 
 			reset_client
+			redraw
+		end
+
+		def redraw
+			if @caption then
+				@window.setpos(0,0)
+				@window.addstr('=' + @caption.ljust(@width-1, '='))
+			end
 		end
 
 		def show

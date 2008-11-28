@@ -50,12 +50,14 @@ module Ruvim
 	public
 
 		def initialize(parent)
-			super
-			self.align=(:client)
-
 			initialize_modes
 			initialize_buffer
 			initialize_page
+			
+			super
+			self.align=(:client)
+			@window.scrollok true
+
 			initialize_plugins
 		end
 
@@ -63,7 +65,7 @@ module Ruvim
 		def redraw
 			@window.clear
 			@window.addstr(@buffer.data)
-			restore
+			@cursor.restore
 		end
 
 		# Takes ranges
@@ -72,11 +74,8 @@ module Ruvim
 				line.each { |r| redraw_line(r) }
 			else
 				@window.setpos(line, 0)
-				
-				#l = (line==@row) ? @buffer.line : @buffer.line_index(page.start + line)
-				# Fix this
-				l = @buffer.line_index(page.start+line)
-				@window.addstr(l.ljust(@width))
+				l = @buffer.line.index(@page.start + line)
+				@window.addstr(l.ljust(@width-1))
 			end
 		end
 		
@@ -148,8 +147,9 @@ module Ruvim
 		end
 
 		def cr
+			oy = @cursor.y
 			@buffer.insert Ruvim::API::CR
-			redraw_line(@cursor.y-1 .. self.lines)
+			redraw_line(oy ... @height)
 			down.goto_bol
 		end
 
