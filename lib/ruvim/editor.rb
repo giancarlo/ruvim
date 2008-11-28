@@ -49,7 +49,7 @@ module Ruvim
 
 	public
 
-		def initialize
+		def initialize(parent)
 			super
 			self.align=(:client)
 
@@ -105,11 +105,11 @@ module Ruvim
 		end
 		
 		def remove
+			# Can't remove nil
 			return if (@buffer.at_end?)
-			ox = @cursor.x
-			oy = @cursor.y
+			ch = @buffer.char
 			@buffer.remove
-			redraw_line((ox == 0) ? (oy ... @height) : oy) 
+			redraw_line((ch == Ruvim::API::CR) ? (@cursor.y ... @height) : @cursor.y) 
 		end
 
 		#
@@ -149,11 +149,8 @@ module Ruvim
 
 		def cr
 			@buffer.insert Ruvim::API::CR
-			@cursor.x = 0
+			down
 			redraw_line(@cursor.y .. self.lines)
-
-			@cursor.down
-			@lines += 1				
 		end
 
 	end

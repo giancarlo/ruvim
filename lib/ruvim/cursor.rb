@@ -23,6 +23,10 @@ module Ruvim
 			@visible
 		end
 
+		def position
+			[@x, @y]
+		end
+
 		def show
 			@visible = true
 		end

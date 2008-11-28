@@ -29,7 +29,7 @@ module Ruvim
 	Version = "0.1"
 
 
-	class Application
+	class Application < Window
 
 		include Ruvim::API
 		include Curses::Key
@@ -62,15 +62,25 @@ module Ruvim
 			@editors = Array.new
 		end
 
+		def initialize_window
+			@window  = Curses.stdscr
+			@client  = [0,0,Curses.cols, Curses.lines]
+			@windows = Array.new
+			@visible = true
+
+			@workspace = Window.new
+			@workspace.align= :client
+		end
+
 		public :eval, :instance_eval
 
 		public
 
 		def initialize
-
 			# this might be wrong but whatever
 			$ruvim = self
 
+			initialize_window
 			initialize_plugins
 			initialize_buffers
 			initialize_editors
@@ -78,7 +88,6 @@ module Ruvim
 			open
 
 			initialize_resources
-
 		end
 
 		# 
@@ -87,13 +96,13 @@ module Ruvim
 		
 		def refresh
 			Curses.refresh
-			Ruvim::Window.refresh
+			super
 			editor.refresh
 		end
 
 		def update(k)
 			@editor.process(k)
-			Ruvim::Window.update(k)
+			super
 		end
 
 		def start

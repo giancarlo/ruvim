@@ -11,81 +11,90 @@ module Ruvim
 
 		# This tell us the space available for alignment.
 		# NOTE Make sure Curses is initialized
-		Client = [0,0, Curses.cols, Curses.lines]
-		
-		@windows = Array.new
 
 		# Refreshes all the windows
-		def self.refresh
+		def refresh
 			Curses.curs_set(0)
 			@windows.each { |w| w.refresh if w.visible? }
+			@window.refresh
 			Curses.curs_set(1)
 		end
 
-		def self.update(k)
+		# Called when window receives input. k: key code
+		def update(k)
 			Curses.curs_set(0)
 			@windows.each { |w| w.update(k) if w.visible? }
 			Curses.curs_set(1)
 		end
 
 		# Registers Windows. If after is provided is inserted after that window. after is a Window Object.
-		def self.register(w, after=nil)
+		def register(w, after=nil)
 			(after) ? (@windows.insert(@windows.index(after), w)) : (@windows << w)
 		end
 
-		def self.unregister(w)
+		def unregister(w)
 			@windows.delete(w)
 		end
 
-		def self.reset_client
-			Client[0] = 0; Client[1] = 0; Client[2] = Curses.cols; Client[3] = Curses.lines
+		def reset_client
+			@client[0] = 0; @client[1] = 0; @client[2] = @width; @client[3] = @height
 		end
 
-		def self.rearrange
-			self.reset_client
+		def rearrange
+			reset_client
+			clients = []
 
 			@windows.each do |w|
-				w.align=(w.align) if w.visible?	
+				(w.align == :client) ? (clients << w) : (w.align=(w.align) if w.visible?)
+			end
+
+			clients.each do |w|
+				(w.align=w.align if w.visible?)
 			end
 		end
 
 	private
 
 		def align_top
-			move(Client[0], Client[1], Client[2], @height)
-			Client[1]	+= @height
-			Client[3]	-= @height
+			move(@parent.client[0], @parent.client[1], @parent.client[2], @parent.height)
+			@parent.client[1]	+= @height
+			@parent.client[3]	-= @height
 		end
 
 		def align_bottom
-			Client[3] -= @height
-			move(Client[0], Client[3], Client[2], @height)
+			@parent.client[3] -= @height
+			move(@parent.client[0], @parent.client[3], @parent.client[2], @height)
 		end
 
 		def align_client
-			move(Client[0], Client[1], Client[2], Client[3])
+			move(@parent.client[0], @parent.client[1], @parent.client[2], @parent.client[3])
 		end
 
 		def align_left
-			move(Client[0], Client[1], @width, Client[3])
-			Client[0] += @width
-			Client[2] -= @width
+			move(@parent.client[0], @parent.client[1], @width, @parent.client[3])
+			@parent.client[0] += @width
+			@parent.client[2] -= @width
 		end
 
 		def align_right
-			Client[2] -= @width
-			move(Client[0], Client[2], @width, Client[3])
+			@parent.client[2] -= @width
+			move(@parent.client[0], @parent.client[2], @width, @parent.client[3])
 		end
 
 	public
 
 		attr_reader :x, :y, :width, :height
-		attr_reader :window, :cursor
+		attr_reader :window, :cursor, :client, :parent
 
-		def initialize(parent=nil)
-			@window = Curses::Window.new(0,0,0,0)
+		def initialize(parent=$ruvim)
+			@window = Curses::Window.new(0,0, 0, 0)
+			@client = [0,0, @width, @height]
+			@parent = parent
+
 			@cursor = Ruvim::Cursor.new(@window)
-			Window.register(self, parent)
+			@windows = Array.new
+			
+			parent.register(self)
 			@visible= true
 		end
 
@@ -98,7 +107,8 @@ module Ruvim
 			@window.clear
 			move(0,0,0,0)
 			@visible = false
-			Window.rearrange
+			parent.rearrange
+			rearrange
 		end
 
 		def align
@@ -123,23 +133,16 @@ module Ruvim
 			else
 				raise "Invalid Alignment."
 			end
+
+			reset_client
 		end
 
 		def show
 			move(@x, @y, @width, @height)
 			redraw
 			@visible = true
-			Window.rearrange
-		end
-
-		# Override this function to clear and redraw
-		def refresh
-			@window.refresh
-		end
-
-		# Override this function to paint the window
-		# key is the last key pressed.
-		def update(key)
+			parent.rearrange
+			rearrange
 		end
 
 		def move(x,y,w,h)

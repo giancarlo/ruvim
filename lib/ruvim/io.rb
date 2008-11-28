@@ -40,7 +40,7 @@ module Ruvim
 
 		def open(file=nil)
 			if @editor.nil? then
-				@editor = Editor.new
+				@editor = Editor.new(@workspace)
 				@editors << @editor
 			end
 			@editor.open(file)

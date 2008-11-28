@@ -24,7 +24,7 @@ module Ruvim
 	public
 
 		def initialize(editor)
-			super
+			super editor.parent
 			@editor = editor
 			@width  = 4
 			self.align=(:left)

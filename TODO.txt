@@ -2,14 +2,9 @@ Ruvim
 
 TODO--
 
-- FEATURE: Create Window Class. Curses.Window + Title Bar.
-- FEATURE: Create
-- FEATURE: Debug Window
+- FEATURE: Each window has its own children
 - FEATURE: Parse command line arguments.
 - FEATURE: Hex View Window
 - FEATURE: MultiUser Editing
 - FIX: Draw Tabs
-- FIX: Correct Number of line
-- FIX: Back at EOL should not go to the other line
 - BUG: File Open
-- BUG: I suck

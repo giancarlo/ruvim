@@ -143,7 +143,7 @@ module Ruvim
 		# Insert what into buffer
 		def insert(what)
 			@data.insert(@index, what)
-			@index += what.size
+			#@index += what.size
 			self
 		end
 
