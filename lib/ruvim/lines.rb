@@ -23,14 +23,18 @@ module Ruvim
 		
 	public
 
+		attr_accessor :color
+
 		def initialize(editor)
 			super editor.parent
 			@editor = editor
 			@width  = 4
+			@color  = Curses.color_pair(3)
 			self.align=(:left)
 		end
 
 		def redraw
+			@window.attron(@color)
 			n = 0
 
 			@editor.page.range.each do |k|
@@ -44,6 +48,8 @@ module Ruvim
 				@window.addstr("~".ljust(@width))
 			end
 			@lines = @editor.lines
+
+			@window.attroff(@color)
 		end
 
 		def update(k)

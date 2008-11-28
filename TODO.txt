@@ -3,6 +3,7 @@ Ruvim
 TODO--
 
 - FEATURE: Each window has its own children
+- FIX: Separate Window Manager From Ruvim
 - FEATURE: Parse command line arguments.
 - FEATURE: Hex View Window
 - FEATURE: MultiUser Editing
