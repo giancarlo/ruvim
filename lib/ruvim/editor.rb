@@ -57,6 +57,7 @@ module Ruvim
 			super
 			self.align=(:client)
 			@window.scrollok true
+			@tabsize = Curses.TABSIZE
 
 			initialize_plugins
 		end
@@ -141,9 +142,24 @@ module Ruvim
 			@buffer.data.lines.count
 		end
 
-		# TODO Fix this shit
 		def line_number
 			@page.start + @cursor.y
+		end
+
+		# Returns Space occupied by the line in the display. If 'col' is given
+		# it returns the space occupied by 'col' characters.
+		def line_space(col=@buffer.line.end)
+			s = 0
+			@buffer.data[@buffer.line.start ... col].each_char do |k|
+				case k
+				when "\t"
+					s += tab(s)
+				else
+					s += 1
+				end
+			end
+
+			s
 		end
 
 		def cr

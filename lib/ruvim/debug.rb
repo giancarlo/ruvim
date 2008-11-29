@@ -30,10 +30,12 @@ module Ruvim
 			lc =$ruvim.editor.lines
 			ps = $ruvim.editor.page.start
 			pe = $ruvim.editor.page.end
+			cx = $ruvim.editor.cursor.x
+			cy = $ruvim.editor.cursor.y
 
 			@window.addstr("Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c})".ljust(50))
 			@window.setpos(2,0)
-			@window.addstr("Line #: #{ln}/#{lc}   Page: (#{ps}-#{pe})")
+			@window.addstr("Line #: #{ln}/#{lc}\tPage: (#{ps}-#{pe})\tCursor: #{cx}, #{cy}")
 			@window.setpos(3,0)
 			@window.addstr($ruvim.editor.buffer.data.ljust(@width))
 

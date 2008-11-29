@@ -41,16 +41,31 @@ module Ruvim
 			if @cursor.x == 0 then
 				up(@buffer.line.size)
 			else
-				@cursor.left
+				if (@buffer.char == "\t") then
+					@cursor.x = line_space(@buffer.index)
+				else
+					@cursor.left
+			    end	
 				self
 			end
 		end
 
+		# Returns Space Occupied by Tab at 'cx' position
+		def tab(cx=@cursor.x)
+			@tabsize - cx % @tabsize
+		end
+
 		def forward
-			if (@cursor.x < column_max) then
-				@buffer.forward
+			case @buffer.char
+			when "\n", nil
+				return self
+			when "\t"
+				@cursor.x += tab
+			else
 				@cursor.right
 			end
+
+			@buffer.forward
 
 			self
 		end
@@ -72,7 +87,8 @@ module Ruvim
 		end
 
 		def goto_bol
-			(@buffer.index - @buffer.line.start).times { back }
+			@cursor.x = 0
+			(@buffer.index - @buffer.line.start).times { @buffer.back }
 		end
 
 		def goto_eol
