@@ -10,6 +10,10 @@ module Ruvim
 			@buffer = buffer
 		end
 
+		def each(&block)
+			to_s.each_char(&block)
+		end
+
 		def start(i = @buffer.index)
 			return 0 if i == 0
 			(e = @buffer.data.rindex(Ruvim::API::CR, i-1)) ? e+1 : 0

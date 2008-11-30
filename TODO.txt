@@ -6,5 +6,4 @@ TODO--
 - FEATURE: Parse command line arguments.
 - FEATURE: Hex View Window
 - FEATURE: MultiUser Editing
-- FIX: Draw Tabs
 - BUG: File Open

@@ -6,6 +6,27 @@ module Ruvim
 
 	class Editor < Ruvim::Window
 
+		# Returns the Space occupied by the char at position s. s is optional but
+		# TABS will not return correct size if s is not present.
+		def char_space(k=@buffer.char, s=@cursor.x)
+			case k
+			when "\t";	return tab(s)
+			else; return 1
+			end
+		end
+
+		# Get the correct position of the cursor from any point in the screen
+		def correct_pos(x)
+			s = 0; i = 0
+			@buffer.line.each do |k|
+				d = char_space(k,s)
+				return [s, i] if s+d > x
+				s += d; i += 1
+			end
+
+			return [s, i]
+		end
+
 		def up(col=nil)
 
 			if (@cursor.at_sow?)
@@ -23,15 +44,12 @@ module Ruvim
 				@cursor.x = col
 				return self
 			end
-			
-			s = @buffer.line.previous.size
-			
-			if (s < @cursor.x) then
-				@cursor.x = s
-				@buffer.goto_bol.back
-			else
-				@buffer.goto_bol.back(s-@cursor.x+1)
-			end
+		
+			@buffer.goto_bol.back
+
+			nx, i = correct_pos(@cursor.x)
+			@buffer.back(@buffer.line.size - i)
+			@cursor.x = nx
 
 			self
 		end
@@ -39,7 +57,7 @@ module Ruvim
 		def back
 			@buffer.back
 			if @cursor.x == 0 then
-				up(@buffer.line.size)
+				up(line_space)
 			else
 				if (@buffer.char == "\t") then
 					@cursor.x = line_space(@buffer.index)
@@ -79,9 +97,11 @@ module Ruvim
 					@cursor.down
 				end
 				
-				nls = @buffer.line.next.size
-				@cursor.x= (nls < @cursor.x) ? nls : @cursor.x
-				@buffer.goto_eol.forward(@cursor.x+1)
+				@buffer.goto_eol.forward
+
+				nx, i = correct_pos(@cursor.x)
+				@buffer.forward(i)
+				@cursor.x = nx
 			end
 			self
 		end

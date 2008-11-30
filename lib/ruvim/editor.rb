@@ -76,7 +76,8 @@ module Ruvim
 			else
 				@window.setpos(line, 0)
 				l = @buffer.line.index(@page.start + line)
-				@window.addstr(l.ljust(@width-1))
+				@window.addstr(l)
+				@window.clrtoeol
 			end
 		end
 		
