@@ -11,6 +11,7 @@ require 'curses'
 Curses.init_screen
 Curses.nonl
 Curses.cbreak
+#Curses.raw
 Curses.noecho
 Curses.stdscr.keypad(true)
 
@@ -106,11 +107,19 @@ module Ruvim
 			super
 		end
 
+		# We need to make sure we use the whole screen
+		def rearrange
+			@width  = Curses.stdscr.maxx
+			@height = Curses.stdscr.maxy
+			super
+		end
+
 		def start
 			editor.cursor.restore
 			refresh
 
-			while (k = Curses.getch)
+			while true
+				k = Curses.getch
 				update(k)
 				editor.cursor.restore
 				refresh
@@ -122,6 +131,15 @@ module Ruvim
 
 		def cleanup
 			Curses.close_screen
+			puts "Goodbye"
+		end
+
+		# This will print a message at the bottom of the screen
+		# NOTE Statusbar overrides this function
+		def message(what)
+			@window.setpos(Curses.lines, 0)
+			@window.addstr(what.to_s)
+			@window.clrtoeol
 		end
 
 	end

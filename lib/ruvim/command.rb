@@ -10,26 +10,30 @@ module Ruvim
 
 		# app necessary to bind
 		def initialize
-			@row    = Curses.lines-1
 			@column = 0
 			@prompt = ":"
 		end
 
-		def print(what)
-			Curses.setpos(@row, @column)
-			Curses.addstr(what.ljust(Curses.cols))
+		def evaluate(command)
+			($ruvim.instance_eval(command).inspect) rescue "ERROR: #{$!}"
+		end
+
+		def row
+			$ruvim.height-1
 		end
 
 		# Gets command from user HAHAHA
 		def input
-			print @prompt	
+			$ruvim.window.setpos(row, @column)
+			$ruvim.window.addstr(@prompt)
+			$ruvim.window.clrtoeol
 
-			Curses.setpos(@row, @prompt.length)
+			$ruvim.window.setpos(row, @column + @prompt.length)
 			Curses.echo
-			command = Curses.getstr
+			command = $ruvim.window.getstr
 			Curses.noecho
 			
-			print $ruvim.instance_eval(command).inspect rescue print "ERROR: #{$!}"
+			$ruvim.message evaluate(command)
 		end
 
 		# Adds mappings to editor e.

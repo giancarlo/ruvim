@@ -39,9 +39,7 @@ module Ruvim
 
 		# Global Map - Map all the mothafuckin' modes'
 		def gmap(k, &action)
-			modes.keys.each do |m|
-				map(k, m, &action)
-			end
+			map(k, *modes.keys, &action)
 		end
 
 	end
@@ -53,7 +51,7 @@ module Ruvim
 			map('i', :normal) { self.mode=(:insert) }
 			nmap('a') { forward.mode=(:insert) }
 
-			gmap(Application::RESIZE) { $ruvim.refresh }
+			gmap(Application::RESIZE) { $ruvim.rearrange }
 
 			map(Application::ESCAPE, :insert) { self.mode= (:normal) }
 			map(Application::DELETE, :insert, :normal) { remove }

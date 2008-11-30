@@ -7,7 +7,8 @@ module Ruvim
 	class Editor < Ruvim::Window
 
 		# Returns the Space occupied by the char at position s. s is optional but
-		# TABS will not return correct size if s is not present.
+		# TABS will not return correct size if s is not present. s is the position
+		# of the cursor within the line.
 		def char_space(k=@buffer.char, s=@cursor.x)
 			case k
 			when "\t";	return tab(s)

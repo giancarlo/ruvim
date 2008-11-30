@@ -64,9 +64,13 @@ module Ruvim
 
 		# Redraws screen
 		def redraw
-			@window.clear
-			@window.addstr(@buffer.data)
-			@cursor.restore
+			redraw_line(0...@height)
+		end
+
+		# Set cursor and buffer position to 0
+		def reset
+			@cursor.reset
+			@buffer.reset
 		end
 
 		# Takes ranges

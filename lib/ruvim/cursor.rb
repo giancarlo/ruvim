@@ -27,6 +27,10 @@ module Ruvim
 			[@x, @y]
 		end
 
+		def move(nx, ny)
+			@x = nx; @y = ny
+		end
+
 		def show
 			@visible = true
 		end
@@ -49,6 +53,10 @@ module Ruvim
 
 		def right(unit=1)
 			@x += unit
+		end
+
+		def reset
+			@x = @y = 0
 		end
 
 		# At End of Window?

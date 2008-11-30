@@ -6,10 +6,10 @@ module Ruvim
 
 	module Message
 
-		FILE_WRITTEN		= "File %1(%2) written."
-		FILE_LOADED			= "File %1 loaded."
+		FILE_WRITTEN		= "File %s(%d) written."
+		FILE_LOADED			= "File %s loaded."
 
-		ERROR_FILE_WRITE	= "Error writing file: %1"
+		ERROR_FILE_WRITE	= "Error writing file: %s"
 
 	end
 

@@ -19,11 +19,13 @@ module Ruvim
 			@file = file
 			f = File.new(file)
 			@buffer.load(f.read)
+			reset
 		rescue
 			@buffer.load ''
+			$ruvim.message $!
 		ensure
 			f.close if f
-			refresh
+			redraw
 		end
 
 		def write(file=@file)
@@ -45,14 +47,14 @@ module Ruvim
 			end
 			@editor.open(file)
 
-			@statusbar.message(Ruvim::Message::FILE_LOADED % file) if file
+			(Ruvim::Message::FILE_LOADED % file) if file
 		end
 
 		def write(file=@editor.file)
 			@editor.write(file)
-			@statusbar.message(Ruvim::Message::FILE_WRITTEN % file, @editor.buffer.size)
+			message(Ruvim::Message::FILE_WRITTEN % file, @editor.buffer.size)
 		rescue
-			@statusbar.message(Ruvim::Message::ERROR_FILE_WRITE % $!)
+			message(Ruvim::Message::ERROR_FILE_WRITE % $!)
 		end
 
 		alias_method :w, :write
@@ -60,11 +62,11 @@ module Ruvim
 		def p(*what)
 			result = ''
 			what.each { |k| result += k.inspect }
-			@statusbar.message(result)
+			message(result)
 		end
 
 		def print(*what)
-			@statusbar.message(what.join)
+			message(what.join)
 		end
 
 		def puts(*what)
