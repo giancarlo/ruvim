@@ -37,18 +37,16 @@ module Ruvim
 			map(key, :insert, &action)
 		end
 
-		# Global Map - Map all the mothafuckin' modes'
+		# Global Map
 		def gmap(k, &action)
 			map(k, *modes.keys, &action)
 		end
 
-	end
-
-	class Editor
-
+		# Default Mappings for Editor
 		def default_mappings
 			
 			map('i', :normal) { self.mode=(:insert) }
+			nmap(Application::IC) { self.mode=(:insert) }
 			nmap('a') { forward.mode=(:insert) }
 
 			gmap(Application::RESIZE) { $ruvim.rearrange }
@@ -58,16 +56,21 @@ module Ruvim
 
 			map(Application::BACKSPACE)  { back }
 			imap(Application::BACKSPACE) { back.remove unless buffer.at_start? }
+			map(8) { back }
+			imap(8) { back.remove unless buffer.at_start? }
 			
 			imap(Application::RETURN) { cr }
 
 			map(Application::HOME, :normal, :insert) { goto_bol }
-			map(Application::Curses::Key::END, :normal, :insert) { goto_eol }
+			map(Curses::Key::END, :normal, :insert) { goto_eol }
 
 			map(Application::UP, :normal, :insert) 	{ up }
 			map(Application::LEFT, :normal, :insert) { back }
 			map(Application::RIGHT, :normal, :insert){ forward }
 			map(Application::DOWN, :normal, :insert) { down }
+
+			map(Application::NPAGE, :normal, :insert ) { (page.lines-1).times { down } }
+			map(Application::PPAGE, :normal, :insert ) { (page.lines-1).times { up } }
 
 			modes[:insert].bindings.default { |k| insert(k.chr) rescue nil }
 

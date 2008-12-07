@@ -47,6 +47,8 @@ module Ruvim
 				@window.setpos(n, 0)
 				@window.addstr("~".ljust(@width))
 			end
+
+			# This is for update routine.
 			@lines = @editor.lines
 			@start = @editor.page.start
 

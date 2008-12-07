@@ -15,16 +15,18 @@ module Ruvim
 
 	class Editor < Ruvim::Window
 		
-		def open(file=nil)
-			@file = file
-			f = File.new(file)
-			@buffer.load(f.read)
-			reset
-		rescue
-			@buffer.load ''
-			$ruvim.message $!
+		def open(file='')
+			if (File.exists?(file)) then
+				@file = file
+				f = File.new(file)
+				@buffer.load(f.read)
+			else
+				# New File
+				@buffer.load ''
+			end
 		ensure
 			f.close if f
+			reset
 			redraw
 		end
 
@@ -40,7 +42,7 @@ module Ruvim
 
 	module API
 
-		def open(file=nil)
+		def open(file='')
 			if @editor.nil? then
 				@editor = Editor.new(@workspace)
 				@editors << @editor

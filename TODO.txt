@@ -3,7 +3,9 @@ Ruvim
 TODO--
 
 - FIX: Separate Window Manager From Ruvim
+- FIX: Redraw at window Resize.
+- FIX: Multiline lines.
 - FEATURE: Parse command line arguments.
 - FEATURE: Hex View Window
 - FEATURE: MultiUser Editing
-- BUG: File Open
+- FEATURE: Selections

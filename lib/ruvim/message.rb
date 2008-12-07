@@ -8,6 +8,7 @@ module Ruvim
 
 		FILE_WRITTEN		= "File %s(%d) written."
 		FILE_LOADED			= "File %s loaded."
+		FILE_NEW			= "New File %s"
 
 		ERROR_FILE_WRITE	= "Error writing file: %s"
 

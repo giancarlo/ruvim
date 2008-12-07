@@ -15,7 +15,7 @@ module Ruvim
 		end
 
 		def evaluate(command)
-			($ruvim.instance_eval(command).inspect) rescue "ERROR: #{$!}"
+			($ruvim.instance_eval(command).inspect) rescue "ERROR: #{$!.to_s}"
 		end
 
 		def row

@@ -6,6 +6,7 @@ require 'ruvim/modes'
 require 'ruvim/bindings'
 require 'ruvim/buffer'
 require 'ruvim/page'
+require 'ruvim/segment'
 
 module Ruvim
 
@@ -25,10 +26,6 @@ module Ruvim
 	
 	private
 
-		def initialize_page
-			@page = Ruvim::Page.new(self, 0, @buffer.data.lines.count)
-		end
-
 		def initialize_plugins
 			@plugins = Hash.new
 
@@ -42,17 +39,13 @@ module Ruvim
 			end
 		end
 
-		def initialize_buffer
-			@lines  = 0
-			@buffer = Ruvim::Buffer.new
-		end
-
 	public
 
 		def initialize(parent)
 			initialize_modes
-			initialize_buffer
-			initialize_page
+			@buffer = Buffer.new
+			@page 	= Page.new(self)
+			@line 	= Segment.new(self, 0, 0)
 			
 			super
 			self.align=(:client)
@@ -126,25 +119,14 @@ module Ruvim
 		#	INFO CODE
 		#
 		
-		# Return current char length
-		def char_size
-			case @buffer.char
-			when "\t"
-				Curses.TABSIZE
-			else
-				1
-			end
-		end
-	
-		# Return max column
-		def column_max
-			@buffer.line.size #  - (@mode == :insert ? 0 : 1)
-		end
-
 		# Return number of lines
 		# TODO Optimize this
 		def lines
 			@buffer.data.lines.count
+		end
+
+		def line
+			@line
 		end
 
 		def line_number
@@ -155,13 +137,8 @@ module Ruvim
 		# it returns the space occupied by 'col' characters.
 		def line_space(col=@buffer.line.end)
 			s = 0
-			@buffer.data[@buffer.line.start ... col].each_char do |k|
-				case k
-				when "\t"
-					s += tab(s)
-				else
-					s += 1
-				end
+			@buffer[@buffer.line.start ... col].each_char do |k|
+				s += char_space(k, s)
 			end
 
 			s

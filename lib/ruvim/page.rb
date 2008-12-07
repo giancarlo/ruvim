@@ -8,17 +8,15 @@ module Ruvim
 
 	class Page
 		
-		def initialize(editor, s, e)
+		def initialize(editor)
 			@editor= editor
-			@start = s
+			@start = 0
 		end
 
-		# TODO Optimize this
 		def start
 			@start
 		end
 
-		# TODO Optimize thsi shit
 		def end
 			lines = @editor.buffer.data.lines.count - 1
 			max   = start + @editor.height
@@ -31,6 +29,10 @@ module Ruvim
 			(start .. self.end)
 		end
 
+		def lines
+			self.end - start
+		end
+
 		def scroll_up(n=1)
 			@start -= n
 			self
@@ -38,11 +40,6 @@ module Ruvim
 
 		def scroll_down
 			scroll_up(-1)
-		end
-
-		# Returns current page number
-		def number
-#			@editor.lines 
 		end
 
 	end

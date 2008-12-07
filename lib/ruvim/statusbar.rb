@@ -73,7 +73,7 @@ module Ruvim
 			@height = 1
 			self.align= :bottom
 			
-			add_panel(:default, Panel.new(self, 1, 0.8, 20))
+			add_panel(:default, Panel.new(self, 0, 0.8, 20))
 			add_panel :position, Panel.new(self, -16, 10, 10)
 			add_panel :mode, Panel.new(self, -2, 1, 1)
 		end

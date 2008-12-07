@@ -32,11 +32,11 @@ module Ruvim
 		end
 
 		def show
-			@visible = true
+			Curses.curs_set(1)
 		end
 
 		def hide
-			@visible = false
+			Curses.curs_set(0)
 		end
 
 		def up(unit=1)

@@ -40,7 +40,6 @@ module Ruvim
 		#
 
 		# Returns size of buffer
-		# TODO Optimize
 		def size
 			@data.size
 		end
@@ -53,11 +52,6 @@ module Ruvim
 		# Returns EOF index
 		def eof
 			@data.size
-		end
-
-		# TODO Optimize!
-		def next_line_size
-			line.next.size
 		end
 
 		# Returns string from index to end of line. Does not include CR
@@ -133,6 +127,13 @@ module Ruvim
 			@data.insert(@index, what)
 			#@index += what.size
 			self
+		end
+
+		#
+		# Syntactic Sugar
+		#
+		def [](index_or_range)
+			@data[index_or_range]
 		end
 
 	end

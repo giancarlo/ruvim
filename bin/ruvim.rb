@@ -6,7 +6,6 @@
 
 require 'curses'
 
-# Initializing Curses. This is fucking horrible here.
 # TODO Find a better place.
 Curses.init_screen
 Curses.nonl
@@ -66,11 +65,13 @@ module Ruvim
 
 		def initialize_window
 			@window  = Curses.stdscr
+			@cursor  = Cursor.new(@window)
 			@client  = [@x = 0, @y = 0, @width = Curses.cols, @height = Curses.lines]
 			@windows = Array.new
 			@visible = true
 
 			@workspace = Window.new
+
 			@workspace.align= :client
 		end
 
@@ -131,7 +132,6 @@ module Ruvim
 
 		def cleanup
 			Curses.close_screen
-			puts "Goodbye"
 		end
 
 		# This will print a message at the bottom of the screen
