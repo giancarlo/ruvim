@@ -17,6 +17,9 @@ module Ruvim
 		end
 
 		# Get the correct position of the cursor from any point in the screen
+		#
+		# x is the index of the current line.
+		#
 		def correct_pos(x)
 			s = 0; i = 0
 			@buffer.line.each do |k|
@@ -105,6 +108,19 @@ module Ruvim
 				@cursor.x = nx
 			end
 			self
+		end
+
+		# Goto the position for buffer[index]
+		def goto(index)
+			@buffer.goto index
+			l = line
+			ln= l.number
+			
+			page.start= ln unless page.range.include? ln
+			
+			# set cursor position
+			@cursor.y = ln - page.start
+			@cursor.x = correct_col(index-line.start)
 		end
 
 		def goto_bol

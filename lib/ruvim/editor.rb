@@ -126,7 +126,7 @@ module Ruvim
 		end
 
 		def line
-			@line
+			Segment.new(self, buffer.line.start, buffer.line.end)
 		end
 
 		def line_number

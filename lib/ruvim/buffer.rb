@@ -85,6 +85,10 @@ module Ruvim
 			@index = 0
 		end
 
+		def goto(i)
+			@index = i
+		end
+
 		def goto_eol
 			@index = line.end;	self
 		end

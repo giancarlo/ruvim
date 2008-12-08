@@ -30,6 +30,7 @@ module Ruvim
 
 		# Returns row of the segment in screen
 		def row
+			@editor.page.start	
 		end
 
 		# Vertical Space of the Segment
