@@ -18,7 +18,7 @@ module Ruvim
 
 		# Exits Application and Closes Screen
 		def exit
-			raise RuvimExit
+			$ruvim.continue = false
 		end
 		alias_method :q, :exit
 

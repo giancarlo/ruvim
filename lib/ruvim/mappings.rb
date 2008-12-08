@@ -46,8 +46,10 @@ module Ruvim
 		def default_mappings
 			
 			map('i', :normal) { self.mode=(:insert) }
+			nmap('I') { goto_bol.mode=(:insert) }
 			nmap(Application::IC) { self.mode=(:insert) }
 			nmap('a') { forward.mode=(:insert) }
+			nmap('A') { goto_eol.mode=(:insert) }
 
 			gmap(Application::RESIZE) { $ruvim.rearrange }
 

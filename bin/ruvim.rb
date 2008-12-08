@@ -36,6 +36,7 @@ module Ruvim
 		include Curses::Key
 		
 		attr_reader :editors, :editor, :plugins, :workspace
+		attr_accessor :continue
 		
 		private
 
@@ -82,6 +83,7 @@ module Ruvim
 		def initialize
 			# this might be wrong but whatever
 			$ruvim = self
+			@continue = true
 
 			initialize_window
 			initialize_plugins
@@ -119,14 +121,13 @@ module Ruvim
 			editor.cursor.restore
 			refresh
 
-			while true
+			while @continue
 				k = Curses.getch
 				update(k)
 				editor.cursor.restore
 				refresh
 			end
 
-		rescue RuvimExit
 			cleanup
 		end
 
