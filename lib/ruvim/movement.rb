@@ -123,6 +123,10 @@ module Ruvim
 			@cursor.x = correct_col(index-line.start)
 		end
 
+		def goto_lastline
+			down while (buffer.line.end < @buffer.size)
+		end
+
 		def goto_bol
 			@cursor.x = 0
 			(@buffer.index - @buffer.line.start).times { @buffer.back }

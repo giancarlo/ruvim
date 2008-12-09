@@ -138,7 +138,7 @@ module Ruvim
 		# This will print a message at the bottom of the screen
 		# NOTE Statusbar overrides this function
 		def message(what)
-			@window.setpos(Curses.lines, 0)
+			@window.setpos(Curses.lines-1, 0)
 			@window.addstr(what.to_s)
 			@window.clrtoeol
 		end
@@ -152,10 +152,10 @@ module Ruvim
 
 			@window.setpos(Curses.lines-1, prompt.length)
 			Curses.echo
-			search = @window.getstr
+			inp = @window.getstr
 			Curses.noecho
 			
-			return search
+			return inp
 		end
 
 	end

@@ -80,7 +80,7 @@ module Ruvim
 
 		def update(k)
 			panels[:mode].display $ruvim.editor.mode.abbr
-			panels[:position].display("#{$ruvim.editor.cursor.y}, #{$ruvim.editor.cursor.x}")
+			panels[:position].display("#{$ruvim.editor.page.start + $ruvim.editor.cursor.y}, #{$ruvim.editor.cursor.x}")
 		end
 
 		def redraw

@@ -23,7 +23,7 @@ module Ruvim
 	class Editor
 
 		def map(key, *mode, &action)
-			key = key.bytes.next if key.class == String
+			#key = key.bytes.next if key.class == String
 			mode << :normal if mode.empty?
 			mode.each { |m| modes[m].bindings.map(key, &action) }
 		end
@@ -50,6 +50,8 @@ module Ruvim
 			nmap(Application::IC) { self.mode=(:insert) }
 			nmap('a') { forward.mode=(:insert) }
 			nmap('A') { goto_eol.mode=(:insert) }
+
+			nmap('G') { goto_lastline }
 
 			gmap(Application::RESIZE) { $ruvim.rearrange }
 
