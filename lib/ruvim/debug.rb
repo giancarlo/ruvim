@@ -10,7 +10,7 @@ module Ruvim
 			super
 			@caption = " Debug "
 			@height = 14
-			self.align=(:bottom)
+			self.alignment= :bottom
 		end
 
 		def redraw

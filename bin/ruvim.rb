@@ -73,7 +73,7 @@ module Ruvim
 
 			@workspace = Window.new
 
-			@workspace.align= :client
+			@workspace.alignment= :client
 		end
 
 		public :eval, :instance_eval

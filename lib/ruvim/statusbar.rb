@@ -71,7 +71,7 @@ module Ruvim
 			@panels		 = Hash.new
 
 			@height = 1
-			self.align= :bottom
+			self.alignment= :bottom
 			
 			add_panel(:default, Panel.new(self, 0, 0.8, 20))
 			add_panel :position, Panel.new(self, -16, 10, 10)

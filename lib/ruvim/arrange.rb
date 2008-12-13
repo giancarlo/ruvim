@@ -38,27 +38,39 @@ module Ruvim
 
 		def reset_client
 			@client[0] = 0; @client[1] = (@caption ? 1 : 0);
-			@client[2] = @width; @client[3] = @height
+			@client[2] = @window.maxx; @client[3] = @window.maxy
 		end
 
 		def rearrange
+			@cursor.hide
+
 			reset_client
 			clients = []
 
 			@windows.each do |w|
-				(w.align == :client) ? (clients << w) : (w.align=(w.align) if w.visible?)
+				(w.alignment == :client) ? (clients << w) : w.align
 			end
 
 			clients.each do |w|
-				(w.align=w.align if w.visible?)
+				w.align
 			end
+
+			@cursor.show
 		end
 
 		# Aligns window to :top, :left, :right, :bottom or :client
-		def align=(where)
+		def alignment=(where)
 			@align = where
+			align
+		end
+
+		def alignment()
+			@align
+		end
+
+		def align
 			return unless visible?
-			case where
+			case @align
 			when :top
 				align_top
 			when :bottom
@@ -73,7 +85,7 @@ module Ruvim
 				raise "Invalid Alignment."
 			end
 
-			reset_client
+			rearrange
 			redraw
 		end
 	end

@@ -48,7 +48,7 @@ module Ruvim
 			@line 	= Segment.new(self, 0, 0)
 			
 			super
-			self.align=(:client)
+			self.alignment=(:client)
 			@window.scrollok true
 			@tabsize = Curses.TABSIZE
 

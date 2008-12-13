@@ -30,7 +30,7 @@ module Ruvim
 			@editor = editor
 			@width  = 4
 			@color  = Curses.color_pair(3)
-			self.align=(:left)
+			self.alignment=(:left)
 		end
 
 		def redraw

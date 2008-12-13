@@ -13,22 +13,15 @@ module Ruvim
 		attr_reader :x, :y, :width, :height
 		attr_reader :window, :cursor, :client, :parent
 
-		# This tell us the space available for alignment.
-		# NOTE Make sure Curses is initialized
-
-		# Refreshes all the windows
+		# Refreshes window and its children.
 		def refresh
-			@cursor.hide
 			@window.refresh
 			@windows.each { |w| w.refresh if w.visible? }
-			@cursor.show
 		end
 
 		# Called when window receives input. k: key code
 		def update(k)
-			@cursor.hide
 			@windows.each { |w| w.update(k) if w.visible? }
-			@cursor.show
 		end
 
 		# Registers Windows. If after is provided is inserted after that window. after is a Window Object.
@@ -39,7 +32,6 @@ module Ruvim
 		def unregister(w)
 			@windows.delete(w)
 		end
-
 
 		def initialize(parent=$ruvim)
 			@window = Curses::Window.new(0,0, 0, 0)
@@ -63,13 +55,7 @@ module Ruvim
 			move(0,0,0,0)
 			@visible = false
 			parent.rearrange
-			rearrange
 		end
-
-		def align
-			@align
-		end
-
 
 		def redraw
 			if @caption then
