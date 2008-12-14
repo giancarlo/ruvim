@@ -100,6 +100,7 @@ module Ruvim
 			@buffer.insert k
 			forward
 			redraw_line
+			self
 		end
 		
 		def remove
@@ -108,6 +109,7 @@ module Ruvim
 			ch = @buffer.char
 			@buffer.remove
 			redraw_line((ch == Ruvim::API::CR) ? (@cursor.y ... @height) : @cursor.y) 
+			self
 		end
 
 		#

@@ -36,6 +36,18 @@ module Ruvim
 			editor.cursor
 		end
 
+		def insert(text)
+			text.each_char { |k| editor.insert(k) }
+		end
+
+		def back(step=1)
+			step.times { editor.back }
+		end
+
+		def forward(step=1)
+			step.times { editor.forward }
+		end
+
 	end
 
 end

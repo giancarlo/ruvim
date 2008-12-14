@@ -46,7 +46,7 @@ module Ruvim
 
 			if File.exists?(path) then
 				ruvimrc = File.new(path)
-				eval(ruvimrc.read)
+				instance_eval(ruvimrc.read)
 				ruvimrc.close
 			end
 		end

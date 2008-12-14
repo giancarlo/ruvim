@@ -1,6 +1,13 @@
 #
 # Handle Key Bindings - Ruvim
 #
+# Adding Mappings:
+#
+# In your .ruvimrc file you can use:
+#
+# map('keys')  { action }
+# imap('keys') { action }
+#
 
 module Ruvim
 
@@ -29,9 +36,13 @@ module Ruvim
 
 		# key: Key Code
 		def process(key)
-			return @map[key].call if @map.has_key?(key)
-				
-			@default.call(key) if @default
+			if @map.has_key?(key)
+				if (x = @map[key].call).class == String then
+					x.each_char { process(key) }
+				end
+			else
+				@default.call(key) if @default
+			end
 		end
 
 	end

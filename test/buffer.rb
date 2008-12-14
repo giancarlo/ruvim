@@ -3,12 +3,17 @@
 #
 
 require 'test/unit'
-require '../lib/ruvim/core'
+require 'ruvim/core'
 
 class BufferTest < Test::Unit::TestCase
 
 	def setup
-		@buffer = Ruvim::Buffer.new(File.new('../test/buffer.data').read)
+		@bufferdata = %{Line 1
+Line 2
+Line 3
+Line 4
+Line 5} 
+		@buffer = Ruvim::Buffer.new(@bufferdata)
 	end
 
 	def test_movement
@@ -72,7 +77,7 @@ class BufferTest < Test::Unit::TestCase
 
 	def test_insert
 		@buffer.insert("Hello")
-		assert_equal("HelloLine 1\n", @buffer.line)
+		assert_equal("HelloLine 1\n", @buffer.line.to_s)
 		@buffer.forward 6
 		@buffer.insert "HAHAHA"
 		assert(@buffer.at_eol?)

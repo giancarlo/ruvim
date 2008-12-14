@@ -130,10 +130,12 @@ module Ruvim
 		def goto_bol
 			@cursor.x = 0
 			(@buffer.index - @buffer.line.start).times { @buffer.back }
+			self
 		end
 
 		def goto_eol
 			(@buffer.line.end - @buffer.index).times { forward }
+			self
 		end
 
 	end
