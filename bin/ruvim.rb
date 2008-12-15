@@ -21,8 +21,8 @@ module Ruvim
 		
 		private
 
+		# Load ~/.ruvimrc and Evaluate
 		def initialize_resources
-			# Load ~/.ruvimrc and Evaluate
 			path = File.expand_path("~/.ruvimrc")
 
 			if File.exists?(path) then
@@ -33,8 +33,7 @@ module Ruvim
 		end
 
 		def initialize_buffers
-			@buffers = Hash.new
-			@buffers[:copy] = Buffer.new
+			@buffers = { :copy => Buffer.new }
 		end
 
 		def initialize_plugins
@@ -62,7 +61,6 @@ module Ruvim
 		public
 
 		def initialize
-			# this might be wrong but whatever
 			$ruvim = self
 			@continue = true
 
@@ -71,7 +69,8 @@ module Ruvim
 			initialize_buffers
 			initialize_editors
 
-			open
+			# Lets check ARGS
+			(ARGV.size > 0) ? (ARGV.each { |arg| open(arg) }) : open
 
 			initialize_resources
 		end

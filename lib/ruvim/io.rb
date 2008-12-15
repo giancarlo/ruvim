@@ -14,16 +14,29 @@ module Ruvim
 	end
 
 	class Editor < Ruvim::Window
+
+		def changed?
+			@changed
+		end
 		
 		def open(file='')
 			if (File.exists?(file)) then
 				@file = file
 				f = File.new(file)
+
+				if changed? then
+					if ($ruvim.input("File was modified. Save? (Y|n)").downcase! == "y") then
+						write
+					end
+				end
+
 				@buffer.load(f.read)
 			else
 				# New File
 				@buffer.load ''
 			end
+			
+			@changed = false
 		ensure
 			f.close if f
 			reset
@@ -34,6 +47,7 @@ module Ruvim
 			@file = file
 			f = File.new(file, 'w')
 			f.write(@buffer.data)
+			@changed = false
 		ensure
 			f.close if f
 		end
@@ -42,6 +56,7 @@ module Ruvim
 
 	module API
 
+		# Opens File in current editor
 		def open(file='')
 			if @editor.nil? then
 				@editor = Editor.new(@workspace)

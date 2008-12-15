@@ -98,6 +98,7 @@ module Ruvim
 		def insert(k)
 			@window.addch k
 			@buffer.insert k
+			@changed = true
 			forward
 			redraw_line
 			self
@@ -108,6 +109,7 @@ module Ruvim
 			return if (@buffer.at_end?)
 			ch = @buffer.char
 			@buffer.remove
+			@changed = true
 			redraw_line((ch == Ruvim::API::CR) ? (@cursor.y ... @height) : @cursor.y) 
 			self
 		end
