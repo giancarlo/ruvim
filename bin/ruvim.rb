@@ -4,29 +4,12 @@
 # by Giancarlo Bellido
 #
 
-require 'curses'
-
-# TODO Find a better place.
-Curses.init_screen
-Curses.nonl
-Curses.cbreak
-#Curses.raw
-Curses.noecho
-Curses.stdscr.keypad(true)
-
-# ESCDELAY might not be defined.
-Curses.ESCDELAY= 50 rescue nil
-Curses.start_color
-Curses.use_default_colors
-Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
-Curses.refresh
-
+require 'ruvim/curses'
 require 'ruvim/core'
 
 module Ruvim
 
 	Version = "0.1"
-
 
 	class Application < Window
 
