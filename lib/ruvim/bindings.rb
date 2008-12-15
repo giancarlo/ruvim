@@ -37,8 +37,8 @@ module Ruvim
 		# key: Key Code
 		def process(key)
 			if @map.has_key?(key)
-				if (x = @map[key].call).class == String then
-					x.each_char { process(key) }
+				if (x = @map[key].call).class == Array then
+					x.each { |k| process(k) }
 				end
 			else
 				@default.call(key) if @default

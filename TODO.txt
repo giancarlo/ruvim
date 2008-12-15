@@ -1,6 +1,6 @@
 Ruvim
 
-TODO--
+--TODO--
 
 - FIX: Separate Window Manager From Ruvim
 - FIX: Redraw at window Resize.

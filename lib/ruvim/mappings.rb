@@ -50,8 +50,8 @@ module Ruvim
 			nmap(Application::IC) { self.mode=(:insert) }
 			nmap('a') { forward.mode=(:insert) }
 			nmap('A') { goto_eol.mode=(:insert) }
-			nmap('o') { goto_eol.cr }
-			nmap('O') { goto_bol.cr.up }
+			nmap('o') { goto_eol.cr.mode=(:insert) }
+			nmap('O') { goto_bol.cr.up.mode=(:insert) }
 
 			nmap('G') { goto_lastline }
 

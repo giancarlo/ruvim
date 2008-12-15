@@ -69,9 +69,9 @@ module Ruvim
 
 		def write(file=@editor.file)
 			@editor.write(file)
-			message(Ruvim::Message::FILE_WRITTEN % file, @editor.buffer.size)
+			Ruvim::Message::FILE_WRITTEN % [file, @editor.buffer.size]
 		rescue
-			message(Ruvim::Message::ERROR_FILE_WRITE % $!)
+			Ruvim::Message::ERROR_FILE_WRITE % $!
 		end
 
 		alias_method :w, :write
