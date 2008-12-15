@@ -9,7 +9,7 @@ spec = Gem::Specification.new do |s|
 	s.version = "0.1" 
 	s.summary = "Ruvim - Ruby Text Editor"
 	s.description = "Ruby Text Editor based on VIM."
-	s.files = 	[ "Rakefile", "README"] +
+	s.files = 	[ "Rakefile", "README", 'install.rb'] +
 				Dir.glob("lib/**/*") +
 				Dir.glob("{bin,test}/*")
 
@@ -52,3 +52,7 @@ task :uninstall do
 	sh "#{RUBY} -S gem uninstall #{spec.name} -v#{spec.version} -Ix"
 end
 
+desc "Run install.rb"
+task :installrb do
+	sh "#{RUBY} install.rb"
+end

@@ -21,8 +21,6 @@ Curses.use_default_colors
 Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
 Curses.refresh
 
-$: << "../lib" << "/home/giancarlo/projects/algorithms/lib"
-
 require 'ruvim/core'
 
 module Ruvim
