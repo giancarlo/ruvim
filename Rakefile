@@ -45,14 +45,12 @@ task :default => [ :test ]
 desc "Install #{spec.name}-#{spec.version}"
 task :install => [:package] do
 	sh "#{RUBY} -S gem install --local pkg/#{spec.name}-#{spec.version} --no-update-sources"
+	sh "#{RUBY} install.rb"
 end
 
 desc "Uninstall #{spec.name}-#{spec.version}"
 task :uninstall do
 	sh "#{RUBY} -S gem uninstall #{spec.name} -v#{spec.version} -Ix"
+	sh "#{RUBY} uninstall.rb"
 end
 
-desc "Run install.rb"
-task :installrb do
-	sh "#{RUBY} install.rb"
-end
