@@ -6,13 +6,19 @@ module Ruvim
 
 	class Search
 
-		attr_accessor :prompt, :last
+		attr_accessor :prompt, :last, :rprompt
 	
 		def initialize
-			@prompt = '/'
+			@prompt  = '/'
+			@rprompt = '?'
 		end
 
+		# 
+		# Finds next 'what' from current buffer index + 'i'.
+		#
 		def find(what = $ruvim.input(@prompt), i=0)
+			# TODO Merge find and rfind and separate search.
+
 			@last = what
 
 			position = $ruvim.editor.buffer.data.index(@last, $ruvim.editor.buffer.index + i)
@@ -32,15 +38,18 @@ module Ruvim
 		
 		end
 
-		def rfind(what = $ruvim.input(@prompt), i=0)
+		# 
+		# Finds previous 'what' from current buffer index - 'i'.
+		#
+		def rfind(what = $ruvim.input(@rprompt), i=0)
 			@last = what
 
 			position = $ruvim.editor.buffer.data.rindex(@last, $ruvim.editor.buffer.index + i)
 
 			if position.nil? then
 				# Continue from the beggining
-				$ruvim.message "Search Hit BOTTOM. Continuing at TOP."
-				position = $ruvim.editor.buffer.data.rindex(@last)
+				$ruvim.message "Search Hit TOP. Continuing at BOTTOM."
+				position = $ruvim.editor.buffer.data.rindex(@last, $ruvim.editor.buffer.eof)
 
 				if position.nil? then
 					$ruvim.message "Pattern not found: " + @last
