@@ -23,8 +23,9 @@ module Ruvim
 			(e = @buffer.data.index(Ruvim::API::CR, i)) ? e : @buffer.eof
 		end
 
+		# TODO Optimize
 		def number
-			@number
+			@buffer.data[0..@buffer.index].count(Ruvim::API::CR)
 		end
 
 		def size

@@ -19,7 +19,7 @@ module Ruvim
 			if position.nil? then
 				$ruvim.message "Pattern not found: " + what
 			else
-				$ruvim.editor.goto_index(position)	
+				$ruvim.editor.goto(position)	
 			end
 		end
 

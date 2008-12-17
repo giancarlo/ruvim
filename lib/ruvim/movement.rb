@@ -20,6 +20,8 @@ module Ruvim
 		#
 		# x is the index of the current line.
 		#
+		# Returns array with [space, index]
+		#
 		def correct_pos(x)
 			s = 0; i = 0
 			@buffer.line.each do |k|
@@ -111,16 +113,17 @@ module Ruvim
 		end
 
 		# Goto the position for buffer[index]
+		# TODO Improve this method. Editor.line should be used.
 		def goto(index)
 			@buffer.goto index
-			l = line
+			l = @buffer.line
 			ln= l.number
 			
 			page.start= ln unless page.range.include? ln
 			
 			# set cursor position
 			@cursor.y = ln - page.start
-			@cursor.x = correct_col(index-line.start)
+			@cursor.x = correct_pos(index-line.start)[0]
 		end
 
 		def goto_lastline
