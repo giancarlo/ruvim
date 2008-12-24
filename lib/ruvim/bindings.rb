@@ -20,6 +20,7 @@ module Ruvim
 
 		def initialize()
 			@map	= Hash.new
+			@default= nil
 		end
 
 		# 

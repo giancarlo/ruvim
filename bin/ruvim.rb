@@ -9,15 +9,12 @@ require 'ruvim/core'
 
 module Ruvim
 
-	Version = "0.1"
-
 	class Application < Window
 
 		include Ruvim::API
 		include Curses::Key
 		
 		attr_reader :editors, :editor, :plugins, :workspace
-		attr_accessor :continue
 		
 		private
 
@@ -56,7 +53,9 @@ module Ruvim
 			@workspace.alignment= :client
 		end
 
-		public :eval, :instance_eval
+		def initialize_arguments
+			(ARGV.size > 0) ? (ARGV.each { |arg| open(arg) }) : open
+		end
 
 		public
 
@@ -68,17 +67,10 @@ module Ruvim
 			initialize_plugins
 			initialize_buffers
 			initialize_editors
-
-			# Lets check ARGS
-			(ARGV.size > 0) ? (ARGV.each { |arg| open(arg) }) : open
-
+			initialize_arguments
 			initialize_resources
 		end
 
-		# 
-		# EVENTS
-		#
-		
 		def refresh
 			Curses.refresh
 			super
@@ -127,10 +119,7 @@ module Ruvim
 		end
 
 		def cleanup
-			# Close open editors
-			@editors.each do |e|
-				e.close
-			end
+			@editors.each { |e|	e.close }
 			
 			Curses.close_screen
 		end
@@ -162,5 +151,4 @@ module Ruvim
 
 end
 
-Ruvim::Application.new
-$ruvim.start
+Ruvim::Application.new.start

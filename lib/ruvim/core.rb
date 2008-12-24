@@ -3,6 +3,7 @@
 #
 require 'curses'
 
+require 'ruvim/version'
 require 'ruvim/window'
 require 'ruvim/cursor'
 require 'ruvim/line'
@@ -19,8 +20,3 @@ require 'ruvim/movement'
 require 'ruvim/message'
 
 require 'ruvim/api'
-
-module Ruvim
-
-
-end

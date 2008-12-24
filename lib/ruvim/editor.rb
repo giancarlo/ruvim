@@ -14,15 +14,12 @@ module Ruvim
 
 		attr_reader :buffer, :file
 		attr_reader :selection
-		attr_reader :active
 		attr_reader :modes
 		attr_reader :page
 		attr_reader :plugins
 		
 		Plugins = Hash.new
 
-	public :eval
-	
 	private
 
 		def initialize_plugins
@@ -117,7 +114,6 @@ module Ruvim
 		end
 		
 		def remove
-			# Can't remove nil
 			return if (@buffer.at_end?)
 			ch = @buffer.char
 			@buffer.remove
@@ -126,15 +122,6 @@ module Ruvim
 			self
 		end
 
-		#
-		#	Movement Routines @ ruvim/movement.rb
-		#
-
-		
-		#
-		#	INFO CODE
-		#
-		
 		# Return number of lines
 		# TODO Optimize this
 		def lines
