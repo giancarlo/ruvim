@@ -128,6 +128,9 @@ module Ruvim
 
 		def cleanup
 			# Close open editors
+			@editors.each do |e|
+				e.close
+			end
 			
 			Curses.close_screen
 		end
