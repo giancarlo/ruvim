@@ -90,11 +90,27 @@ module Ruvim
 			super
 		end
 
-		# We need to make sure we use the whole screen
 		def rearrange
 			@width  = Curses.stdscr.maxx
 			@height = Curses.stdscr.maxy
 			super
+		end
+
+		# Gets Input and Uses Timeout to get multiple chars for mappings
+		def getch
+			
+			k = Curses.getch 
+			
+			while editor.mode.bindings.continue(k)
+				Curses.timeout= @timeout
+				if x = Curses.getch then
+					k = [k] unless (k.class == Array)
+					k << x
+				end
+				Curses.timeout= -1
+			end
+
+			update(k)
 		end
 
 		def start
@@ -102,8 +118,7 @@ module Ruvim
 			refresh
 
 			while @continue
-				k = Curses.getch
-				update(k)
+				getch
 				editor.cursor.restore
 				refresh
 			end
@@ -112,6 +127,8 @@ module Ruvim
 		end
 
 		def cleanup
+			# Close open editors
+			
 			Curses.close_screen
 		end
 

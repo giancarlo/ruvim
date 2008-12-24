@@ -20,7 +20,30 @@ module Ruvim
 		def exit
 			$ruvim.continue = false
 		end
-		alias_method :q, :exit
+		alias_method :qa, :exit
+
+		# Quits current editor and removes them from editors
+		def quit
+			editor.close
+			editors.delete_at @current_editor
+
+			return exit if editors.size == 0
+
+			if @current_editor >= editors.size then
+				@current_editor = editors.size
+			end
+			editor_goto
+		end
+		alias_method :q, :quit
+
+		# Sets tabsize for current and future editors
+		def tabsize=(value)
+			editor.tabsize= value
+		end
+
+		def tabsize
+			editor.tabsize
+		end
 
 		# Returns current line
 		def line

@@ -15,7 +15,6 @@ module Ruvim
 		attr_reader :buffer, :file
 		attr_reader :selection
 		attr_reader :active
-		attr_reader	:bindings
 		attr_reader :modes
 		attr_reader :page
 		attr_reader :plugins
@@ -46,17 +45,30 @@ module Ruvim
 			@buffer = Buffer.new
 			@page 	= Page.new(self)
 			@line 	= Segment.new(self, 0, 0)
+			# 1 second timeout
+			@timeout  = 1000
+			# TODO Make tabsize work with different editors
+			@tabsize = Curses.TABSIZE
 			
 			super
 			self.alignment=(:client)
 			@window.scrollok true
-			@tabsize = Curses.TABSIZE
 
 			initialize_plugins
 		end
 
+		def tabsize
+			@tabsize
+		end
+
+		def tabsize=(value)
+			@tabsize = value
+			redraw
+		end
+
 		# Redraws screen
 		def redraw
+			Curses.TABSIZE= tabsize
 			redraw_line(0...@height)
 		end
 

@@ -76,7 +76,7 @@ module Ruvim
 
 		# Returns Space Occupied by Tab at 'cx' position
 		def tab(cx=@cursor.x)
-			@tabsize - cx % @tabsize
+			tabsize - cx % tabsize
 		end
 
 		def forward

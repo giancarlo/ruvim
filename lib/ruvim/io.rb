@@ -18,24 +18,29 @@ module Ruvim
 		def changed?
 			@changed
 		end
+
+		# Closes Editor and asks to save file if changed.
+		def close
+			if changed? then
+				if ($ruvim.input("File was modified. Save? (Y|n)").downcase! != "n") then
+					write
+				end
+			end
+
+			self
+		end
 		
 		def open(file='')
 			@file = file
 
 			if (File.exists?(file)) then
 				f = File.new(file)
-
-				if changed? then
-					if ($ruvim.input("File was modified. Save? (Y|n)").downcase! == "y") then
-						write
-					end
-				end
-
-				@buffer.load(f.read)
+				close
+				buffer.load(f.read)
 			else
 				# New File
 				$ruvim.message "New File: #{@file}"
-				@buffer.load ''
+				buffer.load ''
 			end
 			
 			@changed = false

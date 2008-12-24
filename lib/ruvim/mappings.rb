@@ -54,6 +54,8 @@ module Ruvim
 			nmap('O') { goto_bol.cr.up.mode=(:insert) }
 
 			nmap('G') { goto_lastline }
+			nmap('gt') { $ruvim.editor_next }
+			nmap('gT') { $ruvim.editor_previous }
 
 			gmap(Application::RESIZE) { $ruvim.rearrange }
 

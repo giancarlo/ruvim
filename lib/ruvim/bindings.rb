@@ -33,6 +33,13 @@ module Ruvim
 		def default(&action)
 			@default = action
 		end
+	
+		# Function to handle multichar mappings
+		def continue(k)
+			# A ternary tree would be useful here
+			# TODO Finish this. For now it will return false. It will only accept single char bindings.
+			false			
+		end
 
 		# key: Key Code
 		def process(key)
