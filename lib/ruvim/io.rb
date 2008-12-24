@@ -20,8 +20,9 @@ module Ruvim
 		end
 		
 		def open(file='')
+			@file = file
+
 			if (File.exists?(file)) then
-				@file = file
 				f = File.new(file)
 
 				if changed? then
@@ -33,6 +34,7 @@ module Ruvim
 				@buffer.load(f.read)
 			else
 				# New File
+				$ruvim.message "New File: #{@file}"
 				@buffer.load ''
 			end
 			
@@ -61,10 +63,27 @@ module Ruvim
 			if @editor.nil? then
 				@editor = Editor.new(@workspace)
 				@editors << @editor
+				@current_editor = @editors.size-1
 			end
 			@editor.open(file)
 
 			(Ruvim::Message::FILE_LOADED % file) if file
+		end
+
+		def editor_goto(index=@current_editor)
+			@editor = @editors[@current_editor]
+
+			message("#{@current_editor}/#{@editors.size}: #{@editor.file}")
+		end
+
+		def editor_next
+			@current_editor = (@current_editor < @editors.size) ? @current_editor + 1 : 0
+			editor_goto
+		end
+
+		def editor_previous
+			@current_editor = ((@current_editor > 0) ? @current_editor : @editor.size) - 1
+			editor_goto
 		end
 
 		def write(file=@editor.file)
