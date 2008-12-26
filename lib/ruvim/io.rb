@@ -22,7 +22,7 @@ module Ruvim
 		# Closes Editor and asks to save file if changed.
 		def close
 			if changed? then
-				if ($ruvim.input("File was modified. Save? (Y|n)").downcase! != "n") then
+				if ($ruvim.input("File was modified. Save (Y|n)? ").downcase != "n") then
 					write
 				end
 			end
