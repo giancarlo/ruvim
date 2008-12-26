@@ -17,6 +17,8 @@ module Ruvim
 		attr_reader :modes
 		attr_reader :page
 		attr_reader :plugins
+
+		attr_accessor :timeout
 		
 		Plugins = Hash.new
 

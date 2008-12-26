@@ -27,12 +27,9 @@ module Ruvim
 			editor.close
 			editors.delete_at @current_editor
 
-			return exit if editors.size == 0
+			return self.exit if editors.size == 0
 
-			if @current_editor >= editors.size then
-				@current_editor = editors.size
-			end
-			editor_goto
+			editor_goto (@current_editor >= editors.size) ? @current_editor = editors.size-1 : @current_editor
 		end
 		alias_method :q, :quit
 

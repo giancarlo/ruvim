@@ -39,7 +39,7 @@ module Ruvim
 				buffer.load(f.read)
 			else
 				# New File
-				$ruvim.message "New File: #{@file}"
+				file = "[New File] #{@file}"
 				buffer.load ''
 			end
 			
@@ -48,6 +48,7 @@ module Ruvim
 			f.close if f
 			reset
 			redraw
+			return (Ruvim::Message::FILE_LOADED % file)
 		end
 
 		def write(file=@file)
@@ -65,30 +66,39 @@ module Ruvim
 
 		# Opens File in current editor
 		def open(file='')
-			if @editor.nil? then
-				@editor = Editor.new(@workspace)
-				@editors << @editor
-				@current_editor = @editors.size-1
-			end
+			tabn if @editor.nil?
 			@editor.open(file)
-
-			(Ruvim::Message::FILE_LOADED % file) if file
 		end
 
-		def editor_goto(index=@current_editor)
-			@editor = @editors[@current_editor]
+		# Creates a new editor
+		def tabn
+			@editor = Editor.new(@workspace)
+			@editors << @editor
+			@current_editor = @editors.size-1
+		end
 
-			message("#{@current_editor}/#{@editors.size}: #{@editor.file}")
+		# Opens file in new editor
+		def tabe(file='')
+			tabn
+			@editor.open(file)
+		end
+
+		def editor_goto(index)
+			# Hide Current Editor
+			@editor.hide
+			@editor = @editors[@current_editor = index]
+			@editor.show
+			message "#{@current_editor+1}/#{@editors.size}: #{@editor.file}"
+		rescue
+			"Invalid Editor Index: #{index}"
 		end
 
 		def editor_next
-			@current_editor = (@current_editor < @editors.size) ? @current_editor + 1 : 0
-			editor_goto
+			editor_goto (@current_editor < @editors.size-1) ? @current_editor + 1 : 0
 		end
 
 		def editor_previous
-			@current_editor = ((@current_editor > 0) ? @current_editor : @editor.size) - 1
-			editor_goto
+			editor_goto ((@current_editor > 0) ? @current_editor : @editors.size) - 1
 		end
 
 		def write(file=@editor.file)

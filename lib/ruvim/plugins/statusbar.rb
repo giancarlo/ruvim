@@ -48,6 +48,7 @@ module Ruvim
 			@statusbar.window.setpos(0, column)
 			@statusbar.window.addstr(t.ljust(length))
 			@statusbar.refresh
+			t
 		end
 
 		# Displays message on panel

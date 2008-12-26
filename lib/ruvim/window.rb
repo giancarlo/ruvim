@@ -38,6 +38,7 @@ module Ruvim
 			@cursor = Ruvim::Cursor.new(@window)
 			@client = [0,0, @width, @height]
 			@parent = parent
+			@caption= nil
 
 			@windows = Array.new
 			
@@ -66,7 +67,6 @@ module Ruvim
 
 		def show
 			move(@x, @y, @width, @height)
-			redraw
 			@visible = true
 			parent.rearrange
 			rearrange

@@ -9,6 +9,8 @@
 # imap('keys') { action }
 #
 
+require 'algorithms/tst'
+
 module Ruvim
 
 	#
@@ -19,7 +21,7 @@ module Ruvim
 	class Bindings
 
 		def initialize()
-			@map	= Hash.new
+			@map	= Structures::TST::Node.new
 			@default= nil
 		end
 
@@ -27,7 +29,12 @@ module Ruvim
 		# Adds a mapping
 		#
 		def map(key, &action)
-			@map[key] = action
+			key = key.bytes.to_a if key.class == String
+			key = [key] unless key.class == Array
+
+			key.map! { |k| (k.class == String) ? k.getbyte(0) : k }
+
+			@map.insert(key, action)
 		end
 
 		# What to do when no mapping was found
@@ -35,24 +42,29 @@ module Ruvim
 			@default = action
 		end
 	
-		# Function to handle multichar mappings
-		def continue(k)
-			# A ternary tree would be useful here
-			# TODO Finish this. For now it will return false. It will only accept single char bindings.
-			false			
+		#
+		# Function to handle multichar mappings.
+		#
+		# node is the current node where to search for element k
+		# Returns nil if not found, the node if more than one found and false if one found.
+		#
+		def continue(k, node=@map)
+			result = node.node([k])
+			return result if result.ref 
+			
+			result.value.call
+			false
+		rescue Structures::TST::NotFound
+			nil
 		end
 
-		# key: Key Code
-		def process(key)
-			if @map.has_key?(key)
-				if (x = @map[key].call).class == Array then
-					x.each { |k| process(k) }
-				end
-			else
-				@default.call(key) if @default
-			end
+		#
+		# Process keycode sequence and call default method
+		#
+		def process(keys)
+			return unless @default
+			keys.each { |k| @default.call(k) }
 		end
-
 	end
 
 end

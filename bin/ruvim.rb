@@ -92,11 +92,6 @@ module Ruvim
 			editor.refresh
 		end
 
-		def update(k)
-			@editor.process(k)
-			super
-		end
-
 		def rearrange
 			@width  = Curses.stdscr.maxx
 			@height = Curses.stdscr.maxy
@@ -106,17 +101,26 @@ module Ruvim
 		# Gets Input and Uses Timeout to get multiple chars for mappings
 		def getch
 			
-			k = Curses.getch 
+			k = Curses.getcode 
+
+			n = editor.mode.bindings.continue(k)
+			return if n == false
+			k = [k]
 			
-			while editor.mode.bindings.continue(k)
-				Curses.timeout= @timeout
-				if x = Curses.getch then
-					k = [k] unless (k.class == Array)
-					k << x
-				end
-				Curses.timeout= -1
+			while n
+
+				nk = Curses.getcodetimeout(editor.timeout)
+
+				(n.value.call if n.value; return) if nk == nil
+
+				k << nk
+				n = editor.mode.bindings.continue(nk, n.ref)
+				return if n == false
 			end
 
+			editor.mode.bindings.process(k)
+
+		ensure
 			update(k)
 		end
 

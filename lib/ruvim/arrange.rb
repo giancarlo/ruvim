@@ -70,6 +70,7 @@ module Ruvim
 
 		def align
 			return unless visible?
+
 			case @align
 			when :top
 				align_top

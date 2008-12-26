@@ -33,6 +33,10 @@ module Ruvim
 			self.alignment=(:left)
 		end
 
+		def visible?
+			@editor.visible?
+		end
+
 		def redraw
 			@window.attron(@color)
 			n = 0
