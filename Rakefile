@@ -4,9 +4,11 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/testtask'
 
+require 'lib/ruvim/version'
+
 spec = Gem::Specification.new do |s|
 	s.name    = "ruvim"
-	s.version = "0.1" 
+	s.version = Ruvim::VERSION 
 	s.summary = "Ruvim - Ruby Text Editor"
 	s.description = "Ruby Text Editor based on VIM."
 	s.files = 	[ "Rakefile", "README"] +
