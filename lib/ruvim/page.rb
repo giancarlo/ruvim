@@ -18,10 +18,14 @@ module Ruvim
 		end
 
 		def end
-			lines = @editor.buffer.data.lines.count - 1
+			lines = @editor.lines - 1
 			max   = start + @editor.height
 
 			(lines > max) ? max : lines
+		end
+
+		def reset
+			@start = 0	
 		end
 
 		# Return a Range from start to end

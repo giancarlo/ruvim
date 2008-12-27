@@ -55,6 +55,7 @@ module Ruvim
 			@window.clear
 			move(0,0,0,0)
 			@visible = false
+			@windows.each { |w| w.hide }
 			parent.rearrange
 		end
 
@@ -76,9 +77,6 @@ module Ruvim
 			@x = x; @y = y; @width = w; @height = h
 			@window.resize(h,w)
 			@window.move(y,x)
-			
-			# make sure the damn thing moved
-#			raise "Window was not moved." if (@x != )
 		end
 
 		def visible?

@@ -46,7 +46,7 @@ module Ruvim
 		# TODO change the row to allow a multirow statusbar
 		def print(t)
 			@statusbar.window.setpos(0, column)
-			@statusbar.window.addstr(t.ljust(length))
+			@statusbar.window.addstr(t.to_s.ljust(length)) unless t.nil?
 			@statusbar.refresh
 			t
 		end

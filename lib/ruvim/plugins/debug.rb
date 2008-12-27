@@ -11,6 +11,7 @@ module Ruvim
 			@caption = " Debug "
 			@height = 14
 			self.alignment= :bottom
+			@lastkey = ''
 		end
 
 		def redraw
@@ -18,12 +19,17 @@ module Ruvim
 			super
 		end
 
+		def print(row, what)
+			@window.setpos(row,0)
+			@window.addstr(what.ljust(@width))
+		end
+
 		def update(k)
 			@window.setpos(1, 0)
 			i = $ruvim.editor.buffer.index
 			le= $ruvim.editor.buffer.line.end
 			fs= $ruvim.editor.buffer.data.size
-			c = $ruvim.editor.buffer.char.inspect rescue nil
+			c = $ruvim.editor.buffer.char.inspect
 			kc= k.bytes.next rescue nil
 			lkc=@lastkey.bytes.next rescue ''
 			ln =$ruvim.editor.line_number
@@ -33,11 +39,9 @@ module Ruvim
 			cx = $ruvim.editor.cursor.x
 			cy = $ruvim.editor.cursor.y
 
-			@window.addstr("Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c})".ljust(50))
-			@window.setpos(2,0)
-			@window.addstr("Line #: #{ln}/#{lc}\tPage: (#{ps}-#{pe})\tCursor: #{cx}, #{cy}")
-			@window.setpos(3,0)
-			@window.addstr($ruvim.editor.buffer.data.ljust(@width))
+			print 1, "Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c})"
+			print 2, "Line #: #{ln}/#{lc}\tPage: (#{ps}-#{pe})\tCursor: #{cx}, #{cy}"
+			print 3, "Current Line: " + $ruvim.editor.line.to_str
 
 			@lastkey = k
 		end

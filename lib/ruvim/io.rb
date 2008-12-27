@@ -29,6 +29,11 @@ module Ruvim
 
 			self
 		end
+
+		# Opens a New File
+		def new_file(file='')
+			buffer.load ''
+		end
 		
 		def open(file='')
 			@file = file
@@ -37,10 +42,11 @@ module Ruvim
 				f = File.new(file)
 				close
 				buffer.load(f.read)
+				page.reset
 			else
 				# New File
 				file = "[New File] #{@file}"
-				buffer.load ''
+				new_file
 			end
 			
 			@changed = false
@@ -84,7 +90,6 @@ module Ruvim
 		end
 
 		def editor_goto(index)
-			# Hide Current Editor
 			@editor.hide
 			@editor = @editors[@current_editor = index]
 			@editor.show

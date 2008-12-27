@@ -49,6 +49,7 @@ module Ruvim
 		# Returns nil if not found, the node if more than one found and false if one found.
 		#
 		def continue(k, node=@map)
+			return false if k.nil?
 			result = node.node([k])
 			return result if result.ref 
 			

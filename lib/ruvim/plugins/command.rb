@@ -14,7 +14,7 @@ module Ruvim
 		end
 
 		def evaluate(command)
-			$ruvim.instance_eval(command).inspect
+			$ruvim.instance_eval(command)
 		rescue Exception
 			"ERROR: #{$!.to_s}"
 		end

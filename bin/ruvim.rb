@@ -147,7 +147,7 @@ module Ruvim
 		# NOTE Statusbar overrides this function
 		def message(what)
 			@window.setpos(Curses.lines-1, 0)
-			@window.addstr(what.to_s)
+			@window.addstr(what.to_s) unless what.nil?
 			@window.clrtoeol
 		end
 

@@ -96,12 +96,6 @@ module Ruvim
 			# Do Nothing because the application gives priority to self.process
 		end
 
-		# This processes the keys sent by the application.
-		# This method exists because update order conflicts with input.
-		def process(key)
-			mode.bindings.process key
-		end
-
 		#
 		#	Edition Routines
 		#

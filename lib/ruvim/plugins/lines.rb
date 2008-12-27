@@ -19,10 +19,6 @@ module Ruvim
 
 	class LineNumbers < Ruvim::Window
 
-	private
-		
-	public
-
 		attr_accessor :color
 
 		def initialize(editor)
@@ -33,23 +29,13 @@ module Ruvim
 			self.alignment=(:left)
 		end
 
-		def visible?
-			@editor.visible?
-		end
-
 		def redraw
+			@window.clear
 			@window.attron(@color)
-			n = 0
 
-			@editor.page.range.each do |k|
+			@editor.page.range.each_with_index do |k, n|
 				@window.setpos(n, 0)
 				@window.addstr(k.to_s.rjust(@width-1))
-				n += 1
-			end
-
-			if (n < @height) then		
-				@window.setpos(n, 0)
-				@window.addstr("~".ljust(@width))
 			end
 
 			# This is for update routine.
