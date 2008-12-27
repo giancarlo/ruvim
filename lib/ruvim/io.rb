@@ -90,12 +90,12 @@ module Ruvim
 		end
 
 		def editor_goto(index)
+			raise "Invalid Editor Index: #{index}" unless (0...@editors.size).include? index
+
 			@editor.hide
 			@editor = @editors[@current_editor = index]
 			@editor.show
 			message "#{@current_editor+1}/#{@editors.size}: #{@editor.file}"
-		rescue
-			"Invalid Editor Index: #{index}"
 		end
 
 		def editor_next
