@@ -41,7 +41,7 @@ module Ruvim
 
 			print 1, "Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c})"
 			print 2, "Line #: #{ln}/#{lc}\tPage: (#{ps}-#{pe})\tCursor: #{cx}, #{cy}"
-			print 3, "Current Line: " + $ruvim.editor.line.to_str
+			print 3, "Current Line: " + $ruvim.editor.buffer.line
 
 			@lastkey = k
 		end

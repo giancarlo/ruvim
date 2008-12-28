@@ -77,6 +77,10 @@ module Ruvim
 			@buffer.reset
 		end
 
+		def redraw_char(c)
+				
+		end
+
 		# Takes ranges
 		def redraw_line(line=@cursor.y)
 			if line.class == Range then

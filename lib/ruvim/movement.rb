@@ -23,14 +23,16 @@ module Ruvim
 		# Returns array with [space, index]
 		#
 		def correct_pos(x)
-			s = 0; i = 0
-			@buffer.line.each do |k|
+			s = 0; i = 0; d=0
+			# We need to include the CR char(s)
+			@buffer.line.to_s.each_char do |k|
 				d = char_space(k,s)
 				return [s, i] if s+d > x
 				s += d; i += 1
 			end
 
-			return [s, i]
+			# NOTE This looks so bad.
+			return [s-d, i-1]
 		end
 
 		def up(col=nil)
@@ -38,7 +40,6 @@ module Ruvim
 			if (@cursor.at_sow?)
 				if (@page.start > 0) then
 					@page.scroll_up
-					redraw_line(0 ... @height)
 				else
 					return self
 				end
@@ -98,7 +99,6 @@ module Ruvim
 			if (@buffer.line.end < @buffer.size)
 				if (@cursor.at_eow?) then
 					@page.scroll_down
-					redraw_line(0...@height)
 				else
 					@cursor.down
 				end

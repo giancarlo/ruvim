@@ -39,6 +39,7 @@ module Ruvim
 
 		def scroll_up(n=1)
 			@start -= n
+			@editor.redraw
 			self
 		end
 
