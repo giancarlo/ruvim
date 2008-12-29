@@ -18,20 +18,21 @@ module Ruvim
 
 		# Get the correct position of the cursor from any point in the screen
 		#
-		# x is the index of the current line.
+		# x is the position of the current line.
 		#
 		# Returns array with [space, index]
 		#
 		def correct_pos(x)
 			s = 0; i = 0; d=0
-			# We need to include the CR char(s)
+
+			return [0, 0] if (line.to_str == '')
+			
 			@buffer.line.to_s.each_char do |k|
 				d = char_space(k,s)
 				return [s, i] if s+d > x
 				s += d; i += 1
 			end
 
-			# NOTE This looks so bad.
 			return [s-d, i-1]
 		end
 
@@ -96,7 +97,7 @@ module Ruvim
 		end
 
 		def down
-			if (@buffer.line.end < @buffer.size)
+			unless @buffer.line.last?
 				if (@cursor.at_eow?) then
 					@page.scroll_down
 				else

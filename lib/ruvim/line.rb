@@ -34,6 +34,11 @@ module Ruvim
 			(e = @buffer.data.index(Ruvim::API::CR, i)) ? e : @buffer.eof
 		end
 
+		# Returns true if buffer is at the last line.
+		def last?
+			(self.end == @buffer.eof)	
+		end
+
 		# TODO Optimize
 		def number
 			@buffer.data[0..@buffer.index].count(Ruvim::API::CR)

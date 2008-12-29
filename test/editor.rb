@@ -2,3 +2,28 @@
 # Editor Class - Test Ruvim
 #
 
+require 'test/unit'
+require 'ruvim/editor'
+
+class TestEditor < Test::Unit::TestCase
+
+	def setup
+		@bufferdata = %{Line 1
+Line 2
+Line 3
+Line 4
+Line 5} 
+
+		@editor = Ruvim::Editor.new 
+		@editor.buffer.data= @bufferdata
+	end
+
+	def teardown
+		Curses.close_screen
+	end
+
+	def test_correct_pos
+		assert(@editor.correct_pos(0) == [0,0])
+	end
+
+end

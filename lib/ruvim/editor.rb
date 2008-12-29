@@ -17,7 +17,7 @@ module Ruvim
 		attr_reader :modes
 		attr_reader :page
 		attr_reader :plugins
-
+		# Input Timeout in millisecond for mappings
 		attr_accessor :timeout
 		
 		Plugins = Hash.new
@@ -44,9 +44,7 @@ module Ruvim
 			@buffer = Buffer.new
 			@page 	= Page.new(self)
 			@line 	= Segment.new(self, 0, 0)
-			# 1 second timeout
 			@timeout  = 1000
-			# TODO Make tabsize work with different editors
 			@tabsize = Curses.TABSIZE
 			
 			super

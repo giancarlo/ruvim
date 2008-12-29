@@ -16,6 +16,16 @@ Line 5}
 		@buffer = Ruvim::Buffer.new(@bufferdata)
 	end
 
+	def test_at
+		assert(@buffer.at_start?)
+		assert(@buffer.at_bol?)
+		@buffer.goto_eol
+		assert(@buffer.at_eol?)
+		@buffer.goto_end
+		assert(@buffer.at_end?)
+		assert(@buffer.at_eol?)
+	end
+
 	def test_movement
 		assert_equal(0, @buffer.index)
 		@buffer.forward 3
@@ -24,22 +34,22 @@ Line 5}
 		assert_equal(6, @buffer.index)
 		@buffer.back 4
 		assert_equal(2, @buffer.index)
+		@buffer.reset
+		assert_equal(0, @buffer.index)
+		assert(@buffer.at_start?)
+		@buffer.goto(5)
+		assert_equal(5, @buffer.index)
+		@buffer.goto_eol
+		assert(@buffer.at_eol?)
+		@buffer.forward
+		assert_equal("Line 2", @buffer.line.to_str)
+		assert(@buffer.at_bol?)
+		@buffer.goto_bol
+		assert(@buffer.at_bol?)
+		@buffer.goto_end
+		assert(@buffer.at_end?)
 	end
-
-	def test_line
-		assert_equal(0, @buffer.line_start)
-		assert_equal(6, @buffer.line_end)
-		assert_equal("Line 1\n", @buffer.line)
-		@buffer.forward 8
-		assert_equal("Line 2\n", @buffer.line)
-		@buffer.forward 8
-		assert_equal("Line 3\n", @buffer.line)
-		@buffer.forward 8
-		assert_equal("Line 4\n", @buffer.line)
-		@buffer.forward 8
-		assert_equal("Line 5\n", @buffer.line)
-	end
-
+	
 	def test_char
 		assert_equal("L", @buffer.char)
 		@buffer.forward 5
@@ -48,22 +58,25 @@ Line 5}
 
 	def test_remove
 		@buffer.remove
-		assert_equal("ine 1\n", @buffer.line)
+		assert_equal("ine 1\n", @buffer.line.to_s)
 		@buffer.forward 5
 		@buffer.remove
-		assert_equal("ine 1Line 2\n", @buffer.line)
+		assert_equal("ine 1Line 2\n", @buffer.line.to_s)
 		@buffer.goto_eol.back.remove
-		assert_equal("ine 1Line \n", @buffer.line)
+		assert_equal("ine 1Line \n", @buffer.line.to_s)
 		@buffer.forward 30
+
 		size = @buffer.size
 		@buffer.remove.remove
+		assert_equal("Line", @buffer.line.to_str)
 		assert_equal(size-2, @buffer.size)
 		assert_equal(@buffer.size, @buffer.index)
+
 		assert(@buffer.at_end?)
-		assert_equal("Line ", @buffer.line)
+		assert_equal("Line", @buffer.line.to_s)
 	end
 
-	def test_other
+	def test_to
 		assert_equal("Line 1\n", @buffer.to_eol)
 		assert_equal("", @buffer.to_bol)
 		@buffer.forward 7
@@ -73,6 +86,8 @@ Line 5}
 		assert_equal("Line 2\n", @buffer.to_bol + @buffer.to_eol)
 		assert_equal("e 2\n", @buffer.to_eol)
 		assert_equal("Lin", @buffer.to_bol)
+		assert_equal("Line 1\nLin", @buffer.to_start)
+		assert_equal("e 2\nLine 3\nLine 4\nLine 5", @buffer.to_end)
 	end
 
 	def test_insert
@@ -80,7 +95,7 @@ Line 5}
 		assert_equal("HelloLine 1\n", @buffer.line.to_s)
 		@buffer.forward 6
 		@buffer.insert "HAHAHA"
-		assert(@buffer.at_eol?)
-		assert_equal("HelloLine 1HAHAHA\n", @buffer.line)
+		assert(6, @buffer.index)
+		assert_equal("HelloLHAHAHAine 1", @buffer.line.to_str)
 	end
 end

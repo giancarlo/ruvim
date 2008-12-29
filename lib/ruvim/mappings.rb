@@ -47,7 +47,7 @@ module Ruvim
 			
 			map('i', :normal) { self.mode=(:insert) }
 			nmap('I') { goto_bol.mode=(:insert) }
-			nmap(Application::IC) { self.mode=(:insert) }
+			nmap(Curses::Key::IC) { self.mode=(:insert) }
 			nmap('a') { forward.mode=(:insert) }
 			nmap('A') { goto_eol.mode=(:insert) }
 			nmap('o') { goto_eol.cr.mode=(:insert) }
@@ -57,28 +57,28 @@ module Ruvim
 			nmap('gt') { $ruvim.editor_next }
 			nmap('gT') { $ruvim.editor_previous }
 
-			gmap(Application::RESIZE) { $ruvim.rearrange }
+			gmap(Curses::Key::RESIZE) { $ruvim.rearrange }
 
-			map(Application::ESCAPE, :insert) { self.mode= (:normal) }
-			map(Application::DELETE, :insert, :normal) { remove }
+			map(27, :insert) { self.mode= (:normal) }
+			map(Curses::Key::DC, :insert, :normal) { remove }
 
-			map(Application::BACKSPACE)  { back }
-			imap(Application::BACKSPACE) { back.remove unless buffer.at_start? }
+			map(Curses::Key::BACKSPACE)  { back }
+			imap(Curses::Key::BACKSPACE) { back.remove unless buffer.at_start? }
 			map(8) { back }
 			imap(8) { back.remove unless buffer.at_start? }
 			
-			imap(Application::RETURN) { cr }
+			imap(13) { cr }
 
-			map(Application::HOME, :normal, :insert) { goto_bol }
+			map(Curses::Key::HOME, :normal, :insert) { goto_bol }
 			map(Curses::Key::END, :normal, :insert) { goto_eol }
 
-			map(Application::UP, :normal, :insert) 	{ up }
-			map(Application::LEFT, :normal, :insert) { back }
-			map(Application::RIGHT, :normal, :insert){ forward }
-			map(Application::DOWN, :normal, :insert) { down }
+			map(Curses::Key::UP, :normal, :insert) 	{ up }
+			map(Curses::Key::LEFT, :normal, :insert) { back }
+			map(Curses::Key::RIGHT, :normal, :insert){ forward }
+			map(Curses::Key::DOWN, :normal, :insert) { down }
 
-			map(Application::NPAGE, :normal, :insert ) { (page.lines-1).times { down } }
-			map(Application::PPAGE, :normal, :insert ) { (page.lines-1).times { up } }
+			map(Curses::Key::NPAGE, :normal, :insert ) { (page.lines-1).times { down } }
+			map(Curses::Key::PPAGE, :normal, :insert ) { (page.lines-1).times { up } }
 
 			modes[:insert].bindings.default { |k| insert(k.chr) rescue nil }
 

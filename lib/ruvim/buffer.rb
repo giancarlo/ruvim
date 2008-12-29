@@ -6,10 +6,11 @@ module Ruvim
 
 	class Buffer
 		
-		attr_reader :index, :data
+		attr_accessor :data
+		attr_reader :index
 
 		def initialize(data='', index=0)
-			@data 		= data
+			@data = data
 			@index		= index
 			@line		= Ruvim::Line.new(self)
 		end
@@ -54,9 +55,9 @@ module Ruvim
 			@data.size
 		end
 
-		# Returns string from index to end of line. Does not include CR
+		# Returns string from index to end of line.
 		def to_eol
-			@data[@index.. line.end]
+			@data[@index .. line.end]
 		end
 
 		# Returns string from index to beggining of line.
@@ -68,8 +69,9 @@ module Ruvim
 			@data[@index .. size]
 		end
 
+		# Returns string from index to start. Does not include current char.
 		def to_start
-			@data[0 .. @index]
+			@data[0 ... @index]
 		end
 		
 		# Returns current char
@@ -97,6 +99,10 @@ module Ruvim
 			@index = line.start; self
 		end
 
+		def goto_end
+			@index = size; self
+		end
+
 		# Goes back l spaces
 		def back(l=1)
 			forward -l
@@ -104,8 +110,8 @@ module Ruvim
 
 		def forward(l=1)
 			@index += l
-			if (@index >= @data.size) then
-				@index = @data.size
+			if (@index > size) then
+				@index = size
 			elsif @index < 0 then
 				@index = 0
 			end
@@ -121,15 +127,15 @@ module Ruvim
 			(@index ... @data.size-1).each do |k|
 				@data[k] = @data[k+1]
 			end
-			
+
 			@data.chop!
+			@index -= 1 if @index > size
 			self
 		end
 
 		# Insert what into buffer
 		def insert(what)
 			@data.insert(@index, what)
-			#@index += what.size
 			self
 		end
 
