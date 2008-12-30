@@ -36,10 +36,10 @@ module Ruvim
 		end
 		
 		def open(file='')
-			@file = file
+			@file = File.expand_path(file)
 
-			if (File.exists?(file)) then
-				f = File.new(file)
+			if (File.exists?(@file)) then
+				f = File.new(@file)
 				close
 				buffer.load(f.read)
 				page.reset
