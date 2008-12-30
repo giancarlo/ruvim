@@ -1,6 +1,8 @@
 #
 # Line Class - Ruvim
 #
+# This is a helper class for Buffer. It manages the current line of the Buffer.
+#
 
 module Ruvim
 

@@ -42,6 +42,12 @@ module Ruvim
 			@end - @start
 		end
 
+		# Removes segment from buffer and editor
+		def delete
+			@editor.buffer.data[start .. self.end]= ''
+			@editor.redraw
+		end
+
 		def to_str
 			@editor.buffer.data[@start .. @end]
 		end
