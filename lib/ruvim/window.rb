@@ -64,6 +64,8 @@ module Ruvim
 				@window.setpos(0,0)
 				@window.addstr('=' + @caption.ljust(@width-1, '='))
 			end
+			# Redraw goddamn children
+			@windows.each { |w| w.redraw if w.visible? }
 		end
 
 		def show

@@ -21,6 +21,10 @@ module Ruvim
 
 		attr_accessor :color
 
+		def visible?
+			return @editor.visible?
+		end
+
 		def initialize(editor)
 			super editor.parent
 			@editor = editor

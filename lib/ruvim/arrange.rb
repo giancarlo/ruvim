@@ -55,6 +55,7 @@ module Ruvim
 				w.align
 			end
 
+			redraw
 			@cursor.show
 		end
 
@@ -87,7 +88,6 @@ module Ruvim
 			end
 
 			rearrange
-			redraw
 		end
 	end
 end

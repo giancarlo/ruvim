@@ -53,7 +53,7 @@ module Ruvim
 		ensure
 			f.close if f
 			reset
-			redraw
+			parent.rearrange
 			return (Ruvim::Message::FILE_LOADED % file)
 		end
 
@@ -78,9 +78,8 @@ module Ruvim
 
 		# Creates a new editor
 		def tabn
-			@editor = Editor.new(@workspace)
-			@editors << @editor
-			@current_editor = @editors.size-1
+			@editors << Editor.new(@workspace)
+			editor_goto(@editors.size-1)
 		end
 
 		# Opens file in new editor
@@ -89,13 +88,18 @@ module Ruvim
 			@editor.open(file)
 		end
 
+		# Shows Editor ed
+		def editor_show(ed)
+			@editor.hide unless @editor.nil?
+			@editor = ed
+			@editor.show
+			message "#{@current_editor+1}/#{@editors.size}: #{@editor.file}"
+		end
+
 		def editor_goto(index)
 			raise "Invalid Editor Index: #{index}" unless (0...@editors.size).include? index
 
-			@editor.hide
-			@editor = @editors[@current_editor = index]
-			@editor.show
-			message "#{@current_editor+1}/#{@editors.size}: #{@editor.file}"
+			editor_show(@editors[@current_editor = index])
 		end
 
 		def editor_next
