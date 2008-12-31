@@ -42,9 +42,9 @@ module Ruvim
 			@end - @start
 		end
 
-		# Removes segment from buffer and editor
+		# Removes segment from buffer and editor. Moves it to the :copy buffer.
 		def delete
-			@editor.buffer.data[start .. self.end]= ''
+			$ruvim.buffers[:copy].data.replace @editor.buffer.data.slice!(start .. self.end)
 			@editor.redraw
 		end
 

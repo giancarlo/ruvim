@@ -58,6 +58,7 @@ module Ruvim
 			nmap('gT') { $ruvim.editor_previous }
 
 			nmap('dd') { $ruvim.editor.line.delete }
+			nmap('p') { $ruvim.editor.paste }
 
 			gmap(Curses::Key::RESIZE) { $ruvim.rearrange }
 

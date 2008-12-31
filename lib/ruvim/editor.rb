@@ -152,6 +152,12 @@ module Ruvim
 			down.goto_bol
 		end
 
+		# inserts content from $ruvim.buffer[:copy] into editor
+		def paste
+			$ruvim.insert $ruvim.buffers[:copy].data
+			redraw
+		end
+
 	end
 
 end

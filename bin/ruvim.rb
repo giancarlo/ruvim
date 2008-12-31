@@ -29,7 +29,7 @@ module Ruvim
 		include Ruvim::API
 		include Curses::Key
 		
-		attr_reader :editors, :editor, :plugins, :workspace
+		attr_reader :editors, :editor, :plugins, :workspace, :buffers
 		
 		private
 
