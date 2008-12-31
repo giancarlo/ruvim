@@ -23,6 +23,13 @@ module Ruvim
 			s
 		end
 
+		# Sets position of segment and returns self
+		def set(segment_start, segment_end)
+			@start = segment_start
+			@end   = segment_end
+			self
+		end
+
 		# Returns column of segment in screen
 		def column
 			@editor.correct_pos(@start - @editor.buffer.bol(@start))
@@ -42,9 +49,11 @@ module Ruvim
 			@end - @start
 		end
 
-		# Removes segment from buffer and editor. Moves it to the :copy buffer.
+		# Removes segment from buffer and editor. Moves the content to the :copy buffer 
+		# and sets cursor position to the start of the segment
 		def delete
 			$ruvim.buffers[:copy].data.replace @editor.buffer.data.slice!(start .. self.end)
+			@editor.goto @start
 			@editor.redraw
 		end
 

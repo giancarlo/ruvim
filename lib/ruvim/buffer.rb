@@ -124,11 +124,8 @@ module Ruvim
 
 		# Removes char from buffer
 		def remove
-			(@index ... @data.size-1).each do |k|
-				@data[k] = @data[k+1]
-			end
+			@data.slice!(@index)
 
-			@data.chop!
 			@index -= 1 if @index > size
 			self
 		end

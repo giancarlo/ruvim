@@ -165,9 +165,7 @@ module Ruvim
 			
 			return inp
 		end
-
 	end
-
 end
 
 Ruvim::Application.new.start

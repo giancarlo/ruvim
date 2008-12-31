@@ -46,6 +46,7 @@ module Ruvim
 			@line 	= Segment.new(self, 0, 0)
 			@timeout  = 1000
 			@tabsize = Curses.TABSIZE
+			@selection = Segment.new(self, 0, 0)
 			
 			super
 			self.alignment=(:client)
@@ -103,11 +104,15 @@ module Ruvim
 		#
 
 		def insert(k)
-			@window.addch k
-			@buffer.insert k
-			@changed = true
-			forward
-			redraw_line
+			if k == Ruvim::API::CR then
+				cr
+			else
+				@window.addch k
+				@buffer.insert k
+				@changed = true
+				forward
+				redraw_line
+			end
 			self
 		end
 		
@@ -126,8 +131,9 @@ module Ruvim
 			@buffer.data.lines.count
 		end
 
+		# Returns Segment of current line.
 		def line
-			Segment.new(self, buffer.line.start, buffer.line.end)
+			@line.set(buffer.line.start, buffer.line.end)
 		end
 
 		def line_number
@@ -150,12 +156,6 @@ module Ruvim
 			@buffer.insert Ruvim::API::CR
 			redraw_line(oy ... @height)
 			down.goto_bol
-		end
-
-		# inserts content from $ruvim.buffer[:copy] into editor
-		def paste
-			$ruvim.insert $ruvim.buffers[:copy].data
-			redraw
 		end
 
 	end

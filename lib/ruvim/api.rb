@@ -68,6 +68,26 @@ module Ruvim
 			step.times { editor.forward }
 		end
 
-	end
+		# Returns current editor selection
+		def selection
+			$ruvim.editor.selection
+		end
 
+		# Inserts content from $ruvim.buffer[:copy] into editor
+		def paste
+			$ruvim.insert $ruvim.buffers[:copy].data
+			$ruvim.editor.redraw
+		end
+
+		# Copies text from segment or current selection
+		def copy(segment=selection)
+			$ruvim.buffers[:copy].data.replace segment
+		end
+
+		# Cuts segment from current editor.
+		def cut(segment=selection)
+			copy segment
+			segment.delete
+		end
+	end
 end
