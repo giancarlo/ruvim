@@ -3,7 +3,10 @@
 #
 
 require 'test/unit'
+require 'ruvim/app'
 require 'ruvim/editor'
+
+Ruvim::Application.new
 
 class TestEditor < Test::Unit::TestCase
 

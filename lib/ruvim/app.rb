@@ -76,6 +76,7 @@ module Ruvim
 
 		def initialize
 			$ruvim = self
+			@caption  = nil
 			@continue = true
 
 			initialize_window

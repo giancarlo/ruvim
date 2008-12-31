@@ -35,10 +35,11 @@ module Ruvim
 
 		def initialize(parent=$ruvim)
 			@window = Curses::Window.new(0,0, 0, 0)
+			@width = 0; @height = 0
+			@caption = false
 			@cursor = Ruvim::Cursor.new(@window)
 			@client = [0,0, @width, @height]
 			@parent = parent
-			@caption= nil
 
 			@windows = Array.new
 			

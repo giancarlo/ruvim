@@ -7,11 +7,11 @@ module Ruvim
 	class Debug < Ruvim::Window
 
 		def initialize
+			@lastkey = ''
 			super
 			@caption = " Debug "
 			@height = 14
 			self.alignment= :bottom
-			@lastkey = ''
 		end
 
 		def redraw
