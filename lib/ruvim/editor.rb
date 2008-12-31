@@ -128,7 +128,7 @@ module Ruvim
 		# Return number of lines
 		# TODO Optimize this
 		def lines
-			@buffer.data.lines.count
+			@buffer.data.count(Ruvim::API::CR)
 		end
 
 		# Returns Segment of current line.

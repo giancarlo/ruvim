@@ -18,7 +18,7 @@ module Ruvim
 		end
 
 		def end
-			lines = @editor.lines - 1
+			lines = @editor.lines
 			max   = start + @editor.height
 
 			(lines > max) ? max : lines
