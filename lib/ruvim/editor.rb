@@ -21,7 +21,6 @@ module Ruvim
 		attr_accessor :timeout
 		
 		Plugins = Hash.new
-
 	private
 
 		def initialize_plugins
@@ -51,7 +50,7 @@ module Ruvim
 			super
 			self.alignment=(:client)
 			@window.scrollok true
-
+			
 			initialize_plugins
 		end
 
@@ -96,7 +95,6 @@ module Ruvim
 		#	Window Routines
 		#
 		def update(key)
-			# Do Nothing because the application gives priority to self.process
 		end
 
 		#
@@ -104,12 +102,12 @@ module Ruvim
 		#
 
 		def insert(k)
+			@changed = true
 			if k == Ruvim::API::CR then
 				cr
 			else
 				@window.addch k
 				@buffer.insert k
-				@changed = true
 				forward
 				redraw_line
 			end
@@ -117,7 +115,7 @@ module Ruvim
 		end
 		
 		def remove
-			return if (@buffer.at_end?)
+			back if (@buffer.at_end?)
 			ch = @buffer.char
 			@buffer.remove
 			@changed = true

@@ -17,7 +17,7 @@ Line 3
 Line 4
 Line 5} 
 
-		@editor = Ruvim::Editor.new 
+		@editor = Ruvim::Editor.new($ruvim)
 		@editor.buffer.data= @bufferdata
 	end
 

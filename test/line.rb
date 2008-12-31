@@ -3,7 +3,7 @@
 #
 
 require 'test/unit'
-require 'ruvim/core'
+require 'ruvim/buffer'
 
 class BufferTest < Test::Unit::TestCase
 

@@ -71,7 +71,7 @@ module Ruvim
 					@cursor.x = line_space(@buffer.index)
 				else
 					@cursor.left
-			    end	
+				end	
 				self
 			end
 		end

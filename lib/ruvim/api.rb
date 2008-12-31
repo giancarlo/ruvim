@@ -29,7 +29,7 @@ module Ruvim
 
 			return self.exit if editors.size == 0
 
-			editor_goto (@current_editor >= editors.size) ? @current_editor = editors.size-1 : @current_editor
+			editor_goto((@current_editor >= editors.size) ? @current_editor = editors.size-1 : @current_editor)
 		end
 		alias_method :q, :quit
 

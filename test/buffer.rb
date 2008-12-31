@@ -3,7 +3,7 @@
 #
 
 require 'test/unit'
-require 'ruvim/core'
+require 'ruvim/buffer'
 
 class BufferTest < Test::Unit::TestCase
 
@@ -64,16 +64,14 @@ Line 5}
 		assert_equal("ine 1Line 2\n", @buffer.line.to_s)
 		@buffer.goto_eol.back.remove
 		assert_equal("ine 1Line \n", @buffer.line.to_s)
-		@buffer.forward 30
+		@buffer.forward 12
 
 		size = @buffer.size
 		@buffer.remove.remove
 		assert_equal("Line", @buffer.line.to_str)
 		assert_equal(size-2, @buffer.size)
-		assert_equal(@buffer.size, @buffer.index)
 
-		assert(@buffer.at_end?)
-		assert_equal("Line", @buffer.line.to_s)
+		assert_equal("Line", @buffer.line.to_str)
 	end
 
 	def test_to

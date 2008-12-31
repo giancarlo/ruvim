@@ -1,36 +1,9 @@
 #
 # Modes - Ruvim
 #
+require 'ruvim/bindings'
 
 module Ruvim
-
-	class Editor < Ruvim::Window
-
-	private
-		def initialize_modes
-			@modes = {
-				:normal  => Mode.new("Normal"),
-				:insert  => Mode.new("Insert"),
-				:visual  => Mode.new("Visual"),
-				:command => Mode.new("Command")
-			}
-
-			@mode = :normal
-
-			default_mappings
-		end
-
-	public
-		# Select the new mode to symbol newmode
-		def mode=(newmode)
-			@mode = newmode
-		end
-
-		def mode
-			@modes[@mode]
-		end
-
-	end
 
 	class Mode
 
@@ -42,6 +15,31 @@ module Ruvim
 			@abbr		= abbr
 		end
 
+		Modes = {
+			:normal  => Mode.new("Normal"),
+			:insert  => Mode.new("Insert"),
+			:visual  => Mode.new("Visual")
+		}
 	end
 
+	class Editor < Ruvim::Window
+
+	private
+		def initialize_modes
+			@modes = {}
+			Mode::Modes.each { |k, v| @modes[k]= v.clone }
+			@mode = :normal
+		end
+
+	public
+		# Select the new mode to symbol newmode
+		def mode=(newmode)
+			raise ArgumentError.new("Invalid Mode: #{newmode}") unless @modes.include? newmode
+			@mode = newmode
+		end
+
+		def mode
+			@modes[@mode]
+		end
+	end
 end

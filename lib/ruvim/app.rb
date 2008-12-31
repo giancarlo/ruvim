@@ -33,17 +33,6 @@ module Ruvim
 		
 		private
 
-		# Load ~/.ruvimrc and Evaluate
-		def initialize_resources
-			path = File.expand_path("~/.ruvimrc")
-
-			if File.exists?(path) then
-				ruvimrc = File.new(path)
-				instance_eval(ruvimrc.read)
-				ruvimrc.close
-			end
-		end
-
 		def initialize_buffers
 			@buffers = { :copy => Buffer.new }
 		end
@@ -72,6 +61,60 @@ module Ruvim
 			(ARGV.size > 0) ? (ARGV.each { |arg| open(arg) }) : open
 		end
 
+		# Load ~/.ruvimrc and Evaluate
+		def initialize_resources
+			path = File.expand_path("~/.ruvimrc")
+
+			if File.exists?(path) then
+				ruvimrc = File.new(path)
+				$ruvim.instance_eval(ruvimrc.read)
+				ruvimrc.close
+			end
+		end
+
+		def initialize_mappings
+			map('i', :normal) { editor.mode=(:insert) }
+			nmap('I') { editor.goto_bol.mode=(:insert) }
+			nmap(Curses::Key::IC) { editor.mode=(:insert) }
+			nmap('a') { editor.forward.mode=(:insert) }
+			nmap('A') { editor.goto_eol.mode=(:insert) }
+			nmap('o') { editor.goto_eol.cr.mode=(:insert) }
+			nmap('O') { editor.goto_bol.cr.up.mode=(:insert) }
+
+			nmap('G') { editor.goto_lastline }
+			nmap('gt') { $ruvim.editor_next }
+			nmap('gT') { $ruvim.editor_previous }
+
+			nmap('dd') { $ruvim.cut $ruvim.editor.line }
+			nmap('yy') { $ruvim.copy $ruvim.editor.line }
+			nmap('p') { $ruvim.paste }
+
+			gmap(Curses::Key::RESIZE) { $ruvim.rearrange }
+
+			map(27, :insert) { editor.mode= (:normal) }
+			map(Curses::Key::DC, :insert, :normal) { editor.remove }
+
+			map(Curses::Key::BACKSPACE)  { editor.back }
+			imap(Curses::Key::BACKSPACE) { editor.back.remove unless buffer.at_start? }
+			map(8) { editor.back }
+			imap(8) { editor.back.remove unless buffer.at_start? }
+			
+			imap(13) { editor.cr }
+
+			map(Curses::Key::HOME, :normal, :insert) { editor.goto_bol }
+			map(Curses::Key::END, :normal, :insert) { editor.goto_eol }
+
+			map(Curses::Key::UP, :normal, :insert) 	{ editor.up }
+			map(Curses::Key::LEFT, :normal, :insert) { editor.back }
+			map(Curses::Key::RIGHT, :normal, :insert){ editor.forward }
+			map(Curses::Key::DOWN, :normal, :insert) { editor.down }
+
+			map(Curses::Key::NPAGE, :normal, :insert ) { (editor.page.lines).times { editor.down } }
+			map(Curses::Key::PPAGE, :normal, :insert ) { (editor.page.lines).times { editor.up } }
+
+			Mode::Modes[:insert].bindings.default { |k| insert(k.chr) rescue nil }
+		end
+
 		public
 
 		def initialize
@@ -82,6 +125,7 @@ module Ruvim
 			initialize_window
 			initialize_plugins
 			initialize_buffers
+			initialize_mappings
 			initialize_editors
 			initialize_arguments
 			initialize_resources
