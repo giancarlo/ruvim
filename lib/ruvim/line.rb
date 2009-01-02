@@ -86,5 +86,4 @@ module Ruvim
 			@buffer.data[s ... e]
 		end
 	end
-
 end

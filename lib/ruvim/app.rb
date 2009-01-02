@@ -70,6 +70,8 @@ module Ruvim
 				$ruvim.instance_eval(ruvimrc.read)
 				ruvimrc.close
 			end
+		rescue
+			raise "Error Loading Resource File: #{path}"
 		end
 
 		def initialize_mappings
@@ -183,7 +185,7 @@ module Ruvim
 		end
 
 		def cleanup
-			@editors.each { |e|	e.close }
+			@editors.each { |e| e.close }
 			
 			Curses.close_screen
 		end

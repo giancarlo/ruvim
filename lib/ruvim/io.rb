@@ -32,29 +32,24 @@ module Ruvim
 
 		# Opens a New File
 		def new_file(file='')
+			@file = File.expand_path(file)
 			buffer.load ''
+
+			event.fire(:new_file)
 		end
 		
+		# Opens a file raises if file was not found
 		def open(file='')
 			@file = File.expand_path(file)
 
-			if (File.exists?(@file)) then
-				f = File.new(@file)
-				close
-				buffer.load(f.read)
-				page.reset
-			else
-				# New File
-				file = "[New File] #{@file}"
-				new_file
-			end
-			
-			@changed = false
-		ensure
-			f.close if f
+			f = File.new(@file)
+			close
+			buffer.load(f.read)
 			reset
 			parent.rearrange
-			return (Ruvim::Message::FILE_LOADED % file)
+		ensure
+			f.close if f
+			event.fire(:open)
 		end
 
 		def write(file=@file)
@@ -70,10 +65,18 @@ module Ruvim
 
 	module API
 
-		# Opens File in current editor
+		# Opens File in current editor.
 		def open(file='')
 			tabn if @editor.nil?
-			@editor.open(file)
+
+			if File.exists? file then
+				@editor.open(file)
+			else
+				@editor.new_file(file)
+				file = file + ' (NEW)'
+			end
+
+			Ruvim::Message::FILE_LOADED % file
 		end
 
 		# Creates a new editor
@@ -85,7 +88,7 @@ module Ruvim
 		# Opens file in new editor
 		def tabe(file='')
 			tabn
-			@editor.open(file)
+			open(file)
 		end
 
 		# Shows Editor ed

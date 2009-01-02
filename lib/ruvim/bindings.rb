@@ -37,6 +37,15 @@ module Ruvim
 			@map.insert(key, action)
 		end
 
+		#
+		# Fires a map or default action if not found.
+		#
+		def fire(*key)
+			@map.search(key).call
+		rescue Structures::TST::NotFound
+			@default.call(key) if @default
+		end
+
 		# What to do when no mapping was found
 		def default(&action)
 			@default = action

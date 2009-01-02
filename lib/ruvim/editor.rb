@@ -12,11 +12,8 @@ module Ruvim
 
 	class Editor < Ruvim::Window
 
-		attr_reader :buffer, :file
-		attr_reader :selection
-		attr_reader :modes
-		attr_reader :page
-		attr_reader :plugins
+		attr_reader :buffer, :file, :selection, :modes, :page, :plugins
+		attr_reader :event
 		# Input Timeout in millisecond for mappings
 		attr_accessor :timeout
 		
@@ -46,6 +43,8 @@ module Ruvim
 			@timeout  = 1000
 			@tabsize = Curses.TABSIZE
 			@selection = Segment.new(self, 0, 0)
+			@event = Bindings.new
+			@event.map(:origin) {}
 			
 			super
 			self.alignment=(:client)
@@ -73,6 +72,8 @@ module Ruvim
 		def reset
 			@cursor.reset
 			@buffer.reset
+			@page.reset
+			@changed = false
 		end
 
 		def redraw_char(c)

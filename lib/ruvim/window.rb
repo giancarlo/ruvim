@@ -54,7 +54,6 @@ module Ruvim
 
 		def hide
 			@window.clear
-			move(0,0,0,0)
 			@visible = false
 			@windows.each { |w| w.hide }
 			parent.rearrange
