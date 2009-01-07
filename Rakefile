@@ -1,4 +1,3 @@
-
 require 'rake/packagetask'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'

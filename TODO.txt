@@ -6,7 +6,15 @@ Ruvim
 - FIX: Redraw at window Resize.
 - FIX: Multiline lines.
 - FEATURE: Parse command line arguments.
-- FEATURE: Hex View Window
+- PLUGIN: Hex View Window
 - FEATURE: MultiUser Editing
 - FEATURE: Selections
-
+- FEATURE: Make it easier to open files
+- FEATURE: Jump to line #
+- FEATURE: Jump to file name at cursor.
+- FEATURE: Syntax Highlighting
+- FEATURE: Block(do..end, (), [], {} ||) highlighting when inside.
+- FEATURE: Object Browser.
+- OPTIONAL: Add Curses extension for compatibility with 1.8
+- PLUGIN: TODO Manager
+- PLUGIN: Instant RI
