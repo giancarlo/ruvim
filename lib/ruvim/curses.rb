@@ -2,7 +2,7 @@
 # Ruby Curses Initialization
 #
 
-require 'curses'
+require 'curses.so'
 
 Curses.init_screen
 Curses.nonl
