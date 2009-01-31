@@ -7,7 +7,7 @@
 module Ruvim
 
 	class Page
-		
+
 		def initialize(editor)
 			@editor= editor
 			@start = 0
@@ -15,6 +15,11 @@ module Ruvim
 
 		def start
 			@start
+		end
+		
+		def start=(value)
+			@start = value
+			@editor.redraw
 		end
 
 		def end
@@ -38,8 +43,7 @@ module Ruvim
 		end
 
 		def scroll_up(n=1)
-			@start -= n
-			@editor.redraw
+			self.start=(@start - n)
 			self
 		end
 
