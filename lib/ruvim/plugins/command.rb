@@ -6,12 +6,7 @@ module Ruvim
 
 	class Command
 
-		attr_accessor :prompt
-
-		# app necessary to bind
-		def initialize
-			@prompt = ":"
-		end
+	private
 
 		def evaluate(command)
 			$ruvim.instance_eval(command)
@@ -19,9 +14,25 @@ module Ruvim
 			"ERROR: #{$!.to_s}"
 		end
 
+	public
+		attr_accessor :prompt
+
+		# app necessary to bind
+		def initialize
+			@prompt = ":"
+		end
+
 		# Gets command from user HAHAHA
 		def input
-			$ruvim.message evaluate($ruvim.input(@prompt))
+			result = evaluate($ruvim.input(@prompt))
+
+			# Handle Special Commands
+			case result
+			when Numeric
+				$ruvim.editor.goto_line(result) if result.integer?
+			end
+
+			$ruvim.message result
 		end
 
 		# Adds mappings to editor e.

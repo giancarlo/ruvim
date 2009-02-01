@@ -88,19 +88,29 @@ module Ruvim
 		end
 
 		def goto(i)
-			@index = i
+			@index = i; self
+		end
+
+		def goto_line(ln)
+			i = 0;
+
+			@data.each_char do |c|
+				ln -= 1 if @data[i] == Ruvim::API::CR
+				i += 1
+				return goto(i) if ln == 0
+			end
 		end
 
 		def goto_eol
-			@index = line.end;	self
+			goto(line.end)
 		end
 
 		def goto_bol
-			@index = line.start; self
+			goto(line.start)
 		end
 
 		def goto_end
-			@index = size; self
+			goto(size)
 		end
 
 		# Goes back l spaces

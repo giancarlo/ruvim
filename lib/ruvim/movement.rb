@@ -6,6 +6,8 @@ module Ruvim
 
 	class Editor < Ruvim::Window
 
+	private
+
 		# Returns the Space occupied by the char at position s. s is optional but
 		# TABS will not return correct size if s is not present. s is the position
 		# of the cursor within the line.
@@ -36,6 +38,14 @@ module Ruvim
 			return [s-d, i-1]
 		end
 
+		# Returns Space Occupied by Tab at 'cx' position
+		def tab(cx=@cursor.x)
+			tabsize - cx % tabsize
+		end
+
+	public
+
+		# Moves Cursor Up
 		def up(col=nil)
 
 			if (@cursor.at_sow?)
@@ -76,10 +86,6 @@ module Ruvim
 			end
 		end
 
-		# Returns Space Occupied by Tab at 'cx' position
-		def tab(cx=@cursor.x)
-			tabsize - cx % tabsize
-		end
 
 		def forward
 			case @buffer.char
@@ -114,17 +120,30 @@ module Ruvim
 		end
 
 		# Goto the position for buffer[index]
-		# TODO Improve this method. Editor.line should be used.
 		def goto(index)
 			@buffer.goto index
-			l = @buffer.line
-			ln= l.number
+			ln= @buffer.line.number
 			
 			page.start= ln unless page.range.include? ln
 			
 			# set cursor position
 			@cursor.y = ln - page.start
 			@cursor.x = line_space(index)
+
+			self
+		end
+
+		# Moves to Line Number num.
+		def goto_line(num)
+			@buffer.goto_line num
+			num = @buffer.line.number
+
+			page.start= num unless page.range.include? num
+			
+			@cursor.y = num - page.start
+			@cursor.x = 0
+
+			self
 		end
 
 		def goto_lastline

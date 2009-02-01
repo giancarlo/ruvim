@@ -42,8 +42,9 @@ module Ruvim
 		end
 
 		# TODO Optimize
+		# NOTE Range does not include current position
 		def number
-			@buffer.data[0..@buffer.index].count(Ruvim::API::CR)
+			@buffer.data[0...@buffer.index].count(Ruvim::API::CR)
 		end
 
 		def size

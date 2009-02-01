@@ -35,7 +35,7 @@ module Ruvim
 
 		# Return a Range from start to end
 		def range
-			(start .. self.end)
+			(start ... self.end)
 		end
 
 		def lines
