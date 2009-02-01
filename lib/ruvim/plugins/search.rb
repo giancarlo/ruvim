@@ -40,10 +40,14 @@ module Ruvim
 			$ruvim.editor.goto(position)	
 		end
 
+		def input
+			$ruvim.input(@prompt)
+		end
+
 	public
 		
 		def search
-			find(@last = $ruvim.input(@prompt))
+			find(@last = Regexp.new(input))
 		end
 
 		def search_next
@@ -55,7 +59,7 @@ module Ruvim
 		end
 
 		def rsearch
-			find(@last = $ruvim.input(@rprompt), 0, :top, :bottom)
+			find(@last = Regexp.new(input), 0, :top, :bottom)
 		end
 
 		# Adds mappings to editor e.

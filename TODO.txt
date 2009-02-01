@@ -10,7 +10,6 @@ Ruvim
 - FEATURE: MultiUser Editing
 - FEATURE: Selections
 - FEATURE: Make it easier to open files
-- FEATURE: Jump to line #
 - FEATURE: Jump to file name at cursor.
 - FEATURE: Syntax Highlighting
 - FEATURE: Block(do..end, (), [], {} ||) highlighting when inside.
