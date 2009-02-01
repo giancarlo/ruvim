@@ -37,7 +37,7 @@ module Ruvim
 			@window.clear
 			@window.attron(@color)
 
-			@editor.page.range.each_with_index do |k, n|
+			(@editor.page.start .. @editor.page.end).each_with_index do |k, n|
 				@window.setpos(n, 0)
 				@window.addstr(k.to_s.rjust(@width-1))
 			end
