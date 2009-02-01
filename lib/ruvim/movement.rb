@@ -18,7 +18,7 @@ module Ruvim
 
 		# Get the correct x position of the cursor from any point in the screen
 		#
-		# x is the position of the current line.
+		# x is the physical column x position of the current line.
 		#
 		# Returns array with [space, index]
 		#
@@ -124,7 +124,7 @@ module Ruvim
 			
 			# set cursor position
 			@cursor.y = ln - page.start
-			@cursor.x = correct_pos(index-buffer.line.start)[0]
+			@cursor.x = line_space(index)
 		end
 
 		def goto_lastline

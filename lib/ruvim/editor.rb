@@ -139,11 +139,12 @@ module Ruvim
 			@page.start + @cursor.y
 		end
 
-		# Returns Space occupied by the line in the display. If 'col' is given
-		# it returns the space occupied by 'col' characters.
-		def line_space(col=@buffer.line.end)
+		# Returns Space occupied by the line in the display. If 'index' is given
+		# it returns the space occupied by the characters from the start of the line
+		# to buffer[index].
+		def line_space(index=@buffer.line.end)
 			s = 0
-			@buffer[@buffer.line.start ... col].each_char do |k|
+			@buffer[@buffer.line.start ... index].each_char do |k|
 				s += char_space(k, s)
 			end
 
