@@ -4,7 +4,6 @@ Ruvim
 
 - FIX: Separate Window Manager From Ruvim
 - FIX: Redraw at window Resize.
-- FIX: Multiline lines.
 - FEATURE: Parse command line arguments.
 - PLUGIN: Hex View Window
 - FEATURE: MultiUser Editing
@@ -17,3 +16,7 @@ Ruvim
 - OPTIONAL: Add Curses extension for compatibility with 1.8
 - PLUGIN: TODO Manager
 - PLUGIN: Instant RI
+- PLUGIN: Debugger
+- PLUGIN: Auto Completion
+- FIX: Multiline lines.
+- HELLO.

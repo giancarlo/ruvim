@@ -4,6 +4,28 @@
 
 module Ruvim
 
+	module API
+
+		def gsub(regex, replace)
+			buffer.data.gsub!(regex, re)
+			editor.redraw
+		end
+
+		def sub(regex, replace)
+			buffer.data.sub(regex, re)
+			editor.redraw
+		end
+
+		def match(regex)
+			buffer.data.match(regex)
+		end
+
+		def find(regex)
+			$ruvim.search.find(regex)
+		end
+
+	end
+
 	class Search
 
 		attr_accessor :prompt, :last, :rprompt
@@ -16,13 +38,18 @@ module Ruvim
 	private
 
 		def not_found
-			$ruvim.message "Pattern not found: " + @last
+			$ruvim.message "Pattern not found: " + @last.inspect
 		end
 
 		def find_a(from, direction)
 			position = (direction == :bottom) ? $ruvim.buffer.data.index(@last, from) : $ruvim.buffer.data.rindex(@last, from)
 		end
 
+		def input(p=@prompt)
+			$ruvim.input(p)
+		end
+
+	public
 		# 
 		# Finds next 'what' from current buffer index + 'i'.
 		#
@@ -39,12 +66,6 @@ module Ruvim
 			
 			$ruvim.editor.goto(position)	
 		end
-
-		def input
-			$ruvim.input(@prompt)
-		end
-
-	public
 		
 		def search
 			find(@last = Regexp.new(input))
@@ -59,7 +80,7 @@ module Ruvim
 		end
 
 		def rsearch
-			find(@last = Regexp.new(input), 0, :top, :bottom)
+			find(@last = Regexp.new(input(@rprompt)), 0, :top, :bottom)
 		end
 
 		# Adds mappings to editor e.

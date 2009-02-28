@@ -89,5 +89,6 @@ module Ruvim
 			copy segment
 			segment.delete
 		end
+
 	end
 end

@@ -6,12 +6,23 @@ module Ruvim
 
 	class Segment
 		
-		attr_reader :start, :end
-		
 		def initialize(editor, start, last)
 			@editor = editor
+			@highlight = false
 			@start  = start
 			@end   = last
+		end
+
+		def start
+			@start
+		end
+
+		def end
+			@end
+		end
+
+		def highlight=(value)
+			@highlight = value
 		end
 
 		def space
@@ -24,15 +35,15 @@ module Ruvim
 		end
 
 		# Sets position of segment and returns self
-		def set(segment_start, segment_end)
+		def set(segment_start, segment_end=@end)
 			@start = segment_start
-			@end   = segment_end
+			@end = segment_end
 			self
 		end
 
 		# Returns column of segment in screen
 		def column
-			@editor.correct_pos(@start - @editor.buffer.bol(@start))
+			@editor.line_space(@start)
 		end
 
 		# Returns row of the segment in screen

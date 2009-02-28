@@ -8,4 +8,4 @@
 
 Documentation at http://hackerhosting.com/ruvim
 
-* Requires Ruby 1.9 (trunk)
+* Requires Ruby >= 1.9

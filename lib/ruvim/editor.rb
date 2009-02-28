@@ -45,6 +45,7 @@ module Ruvim
 			@selection = Segment.new(self, 0, 0)
 			@event = Bindings.new
 			@event.map(:origin) {}
+			@changed = false
 			
 			super
 			self.alignment=(:client)
@@ -154,6 +155,7 @@ module Ruvim
 		def cr
 			oy = @cursor.y
 			@buffer.insert Ruvim::API::CR
+			@changed = true
 			redraw_line(oy ... @height)
 			down.goto_bol
 		end

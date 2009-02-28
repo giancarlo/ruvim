@@ -2,4 +2,9 @@
 
 require 'ruvim/app'
 
-Ruvim::Application.new.start
+begin
+	Ruvim::Application.new.start
+rescue Exception
+	#Curses.close_screen
+	puts $stderr.string if $stderr.class == StringIO
+end

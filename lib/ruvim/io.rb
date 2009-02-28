@@ -122,6 +122,12 @@ module Ruvim
 
 		alias_method :w, :write
 
+		# Write And Quit
+		def wq
+			write
+			quit
+		end
+
 		def p(*what)
 			result = ''
 			what.each { |k| result += k.inspect }

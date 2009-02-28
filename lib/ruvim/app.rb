@@ -4,6 +4,8 @@
 # by Giancarlo Bellido
 #
 
+require 'stringio'
+
 require 'ruvim/curses'
 require 'ruvim/version'
 require 'ruvim/window'
@@ -43,6 +45,7 @@ module Ruvim
 
 		def initialize_editors
 			@editors = Array.new
+			@editor  = nil
 		end
 
 		def initialize_window
@@ -90,10 +93,14 @@ module Ruvim
 			nmap('dd') { $ruvim.cut $ruvim.editor.line }
 			nmap('yy') { $ruvim.copy $ruvim.editor.line }
 			nmap('p') { $ruvim.paste }
+			nmap('v') do
+				$ruvim.editor.mode=(:visual)
+				$ruvim.editor.selection.set($ruvim.buffer.index, $ruvim.buffer.index)
+			end
 
 			gmap(Curses::Key::RESIZE) { $ruvim.rearrange }
 
-			map(27, :insert) { editor.mode= (:normal) }
+			map(27, :insert, :visual) { editor.mode= (:normal) }
 			map(Curses::Key::DC, :insert, :normal) { editor.remove }
 
 			map(Curses::Key::BACKSPACE)  { editor.back }
@@ -123,6 +130,9 @@ module Ruvim
 			$ruvim = self
 			@caption  = nil
 			@continue = true
+
+			# Redirect the goddamn stderr
+			#$stderr = StringIO.new
 
 			initialize_window
 			initialize_plugins
