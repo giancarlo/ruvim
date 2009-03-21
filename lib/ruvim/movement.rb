@@ -119,6 +119,17 @@ module Ruvim
 			self
 		end
 
+		# Gets X, Y Coordinate of index in screen.
+		# Returns nil if Outside String
+		def get_pos(index)
+			
+			ln = @buffer.line.number
+
+			return nil unless page.range.include? ln
+
+			[line_space(index), ln - page.start]
+		end
+		
 		# Goto the position for buffer[index]
 		def goto(index)
 			@buffer.goto index

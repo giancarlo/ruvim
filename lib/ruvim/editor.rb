@@ -77,8 +77,20 @@ module Ruvim
 			@changed = false
 		end
 
-		def redraw_char(c)
-				
+		# Sets Current Attribute executes block then returns to normal
+		def attr(attrib)
+			case attrib
+			when :selection
+				Curses.attron(Curses::A_REVERSE)
+				yield
+			end
+			Curses.standend
+		end
+
+		def print(start, ending)
+			pos = get_pos
+
+			@window.setpos(pos[1], pos[0])
 		end
 
 		# Takes ranges

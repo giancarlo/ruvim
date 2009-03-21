@@ -10,9 +10,9 @@ module Ruvim
 		attr_reader :index
 
 		def initialize(data='', index=0)
-			@data = data
-			@index		= index
-			@line		= Ruvim::Line.new(self)
+			@data  = data
+			@index = index
+			@line  = Ruvim::Line.new(self)
 		end
 
 		#
@@ -115,7 +115,7 @@ module Ruvim
 
 		# Goes back l spaces
 		def back(l=1)
-			forward -l
+			forward(-l)
 		end
 
 		def forward(l=1)

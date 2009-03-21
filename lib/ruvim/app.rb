@@ -98,6 +98,14 @@ module Ruvim
 				$ruvim.editor.selection.set($ruvim.buffer.index, $ruvim.buffer.index)
 			end
 
+			#
+			# Visual Mode Default Mappings
+			#
+			vmap(Curses::Key::UP) { editor.up.selection.update }
+			vmap(Curses::Key::DOWN) { editor.down.selection.update }
+			vmap(Curses::Key::LEFT) { editor.back.selection.update }
+			vmap(Curses::Key::RIGHT) { editor.forward.selection.update }
+
 			gmap(Curses::Key::RESIZE) { $ruvim.rearrange }
 
 			map(27, :insert, :visual) { editor.mode= (:normal) }

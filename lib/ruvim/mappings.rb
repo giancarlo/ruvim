@@ -19,6 +19,10 @@ module Ruvim
 			map(key, :normal, &action)
 		end
 
+		def vmap(key, &action)
+			map(key, :visual, &action)
+		end
+
 		# Maps to all modes
 		def gmap(key, &action)
 			map(key, *Mode::Modes.keys, &action)

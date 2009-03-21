@@ -21,8 +21,19 @@ module Ruvim
 			@end
 		end
 
-		def highlight=(value)
+		# Updates Selection end to Current Editor Index
+		def update
+			@end   = @editor.buffer.index
+
+			highlight if @highlight
+		end
+
+		def highlight(value=true)
 			@highlight = value
+			
+			@editor.attr(:selection) do
+				@editor.print(@start, @end)
+			end
 		end
 
 		def space
@@ -60,24 +71,28 @@ module Ruvim
 			@end - @start
 		end
 
+		# Returns Selection as A Range of the buffer indexes.
+		def range
+			(@end > @start) ? (@start .. @end) : (@end .. @start)
+		end
+
 		# Removes segment from buffer and editor and sets cursor 
 		# position to the start of the segment
 		def delete
-			result = @editor.buffer.data.slice!(start .. self.end)
 			@editor.goto @start
+			result = @editor.buffer.data.slice!(range)
 			@editor.redraw
 
 			return result
 		end
 
 		def to_str
-			@editor.buffer.data[@start .. @end]
+			@editor.buffer.data[range]
 		end
 
 		def each(&block)
 			to_str.each_char(&block)
 		end
-
 	end
 
 end

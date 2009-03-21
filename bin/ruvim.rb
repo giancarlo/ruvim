@@ -7,4 +7,5 @@ begin
 rescue Exception
 	#Curses.close_screen
 	puts $stderr.string if $stderr.class == StringIO
+	puts $!
 end
