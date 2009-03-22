@@ -152,14 +152,11 @@ module Ruvim
 		end
 
 		def goto_bol
-			@cursor.x = 0
-			(@buffer.index - @buffer.line.start).times { @buffer.back }
-			self
+			goto @buffer.line.start
 		end
 
 		def goto_eol
-			(@buffer.line.end - @buffer.index).times { forward }
-			self
+			goto @buffer.line.end
 		end
 
 	end

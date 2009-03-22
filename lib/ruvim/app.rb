@@ -89,6 +89,7 @@ module Ruvim
 			nmap('G') { editor.goto_lastline }
 			nmap('gt') { $ruvim.editor_next }
 			nmap('gT') { $ruvim.editor_previous }
+			nmap('g$') { $ruvim.editor.goto_eol }
 
 			nmap('dd') { $ruvim.cut $ruvim.editor.line }
 			nmap('yy') { $ruvim.copy $ruvim.editor.line }
