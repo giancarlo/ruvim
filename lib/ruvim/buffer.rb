@@ -91,14 +91,16 @@ module Ruvim
 			@index = i; self
 		end
 
-		def goto_line(ln)
-			i = 0;
+		# Gets index of Line number n. Returns nil if not found.
+		def line_index(n)
+			i = 0
+			n.times { i = @data.index(Ruvim::API::CR, i); break if i == nil }
 
-			@data.each_char do |c|
-				ln -= 1 if @data[i] == Ruvim::API::CR
-				i += 1
-				return goto(i) if ln == 0
-			end
+			i
+		end
+
+		def goto_line(ln)
+			goto(line_index(ln))
 		end
 
 		def goto_eol

@@ -32,13 +32,13 @@ module Ruvim
 			@highlight = value
 			
 			@editor.attr(:selection) do
-				@editor.print(@start, @end)
+				@editor.print(range)
 			end
 		end
 
 		def space
 			s = 0
-			@editor.buffer.data[@start .. @end].each_char do |k|
+			@editor.buffer.data[range].each_char do |k|
 				s += @editor.char_space(k, s)
 			end
 
@@ -53,22 +53,22 @@ module Ruvim
 		end
 
 		# Returns column of segment in screen
-		def column
-			@editor.line_space(@start)
-		end
+		#def column
+		#	@editor.line_space(@start)
+		#end
 
 		# Returns row of the segment in screen
-		def row
-			@editor.page.start	
-		end
+		#def row
+		#	@editor.page.start	
+		#end
 
-		# Vertical Space of the Segment
+		# Returns vertical space of the segment by counting the number of lines in the text.
 		def vspace
-			
+			@editor.buffer.data[range].lines.count
 		end
 
 		def size
-			@end - @start
+			(@end - @start).abs
 		end
 
 		# Returns Selection as A Range of the buffer indexes.
@@ -79,9 +79,8 @@ module Ruvim
 		# Removes segment from buffer and editor and sets cursor 
 		# position to the start of the segment
 		def delete
-			@editor.goto @start
 			result = @editor.buffer.data.slice!(range)
-			@editor.redraw
+			@editor.goto(@start).redraw
 
 			return result
 		end

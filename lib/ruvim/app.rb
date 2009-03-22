@@ -106,6 +106,9 @@ module Ruvim
 			vmap(Curses::Key::LEFT) { editor.back.selection.update }
 			vmap(Curses::Key::RIGHT) { editor.forward.selection.update }
 
+			vmap("d") { cut selection; mode :normal }
+			vmap("y") { copy selection; mode :normal }
+
 			gmap(Curses::Key::RESIZE) { $ruvim.rearrange }
 
 			map(27, :insert, :visual) { editor.mode= (:normal) }
@@ -126,8 +129,8 @@ module Ruvim
 			map(Curses::Key::RIGHT, :normal, :insert){ editor.forward }
 			map(Curses::Key::DOWN, :normal, :insert) { editor.down }
 
-			map(Curses::Key::NPAGE, :normal, :insert ) { (editor.page.lines).times { editor.down } }
-			map(Curses::Key::PPAGE, :normal, :insert ) { (editor.page.lines).times { editor.up } }
+			map(Curses::Key::NPAGE, :normal, :insert ) { page.lines.times { editor.down } }
+			map(Curses::Key::PPAGE, :normal, :insert ) { page.lines.times { editor.up } }
 
 			Mode::Modes[:insert].bindings.default { |k| insert(k.chr) rescue nil }
 		end

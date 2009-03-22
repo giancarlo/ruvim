@@ -87,7 +87,7 @@ module Ruvim
 			Curses.standend
 		end
 
-		def print(start, ending)
+		def print(range)
 			pos = get_pos
 
 			@window.setpos(pos[1], pos[0])

@@ -137,9 +137,7 @@ module Ruvim
 			
 			page.start= ln unless page.range.include? ln
 			
-			# set cursor position
-			@cursor.y = ln - page.start
-			@cursor.x = line_space(index)
+			@cursor.move(line_space(index), ln - page.start)
 
 			self
 		end
@@ -147,14 +145,7 @@ module Ruvim
 		# Moves to Line Number num.
 		def goto_line(num)
 			@buffer.goto_line num
-			num = @buffer.line.number
-
-			page.start= num unless page.range.include? num
-			
-			@cursor.y = num - page.start
-			@cursor.x = 0
-
-			self
+			goto buffer.index
 		end
 
 		def goto_lastline

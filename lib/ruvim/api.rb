@@ -11,6 +11,16 @@ module Ruvim
 		DELETE = Curses::Key::DC
 		CR = "\n"
 
+
+		def mode(newmode)
+			editor.mode= newmode
+		end
+
+		# Returns current editor page object.
+		def page
+			editor.page
+		end
+
 		# Returns current buffer
 		def buffer
 			editor.buffer
