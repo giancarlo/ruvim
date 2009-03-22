@@ -87,16 +87,17 @@ module Ruvim
 			nmap('O') { editor.goto_bol.cr.up.mode=(:insert) }
 
 			nmap('G') { editor.goto_lastline }
-			nmap('gt') { $ruvim.editor_next }
-			nmap('gT') { $ruvim.editor_previous }
-			nmap('g$') { $ruvim.editor.goto_eol }
+			nmap('gt') { editor_next }
+			nmap('gT') { editor_previous }
+			nmap('g$') { editor.goto_eol }
+			nmap('w') { editor.goto_next_word }
 
-			nmap('dd') { $ruvim.cut $ruvim.editor.line }
-			nmap('yy') { $ruvim.copy $ruvim.editor.line }
-			nmap('p') { $ruvim.paste }
+			nmap('dd') { cut editor.line }
+			nmap('yy') { copy editor.line }
+			nmap('p') { paste }
 			nmap('v') do
-				$ruvim.editor.mode=(:visual)
-				$ruvim.editor.selection.set($ruvim.buffer.index, $ruvim.buffer.index)
+				mode :visual
+				selection.set(buffer.index, buffer.index)
 			end
 
 			#

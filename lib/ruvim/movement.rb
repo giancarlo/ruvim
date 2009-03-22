@@ -120,7 +120,7 @@ module Ruvim
 		end
 
 		# Gets X, Y Coordinate of index in screen.
-		# Returns nil if Outside String
+		# Returns nil if position is outside the screen 
 		def get_pos(index)
 			
 			ln = @buffer.line.number
@@ -157,6 +157,15 @@ module Ruvim
 
 		def goto_eol
 			goto @buffer.line.end
+		end
+
+		def goto_next_word
+			buffer.forward while (buffer.char.match(/\w/))
+			buffer.forward until (buffer.char.match(/\w/))
+		rescue Exception
+
+		ensure 
+			goto(buffer.index)
 		end
 
 	end
