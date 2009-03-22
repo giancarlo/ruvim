@@ -29,7 +29,7 @@ module Ruvim
 			# Handle Special Commands
 			case result
 			when Numeric
-				$ruvim.editor.goto_line(result) if result.integer?
+				$ruvim.editor.goto_line(result) 
 			end
 
 			$ruvim.message result

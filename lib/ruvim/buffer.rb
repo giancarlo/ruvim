@@ -94,7 +94,7 @@ module Ruvim
 		# Gets index of Line number n. Returns nil if not found.
 		def line_index(n)
 			i = 0
-			n.times { i = @data.index(Ruvim::API::CR, i); break if i == nil }
+			n.times { i = @data.index(Ruvim::API::CR, i)+1; break if i == nil }
 
 			i
 		end
