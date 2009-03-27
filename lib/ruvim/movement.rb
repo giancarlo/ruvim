@@ -148,7 +148,7 @@ module Ruvim
 		end
 
 		def goto_lastline
-			down while (buffer.line.end < @buffer.size)
+			goto @buffer.size
 		end
 
 		def goto_bol

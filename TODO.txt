@@ -16,6 +16,6 @@ Ruvim
 - OPTIONAL: Add Curses extension for compatibility with 1.8
 - PLUGIN: TODO Manager
 - PLUGIN: Instant RI
-- PLUGIN: Debugger
 - PLUGIN: Auto Completion
+- PLUGIN: Debugger
 - FIX: Multiline lines.
