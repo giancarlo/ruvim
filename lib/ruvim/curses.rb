@@ -11,12 +11,19 @@ Curses.cbreak
 Curses.noecho
 Curses.stdscr.keypad(true)
 
-# ESCDELAY might not be defined.
-Curses.ESCDELAY= 50 rescue nil
-Curses.start_color
-Curses.use_default_colors rescue nil
-Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
-Curses.refresh
+begin
+	# ESCDELAY might not be defined.
+	Curses.ESCDELAY= 50
+rescue Exception
+end
+
+	Curses.start_color
+begin
+	Curses.use_default_colors
+rescue Exception
+end
+	Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
+	Curses.refresh
 
 # Make Sure getch always returns a goddamn INTEGER!
 
