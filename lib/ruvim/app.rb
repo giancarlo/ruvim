@@ -32,6 +32,7 @@ module Ruvim
 		include Curses::Key
 		
 		attr_reader :editors, :editor, :plugins, :workspace, :buffers
+		attr_reader :events
 		
 		private
 
@@ -143,6 +144,9 @@ module Ruvim
 			$ruvim = self
 			@caption  = nil
 			@continue = true
+
+			@events = Bindings.new
+			@events.map(:origin) {}
 
 			# Redirect the goddamn stderr
 			#$stderr = StringIO.new

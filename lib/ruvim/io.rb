@@ -76,6 +76,8 @@ module Ruvim
 				file = file + ' (NEW)'
 			end
 
+			$ruvim.events.fire(:open)
+
 			Ruvim::Message::FILE_LOADED % file
 		end
 
