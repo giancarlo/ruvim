@@ -36,6 +36,7 @@ module Ruvim
 		def initialize(parent=$ruvim)
 			@window = Curses::Window.new(0,0, 0, 0)
 			@width = 0; @height = 0
+			@x = 0; @y = 0
 			@caption = false
 			@cursor = Ruvim::Cursor.new(@window)
 			@client = [0,0, @width, @height]

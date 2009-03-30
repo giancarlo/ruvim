@@ -22,11 +22,12 @@ module Ruvim
 		attr_accessor :color
 
 		def visible?
-			return @editor.visible?
+			return @editor.visible? && @visible
 		end
 
 		def initialize(editor)
 			super editor.parent
+			@visible = false
 			@editor = editor
 			@width  = 4
 			@color  = Curses.color_pair(3)
