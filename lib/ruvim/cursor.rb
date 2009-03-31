@@ -28,15 +28,15 @@ module Ruvim
 		end
 
 		def move(nx, ny)
-			@x = nx; @y = ny
+			@x = nx; @y = ny; self
 		end
 
 		def show
-			Curses.curs_set(1)
+			Curses.curs_set(1); self
 		end
 
 		def hide
-			Curses.curs_set(0)
+			Curses.curs_set(0); self
 		end
 
 		def up(unit=1)

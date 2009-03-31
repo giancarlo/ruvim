@@ -44,6 +44,7 @@ module Ruvim
 		# TODO Optimize
 		# NOTE Range does not include current position
 		def number
+			#return if @buffer.index == nil
 			@buffer.data[0...@buffer.index].count(Ruvim::API::CR)
 		end
 

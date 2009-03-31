@@ -144,7 +144,7 @@ module Ruvim
 
 		# Moves to Line Number num.
 		def goto_line(num)
-			goto(buffer.line_index(num))
+			goto buffer.line_index(num)
 		end
 
 		def goto_lastline
