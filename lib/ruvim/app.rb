@@ -239,5 +239,20 @@ module Ruvim
 			
 			return inp
 		end
+
+
+		# Prompts the user for confirmation
+		def confirm(prompt)
+			while true
+				response = input(prompt + "[Y/n]?")
+
+				case response
+				when 'n','N'
+					return false
+				when 'y','Y', ''
+					return true
+				end	
+			end
+		end
 	end
 end

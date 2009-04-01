@@ -4,27 +4,16 @@
 
 module Ruvim
 
-	class Buffer
-
-		def load(data)
-			@data = data
-			reset
-		end
-
-	end
-
 	class Editor < Ruvim::Window
 
 		def changed?
-			@changed
+			buffer.changed?
 		end
 
 		# Closes Editor and asks to save file if changed.
 		def close
 			if changed? then
-				if ($ruvim.input("File was modified. Save (Y|n)? ").downcase != "n") then
-					write
-				end
+				write if $ruvim.confirm("File was modified. Save")
 			end
 
 			self
@@ -55,8 +44,7 @@ module Ruvim
 		def write(file=@file)
 			@file = file
 			f = File.new(file, 'w')
-			f.write(@buffer.data)
-			@changed = false
+			buffer.write(f)
 		ensure
 			f.close if f
 		end
@@ -108,11 +96,11 @@ module Ruvim
 		end
 
 		def editor_next
-			editor_goto (@current_editor < @editors.size-1) ? @current_editor + 1 : 0
+			editor_goto( (@current_editor < @editors.size-1) ? @current_editor + 1 : 0)
 		end
 
 		def editor_previous
-			editor_goto ((@current_editor > 0) ? @current_editor : @editors.size) - 1
+			editor_goto( ((@current_editor > 0) ? @current_editor : @editors.size) - 1)
 		end
 
 		def write(file=@editor.file)

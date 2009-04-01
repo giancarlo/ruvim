@@ -45,7 +45,6 @@ module Ruvim
 			@selection = Segment.new(self, 0, 0)
 			@event = Bindings.new
 			@event.map(:origin) {}
-			@changed = false
 			
 			super
 			self.alignment=(:client)
@@ -74,7 +73,6 @@ module Ruvim
 			@cursor.reset
 			@buffer.reset
 			@page.reset
-			@changed = false
 		end
 
 		# Sets Current Attribute executes block then returns to normal
@@ -87,16 +85,10 @@ module Ruvim
 			Curses.standend
 		end
 
-		def print(range)
-			pos = get_pos
-
-			@window.setpos(pos[1], pos[0])
-		end
-
 		# Takes ranges.
 		# @param line Number of line relative to screen.
 		def redraw_line(line=@cursor.y)
-			if line.class == Range then
+			if line.respond_to? :each then
 				line.each { |r| redraw_line(r) }
 			else
 				l = @buffer.line.index(@page.start + line)
@@ -115,8 +107,9 @@ module Ruvim
 		#
 		#	Edition Routines
 		#
+
+		# Inserts character into the text at current position.
 		def insert(k)
-			@changed = true
 			if k == Ruvim::API::CR then
 				cr
 			else
@@ -128,17 +121,16 @@ module Ruvim
 			self
 		end
 		
+		# Removes character at cursor.
 		def remove
 			back if (@buffer.at_end?)
 			ch = @buffer.char
 			@buffer.remove
-			@changed = true
 			redraw_line((ch == Ruvim::API::CR) ? (@cursor.y ... @height) : @cursor.y) 
 			self
 		end
 
 		# Return number of lines
-		# TODO Optimize this
 		def lines
 			@buffer.data.count(Ruvim::API::CR)
 		end
@@ -162,14 +154,16 @@ module Ruvim
 			@buffer[@buffer.line.start ... index].each_char do |k|
 				s += char_space(k, s)
 			end
-
+			
 			s
 		end
 
+		#
+		# Inserts a Carriage Return at cursor.
+		#
 		def cr
 			oy = @cursor.y
 			@buffer.insert Ruvim::API::CR
-			@changed = true
 			redraw_line(oy ... @height)
 			down.goto_bol
 		end

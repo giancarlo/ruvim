@@ -6,13 +6,24 @@ module Ruvim
 
 	class Buffer
 		
-		attr_accessor :data
-		attr_reader :index
+		attr_reader :data, :index
 
-		def initialize(data='', index=0)
-			@data  = data
-			@index = index
+		def initialize
+			@data  = ''
+			@index = 0
+			@changed = false
 			@line  = Ruvim::Line.new(self)
+		end
+
+		#
+		# Status Functions
+		#
+		def changed?
+			@changed
+		end
+
+		def touch
+			@changed = true
 		end
 
 		#
@@ -88,7 +99,7 @@ module Ruvim
 		end
 
 		def goto(i)
-			@index = i.nil? ? size : i
+			@index = i #.nil? ? size : i
 			self
 		end
 
@@ -142,15 +153,27 @@ module Ruvim
 		# Removes char from buffer
 		def remove
 			@data.slice!(@index)
-
 			@index -= 1 if @index > size
+			touch
 			self
 		end
 
 		# Insert what into buffer
 		def insert(what)
 			@data.insert(@index, what)
+			touch
 			self
+		end
+
+		def load(data)
+			@data.replace data
+			@changed = false
+			reset
+		end
+
+		def write(stream)
+			f.write(@data)
+			@changed = false
 		end
 
 		#
