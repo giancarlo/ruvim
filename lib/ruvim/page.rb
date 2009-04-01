@@ -20,6 +20,7 @@ module Ruvim
 		def start=(value)
 			@start = value
 			@editor.redraw
+			self
 		end
 
 		def end
@@ -30,7 +31,7 @@ module Ruvim
 		end
 
 		def reset
-			@start = 0	
+			self.start = 0	
 		end
 
 		# Return a Range from start to end
@@ -44,7 +45,6 @@ module Ruvim
 
 		def scroll_up(n=1)
 			self.start=(@start - n)
-			self
 		end
 
 		def scroll_down

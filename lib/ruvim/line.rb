@@ -44,7 +44,7 @@ module Ruvim
 		# TODO Optimize
 		# NOTE Range does not include current position
 		def number
-			#return if @buffer.index == nil
+			return 0 if @buffer.index == 0
 			@buffer.data[0...@buffer.index].count(Ruvim::API::CR)
 		end
 
@@ -53,16 +53,10 @@ module Ruvim
 		end
 
 		def index(i)
-			s = 0
-			i.times do
-				s = @buffer.data.index(Ruvim::API::CR, s)
-				return "" unless s
-				s += 1
-			end
-
+			s = @buffer.line_index(i)
 			@buffer.data[s ... line_end(s)]
 		end
-		
+
 		# Returns Line
 		def to_str
 			@buffer.data[self.start ... line_end]	

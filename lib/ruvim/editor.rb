@@ -93,18 +93,19 @@ module Ruvim
 			@window.setpos(pos[1], pos[0])
 		end
 
-		# Takes ranges
+		# Takes ranges.
+		# @param line Number of line relative to screen.
 		def redraw_line(line=@cursor.y)
 			if line.class == Range then
 				line.each { |r| redraw_line(r) }
 			else
-				@window.setpos(line, 0)
 				l = @buffer.line.index(@page.start + line)
+				@window.setpos(line, 0)
 				@window.addstr(l)
 				@window.clrtoeol
 			end
 		end
-		
+
 		#
 		#	Window Routines
 		#
@@ -114,7 +115,6 @@ module Ruvim
 		#
 		#	Edition Routines
 		#
-
 		def insert(k)
 			@changed = true
 			if k == Ruvim::API::CR then
@@ -152,12 +152,14 @@ module Ruvim
 			@page.start + @cursor.y
 		end
 
+		#
 		# Returns Space occupied by the line in the display. If 'index' is given
 		# it returns the space occupied by the characters from the start of the line
 		# to buffer[index].
+		#
 		def line_space(index=@buffer.line.end)
 			s = 0
-			@buffer[@buffer.line.start ... index].each_char do |k|
+			@buffer[@buffer.line.start .. index].each_char do |k|
 				s += char_space(k, s)
 			end
 

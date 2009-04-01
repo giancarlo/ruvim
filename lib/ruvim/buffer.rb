@@ -88,16 +88,17 @@ module Ruvim
 		end
 
 		def goto(i)
-			@index = i; self
+			@index = i.nil? ? size : i
+			self
 		end
 
-		# Gets index of Line number n. Returns nil if not found.
+		# Gets index of Line number n. Returns EOF if not found.
 		def line_index(n)
 
 			i = 0
 			n.times do
 				i = @data.index(Ruvim::API::CR, i)
-				return 0 if i == nil
+				return eof if i == nil
 				i += 1 
 			end
 			i
