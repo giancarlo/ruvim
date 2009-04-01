@@ -159,7 +159,7 @@ module Ruvim
 		#
 		def line_space(index=@buffer.line.end)
 			s = 0
-			@buffer[@buffer.line.start .. index].each_char do |k|
+			@buffer[@buffer.line.start ... index].each_char do |k|
 				s += char_space(k, s)
 			end
 
