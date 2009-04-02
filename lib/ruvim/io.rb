@@ -86,7 +86,7 @@ module Ruvim
 			@editor.hide unless @editor.nil?
 			@editor = ed
 			@editor.show
-			message "#{@current_editor+1}/#{@editors.size}: #{@editor.file}"
+			$ruvim.message "#{@current_editor+1}/#{@editors.size}: #{@editor.file}"
 		end
 
 		def editor_goto(index)

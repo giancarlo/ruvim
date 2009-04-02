@@ -168,6 +168,11 @@ module Ruvim
 			down.goto_bol
 		end
 
+		# 
+		# 
+		#
+
+
 	end
 
 end

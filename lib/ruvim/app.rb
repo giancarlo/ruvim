@@ -49,10 +49,15 @@ module Ruvim
 			@editor  = nil
 		end
 
+		def reset_client
+			@client[0] = 0; @client[1] = 0
+			@client[2] = Curses.cols; @client[3] = Curses.lines - 1
+		end
+
 		def initialize_window
 			@window  = Curses.stdscr
 			@cursor  = Cursor.new(@window)
-			@client  = [@x = 0, @y = 0, @width = Curses.cols, @height = Curses.lines]
+			@client  = [0,0,Curses.cols,Curses.lines-1]
 			@windows = Array.new
 			@visible = true
 
@@ -244,7 +249,7 @@ module Ruvim
 		# Prompts the user for confirmation
 		def confirm(prompt)
 			while true
-				response = input(prompt + "[Y/n]?")
+				response = input(prompt + "[Y/n]? ")
 
 				case response
 				when 'n','N'
