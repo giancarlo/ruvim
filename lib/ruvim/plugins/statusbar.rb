@@ -100,6 +100,11 @@ module Ruvim
 			statusbar.panels[:default].display(msg)
 		end
 
+		def reset_client
+			@client[0] = 0; @client[1] = 0
+			@client[2] = Curses.cols; @client[3] = Curses.lines
+		end
+
 	end
 
 	Plugin::Application.register(:statusbar, StatusBar)
