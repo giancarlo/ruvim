@@ -31,6 +31,8 @@ module Ruvim
 			ByFilename.each do |m, v|
 				return v if m.include? file
 			end
+			
+			nil
 		end
 
 		def self.bind
@@ -58,6 +60,8 @@ module Ruvim
 		end
 
 		def filetype(*extension, &block)
+			return editor.filetype if extension.empty?
+
 			extension.each do |ext|
 				if FileType.bind[ext].class != Array then
 					FileType.bind[ext] = []
