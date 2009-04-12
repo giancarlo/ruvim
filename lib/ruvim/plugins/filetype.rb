@@ -7,7 +7,7 @@ module Ruvim
 	module FileType
 
 		ByFilename  = {
-			'Rakefile' => :ruby
+			['Rakefile'] => :ruby
 		}
 
 		ByExtension = {
@@ -44,7 +44,7 @@ module Ruvim
 	class Editor
 		
 		def filetype
-			FileType.by_filename(file) || FileType.by_extension(File.extname(file))
+			FileType.by_filename(File.basename(file)) || FileType.by_extension(File.extname(file))
 		end
 
 	end
