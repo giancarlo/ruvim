@@ -67,7 +67,7 @@ module Ruvim
 		end
 
 		def initialize_arguments
-			(ARGV.size > 0) ? (ARGV.each { |arg| open(arg) }) : open
+			(ARGV.size > 0) ? (ARGV.each { |arg| tabe(arg) }) : open
 		end
 
 		# Load ~/.ruvimrc and Evaluate
@@ -80,7 +80,7 @@ module Ruvim
 				ruvimrc.close
 			end
 		rescue
-			raise "Error Loading Resource File: #{path}"
+			raise "Error Loading Resource File: #{path}\n#{$!}"
 		end
 
 		def initialize_mappings
@@ -95,7 +95,7 @@ module Ruvim
 			nmap('G') { editor.goto_lastline }
 			nmap('gt') { editor_next }
 			nmap('gT') { editor_previous }
-			nmap('g$') { editor.goto_eol }
+			nmap('$') { editor.goto_eol }
 			nmap('w') { editor.goto_next_word }
 
 			nmap('dd') { cut editor.line }
@@ -136,6 +136,10 @@ module Ruvim
 			map(Curses::Key::LEFT, :normal, :insert) { editor.back }
 			map(Curses::Key::RIGHT, :normal, :insert){ editor.forward }
 			map(Curses::Key::DOWN, :normal, :insert) { editor.down }
+			map("j", :normal, :insert) { editor.down }
+			map("k", :normal, :insert) { editor.up }
+			map("l", :normal, :insert) { editor.forward }
+			map("h", :normal, :insert) { editor.back }
 
 			map(Curses::Key::NPAGE, :normal, :insert ) { page.lines.times { editor.down } }
 			map(Curses::Key::PPAGE, :normal, :insert ) { page.lines.times { editor.up } }
@@ -153,16 +157,16 @@ module Ruvim
 			@events = Bindings.new
 			@events.map(:origin) {}
 
-			# Redirect the goddamn stderr
-			#$stderr = StringIO.new
-
 			initialize_window
 			initialize_plugins
 			initialize_buffers
 			initialize_mappings
 			initialize_editors
 			initialize_arguments
-			initialize_resources
+
+			# Redirect the goddamn stderr
+			#$stderr = StringIO.new
+
 		end
 
 		def refresh
@@ -204,6 +208,8 @@ module Ruvim
 		end
 
 		def start
+			initialize_resources
+
 			editor.cursor.restore
 			refresh
 
