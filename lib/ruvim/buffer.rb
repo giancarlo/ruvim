@@ -172,7 +172,7 @@ module Ruvim
 		end
 
 		def write(stream)
-			f.write(@data)
+			stream.write(@data)
 			@changed = false
 		end
 
