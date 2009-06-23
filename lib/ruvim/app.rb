@@ -136,10 +136,10 @@ module Ruvim
 			map(Curses::Key::LEFT, :normal, :insert) { editor.back }
 			map(Curses::Key::RIGHT, :normal, :insert){ editor.forward }
 			map(Curses::Key::DOWN, :normal, :insert) { editor.down }
-			map("j", :normal, :insert) { editor.down }
-			map("k", :normal, :insert) { editor.up }
-			map("l", :normal, :insert) { editor.forward }
-			map("h", :normal, :insert) { editor.back }
+			map("j", :normal, :visual) { editor.down }
+			map("k", :normal, :visual) { editor.up }
+			map("l", :normal, :visual) { editor.forward }
+			map("h", :normal, :visual) { editor.back }
 
 			map(Curses::Key::NPAGE, :normal, :insert ) { page.lines.times { editor.down } }
 			map(Curses::Key::PPAGE, :normal, :insert ) { page.lines.times { editor.up } }
