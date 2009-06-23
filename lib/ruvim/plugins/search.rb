@@ -33,6 +33,7 @@ module Ruvim
 		def initialize
 			@prompt  = '/'
 			@rprompt = '?'
+			@last = nil
 		end
 
 	private
@@ -47,6 +48,10 @@ module Ruvim
 
 		def input(p=@prompt)
 			$ruvim.input(p)
+		end
+
+		def regex(p=@prompt)
+			@last = Regexp.new(input(p))
 		end
 
 	public
@@ -64,11 +69,11 @@ module Ruvim
 				return not_found if position.nil?
 			end
 			
-			$ruvim.editor.goto(position)	
+			$ruvim.editor.goto(position)
 		end
 		
 		def search
-			find(@last = Regexp.new(input))
+			find(regex())
 		end
 
 		def search_next
@@ -80,15 +85,31 @@ module Ruvim
 		end
 
 		def rsearch
-			find(@last = Regexp.new(input(@rprompt)), 0, :top, :bottom)
+			find(regex(@rprompt), 0, :top, :bottom)
+		end
+
+		# Runs search with Error Protection
+		def do_search(what=:search)
+			case what
+			when :next
+				search_next
+			when :previous
+				search_previous
+			when :rsearch
+				rsearch
+			else
+				search
+			end
+		rescue Exception
+			$ruvim.message "ERROR: #{$!.to_s}"
 		end
 
 		# Adds mappings to editor e.
 		def self.mappings(e)
-			e.nmap('/') { $ruvim.search.search  }
-			e.nmap('n') { $ruvim.search.search_next     if $ruvim.search.last }
-			e.nmap('N') { $ruvim.search.search_previous if $ruvim.search.last }
-			e.nmap('?') { $ruvim.search.rsearch }
+			e.nmap('/') { $ruvim.search.do_search }
+			e.nmap('n') { $ruvim.search.do_search :next     if $ruvim.search.last }
+			e.nmap('N') { $ruvim.search.do_search :previous if $ruvim.search.last }
+			e.nmap('?') { $ruvim.search.do_search :rsearch }
 		end
 			
 	end
