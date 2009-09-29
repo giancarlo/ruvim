@@ -14,7 +14,13 @@ def install_bin
 	from		= 'bin/ruvim.rb'
 	bindir		= CONFIG['bindir']
 
-	FileUtils.install(from, File.join(bindir, filename), :mode => 0755, :verbose => true)
+	# Add Shebang
+	out = File.join(bindir, filename)
+	FileUtils.install(from, out, :mode => 0755, :verbose => true)
+
+	f = File.new(out, "r+")
+	f.puts "#!/usr/bin/env #{CONFIG['ruby_install_name']}"
+	f.close
 end
 
 install_bin

@@ -2,7 +2,7 @@
 # Ruby Curses Initialization
 #
 
-require 'curses.so'
+throw "Curses is not installed in this ruby installation" unless require 'curses.so'
 
 Curses.init_screen
 Curses.nonl
@@ -11,23 +11,29 @@ Curses.cbreak
 Curses.noecho
 Curses.stdscr.keypad(true)
 
-begin
-	# ESCDELAY might not be defined.
-	Curses.ESCDELAY= 50
-rescue Exception
-end
+# ESCDELAY might not be defined.
+Curses.ESCDELAY= 50 if Curses.respond_to? 'ESCDELAY='
 
-	Curses.start_color
-begin
-	Curses.use_default_colors
-rescue Exception
-end
-	Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
-	Curses.refresh
+Curses.start_color
+Curses.use_default_colors if Curses.methods.include? 'use_default_colors'
+
+Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
+Curses.refresh
 
 # Make Sure getch always returns a goddamn INTEGER!
 
 module Curses
+
+	unless Curses.respond_to? 'TABSIZE'
+	
+		def self.TABSIZE
+			8
+		end
+
+		def self.TABSIZE=(tabsize)
+		end
+	
+	end 
 
 	#
 	# Gets Code. Always returns an integer(or nil !!!)

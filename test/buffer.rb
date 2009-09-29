@@ -4,6 +4,7 @@
 
 require 'test/unit'
 require 'ruvim/buffer'
+require 'stringio'
 
 class BufferTest < Test::Unit::TestCase
 

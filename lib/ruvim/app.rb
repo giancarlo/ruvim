@@ -3,9 +3,6 @@
 #
 # by Giancarlo Bellido
 #
-
-require 'stringio'
-
 require 'ruvim/curses'
 require 'ruvim/version'
 require 'ruvim/window'
@@ -168,10 +165,6 @@ module Ruvim
 			initialize_mappings
 			initialize_editors
 			initialize_arguments
-
-			# Redirect the goddamn stderr
-			#$stderr = StringIO.new
-
 		end
 
 		def refresh
@@ -249,6 +242,7 @@ module Ruvim
 			@window.clrtoeol
 
 			@window.setpos(Curses.lines-1, prompt.length)
+			Curses.refresh
 			Curses.echo
 			inp = @window.getstr
 			Curses.noecho
