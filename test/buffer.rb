@@ -39,6 +39,7 @@ Line 5}
 		assert(@buffer.at_start?)
 		@buffer.goto(5)
 		assert_equal(5, @buffer.index)
+		assert_equal("1", @buffer.char)
 		@buffer.goto_eol
 		assert(@buffer.at_eol?)
 		@buffer.forward
@@ -54,6 +55,11 @@ Line 5}
 		assert_equal("L", @buffer.char)
 		@buffer.forward 5
 		assert_equal("1", @buffer.char)
+	end
+
+	def test_operators
+		assert_equal("L", @buffer[0])
+		assert_equal(nil, @buffer[100])
 	end
 
 	def test_remove
@@ -72,6 +78,10 @@ Line 5}
 		assert_equal(size-2, @buffer.size)
 
 		assert_equal("Line", @buffer.line.to_str)
+	end
+
+	def test_size
+		assert_equal(@bufferdata.size, @buffer.size)
 	end
 
 	def test_to
@@ -95,5 +105,21 @@ Line 5}
 		@buffer.insert "HAHAHA"
 		assert(6, @buffer.index)
 		assert_equal("HelloLHAHAHAine 1", @buffer.line.to_str)
+	end
+
+	def test_touch
+		assert(!@buffer.changed?)
+		@buffer.touch
+		assert(@buffer.changed?)
+	end
+
+	def test_write
+		stream = StringIO.new
+		@buffer.write stream
+		stream.rewind
+		d = stream.read
+
+		assert_equal(@bufferdata, d)
+		assert_equal(@buffer.data, d)
 	end
 end

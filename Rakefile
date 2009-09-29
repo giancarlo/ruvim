@@ -1,9 +1,9 @@
+require './lib/ruvim/version'
+
 require 'rake/packagetask'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/testtask'
-
-require 'lib/ruvim/version'
 
 spec = Gem::Specification.new do |s|
 	s.name    = "ruvim"
@@ -18,7 +18,7 @@ spec = Gem::Specification.new do |s|
 
 	s.author = "Giancarlo Bellido"
 	s.email  = "giancarlo.bellido@gmail.com"
-	s.homepage= "cpb.coaxialhost.com"
+	s.homepage= "http://cpb.coaxialhost.com"
 	s.rubyforge_project = "ruvim"
 end
 

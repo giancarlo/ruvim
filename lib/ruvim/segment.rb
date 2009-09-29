@@ -81,6 +81,7 @@ module Ruvim
 		def delete
 			result = @editor.buffer.data.slice!(range)
 			@editor.goto(@start).redraw
+			@editor.buffer.touch
 
 			return result
 		end

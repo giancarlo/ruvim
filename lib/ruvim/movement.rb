@@ -151,6 +151,10 @@ module Ruvim
 			goto @buffer.size
 		end
 
+		def goto_firstline
+			goto 0
+		end
+
 		def goto_bol
 			goto @buffer.line.start
 		end

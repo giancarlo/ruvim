@@ -8,11 +8,13 @@ module Ruvim
 		
 		attr_reader :data, :index
 
-		def initialize
+		def initialize(initial_data=nil)
 			@data  = ''
 			@index = 0
 			@changed = false
 			@line  = Ruvim::Line.new(self)
+
+			load(initial_data) if initial_data
 		end
 
 		#
@@ -22,6 +24,7 @@ module Ruvim
 			@changed
 		end
 
+		# Mark Buffer as changed.
 		def touch
 			@changed = true
 		end
@@ -171,6 +174,7 @@ module Ruvim
 			reset
 		end
 
+		# Writes contents of buffer in the specified Stream stream.
 		def write(stream)
 			stream.write(@data)
 			@changed = false

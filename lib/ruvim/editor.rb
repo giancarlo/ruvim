@@ -40,6 +40,7 @@ module Ruvim
 			@buffer = Buffer.new
 			@page 	= Page.new(self)
 			@line 	= Segment.new(self, 0, 0)
+			@word   = Segment.new(self, 0, 0)
 			@timeout  = 1000
 			@tabsize = Curses.TABSIZE
 			@selection = Segment.new(self, 0, 0)
@@ -140,6 +141,18 @@ module Ruvim
 			@line.set(buffer.line.start, buffer.line.end)
 		end
 
+		# Returns Index for End of Word.
+		def find_eow
+			i = buffer.index
+			i = i + 1 while ((buffer[i] != nil) && buffer[i].match(/\w/))
+			return i
+		end
+
+		# Returns Segment of current word.
+		def word
+			@word.set(buffer.index, find_eow)
+		end
+
 		def line_number
 			@page.start + @cursor.y
 		end
@@ -167,11 +180,6 @@ module Ruvim
 			redraw_line(oy ... @height)
 			down.goto_bol
 		end
-
-		# 
-		# 
-		#
-
 
 	end
 

@@ -18,7 +18,7 @@ Line 4
 Line 5} 
 
 		@editor = Ruvim::Editor.new($ruvim)
-		@editor.buffer.data= @bufferdata
+		@editor.buffer.load(@bufferdata)
 	end
 
 	def teardown

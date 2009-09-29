@@ -93,12 +93,14 @@ module Ruvim
 			nmap('O') { editor.goto_bol.cr.up.mode=(:insert) }
 
 			nmap('G') { editor.goto_lastline }
+			nmap('gg') { editor.goto_firstline }
 			nmap('gt') { editor_next }
 			nmap('gT') { editor_previous }
 			nmap('$') { editor.goto_eol }
 			nmap('w') { editor.goto_next_word }
 
 			nmap('dd') { cut editor.line }
+			nmap('dw') { cut editor.word }
 			nmap('yy') { copy editor.line }
 			nmap('p') { paste }
 			nmap('v') do
@@ -124,6 +126,9 @@ module Ruvim
 
 			map(Curses::Key::BACKSPACE)  { editor.back }
 			imap(Curses::Key::BACKSPACE) { editor.back.remove unless buffer.at_start? }
+			map(127)  { editor.back }
+			imap(127) { editor.back.remove unless buffer.at_start? }
+
 			map(8) { editor.back }
 			imap(8) { editor.back.remove unless buffer.at_start? }
 			
