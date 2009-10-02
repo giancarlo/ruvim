@@ -12,10 +12,10 @@ Curses.noecho
 Curses.stdscr.keypad(true)
 
 # ESCDELAY might not be defined.
-Curses.ESCDELAY= 50 if Curses.respond_to? 'ESCDELAY='
+Curses.ESCDELAY= 50 if Curses.respond_to? :ESCDELAY=
 
 Curses.start_color
-Curses.use_default_colors if Curses.methods.include? 'use_default_colors'
+Curses.use_default_colors if Curses.methods.include? :use_default_colors
 
 Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
 Curses.refresh
