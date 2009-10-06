@@ -5,6 +5,8 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/testtask'
 
+MAKE = "make"
+
 spec = Gem::Specification.new do |s|
 	s.name    = "ruvim"
 	s.version = Ruvim::VERSION 
@@ -20,6 +22,15 @@ spec = Gem::Specification.new do |s|
 	s.email  = "giancarlo.bellido@gmail.com"
 	s.homepage= "http://cpb.coaxialhost.com"
 	s.rubyforge_project = "ruvim"
+end
+
+desc "Build Ruby Extension"
+task :ruvimc do
+	Dir.chdir('ext/ruvim') do
+		ruby 'extconf.rb'
+		sh "#{MAKE}"
+	end
+	cp 'ext/ruvim/ruvimc.so', 'lib/ruvim'
 end
 
 Rake::TestTask.new do |t|

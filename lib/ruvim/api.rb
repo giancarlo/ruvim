@@ -11,7 +11,6 @@ module Ruvim
 		DELETE = Curses::Key::DC
 		CR = "\n"
 
-
 		def mode(newmode)
 			editor.mode= newmode
 		end

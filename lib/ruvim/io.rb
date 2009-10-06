@@ -22,18 +22,26 @@ module Ruvim
 		# Opens a New File
 		def new_file(file='')
 			@file = File.expand_path(file)
-			buffer.load ''
+			new_setup
+		end
 
-			event.fire(:new_file)
+		def new_setup
+			buffer.load ''
+			event.fire(:new_file)			
 		end
 		
 		# Opens a file raises if file was not found
 		def open(file='')
 			@file = File.expand_path(file)
 
-			f = File.new(@file)
-			close
-			buffer.load(f.read)
+			if File.exists? @file then
+				f = File.new(@file)
+				close
+				buffer.load(f.read)
+			else
+				return new_setup
+			end
+
 			reset
 			parent.rearrange
 		ensure
@@ -57,13 +65,7 @@ module Ruvim
 		def open(file='')
 			tabn if @editor.nil?
 
-			if File.exists? file then
-				@editor.open(file)
-			else
-				@editor.new_file(file)
-				file = file + ' (NEW)'
-			end
-
+			@editor.open(file)
 			$ruvim.events.fire(:open)
 
 			Ruvim::Message::FILE_LOADED % file
