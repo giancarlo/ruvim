@@ -62,11 +62,13 @@ module Ruvim
 	module API
 
 		# Opens File in current editor.
-		def open(file='')
+		def open(file=nil)
 			tabn if @editor.nil?
 
-			@editor.open(file)
-			$ruvim.events.fire(:open)
+			if file then
+				@editor.open(file)
+				$ruvim.events.fire(:open)
+			end
 
 			Ruvim::Message::FILE_LOADED % file
 		end
