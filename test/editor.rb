@@ -21,6 +21,18 @@ Line 5}
 		@editor.buffer.load(@bufferdata)
 	end
 
+	def test_pattern
+		assert_equal 'Line', @editor.pattern(@editor.options[:isfname]).to_str
+		@editor.down
+		assert_equal 'Line', @editor.pattern(@editor.options[:isfname]).to_str
+		@editor.forward
+		assert_equal 'Line', @editor.pattern(@editor.options[:isfname]).to_str
+		@editor.forward.forward.forward
+		assert_equal nil, @editor.pattern(@editor.options[:isfname])
+		@editor.forward
+		assert_equal '2', @editor.pattern(@editor.options[:isfname])
+	end
+
 	def teardown
 		Curses.close_screen
 	end

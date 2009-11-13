@@ -9,11 +9,11 @@ require 'ruvim/page'
 require 'ruvim/segment'
 
 module Ruvim
-
+	
 	class Editor < Ruvim::Window
 
 		attr_reader :buffer, :file, :selection, :modes, :page, :plugins
-		attr_reader :event
+		attr_reader :event, :options
 		# Input Timeout in millisecond for mappings
 		attr_accessor :timeout
 		
@@ -33,6 +33,10 @@ module Ruvim
 			end
 		end
 
+		def initialize_options
+			@options[:isfname] = /[A-Za-z0-9]\.?/ 
+		end
+
 	public
 
 		def initialize(parent)
@@ -46,12 +50,14 @@ module Ruvim
 			@selection = Segment.new(self, 0, 0)
 			@event = Bindings.new
 			@event.map(:origin) {}
+			@options = {}
 			
 			super
 			self.alignment=(:client)
 			@window.scrollok true
 			
 			initialize_plugins
+			initialize_options
 		end
 
 		def tabsize
@@ -151,6 +157,32 @@ module Ruvim
 		# Returns Segment of current word.
 		def word
 			@word.set(buffer.index, find_eow)
+		end
+
+		def find_pattern_forward(pat_str, s)
+			s += 1 while pat_str.match(@buffer[s+1])
+			s
+		end
+
+		def find_pattern_backward(pat_str, s)
+			s -= 1 while pat_str.match(@buffer[s-1])
+			s
+		end
+
+		def pattern(pat_str)
+			s = @buffer.index
+
+			if pat_str.match(@buffer[s]) then
+				s = find_pattern_backward(pat_str, s)
+				e = find_pattern_forward(pat_str, s)
+				Ruvim::Segment.new(self, s, e)
+			else
+				nil
+			end
+		end
+
+		def open_file_at_cursor
+			open pattern(@options[:isfname])			
 		end
 
 		def line_number

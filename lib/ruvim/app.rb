@@ -93,6 +93,7 @@ module Ruvim
 			nmap('gg') { editor.goto_firstline }
 			nmap('gt') { editor_next }
 			nmap('gT') { editor_previous }
+			nmap('gf') { editor.open_file_at_cursor }
 			nmap('$') { editor.goto_eol }
 			nmap('w') { editor.goto_next_word }
 

@@ -29,15 +29,28 @@ module Ruvim
 			buffer.load ''
 			event.fire(:new_file)			
 		end
+
+		def read_directory(dirname)
+			result = ''
+			Dir.entries(dirname).sort!.each do |filename|
+				result += "#{filename}\n"
+			end
+			result
+		end
 		
 		# Opens a file raises if file was not found
 		def open(file='')
 			@file = File.expand_path(file)
 
 			if File.exists? @file then
-				f = File.new(@file)
-				close
-				buffer.load(f.read)
+				if File.directory? @file then
+					filedata = read_directory @file
+				else
+					f = File.new(@file)
+					close
+					filedata = f.read
+				end
+				buffer.load(filedata)
 			else
 				return new_setup
 			end
