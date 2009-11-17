@@ -181,8 +181,18 @@ module Ruvim
 			end
 		end
 
+		def file_at_cursor
+			filename = pattern(@options[:isfname]).to_str
+			if filename && File.exists?(filename) then
+				return filename
+			else
+				nil
+			end
+		end
+
 		def open_file_at_cursor
-			open pattern(@options[:isfname])			
+			filename = file_at_cursor
+			open filename if filename
 		end
 
 		def line_number
