@@ -33,6 +33,12 @@ module Ruvim
 			end
 		end
 
+		def initialize_modes
+			@modes = {}
+			Mode::Modes.each { |k, v| @modes[k]= v.clone }
+			@mode = :normal
+		end
+
 		def initialize_options
 			@options[:isfname] = /[A-Za-z0-9]\.?/ 
 		end
@@ -58,6 +64,15 @@ module Ruvim
 			
 			initialize_plugins
 			initialize_options
+		end
+
+		def mode=(newmode)
+			raise ArgumentError.new("Invalid Mode: #{newmode}") unless @modes.include? newmode
+			@mode = newmode
+		end
+
+		def mode
+			@modes[@mode]
 		end
 
 		def tabsize

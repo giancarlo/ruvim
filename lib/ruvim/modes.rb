@@ -21,25 +21,4 @@ module Ruvim
 			:visual  => Mode.new("Visual")
 		}
 	end
-
-	class Editor < Ruvim::Window
-
-	private
-		def initialize_modes
-			@modes = {}
-			Mode::Modes.each { |k, v| @modes[k]= v.clone }
-			@mode = :normal
-		end
-
-	public
-		# Select the new mode to symbol newmode
-		def mode=(newmode)
-			raise ArgumentError.new("Invalid Mode: #{newmode}") unless @modes.include? newmode
-			@mode = newmode
-		end
-
-		def mode
-			@modes[@mode]
-		end
-	end
 end

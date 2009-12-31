@@ -86,7 +86,7 @@ module Ruvim
 			nmap(Curses::Key::IC) { editor.mode=(:insert) }
 			nmap('a') { editor.forward.mode=(:insert) }
 			nmap('A') { editor.goto_eol.mode=(:insert) }
-			nmap('o') { editor.goto_eol.cr.mode=(:insert) }
+			nmap('o') { editor.goto_eol.mode=(:insert); editor.mode.bindings.fire RETURN }
 			nmap('O') { editor.goto_bol.cr.up.mode=(:insert) }
 
 			nmap('G') { editor.goto_lastline }
@@ -130,7 +130,7 @@ module Ruvim
 			map(8) { editor.back }
 			imap(8) { editor.back.remove unless buffer.at_start? }
 			
-			imap(13) { editor.cr }
+			imap(Ruvim::API::RETURN) { editor.cr }
 
 			map(Curses::Key::HOME, :normal, :insert) { editor.goto_bol }
 			map(Curses::Key::END, :normal, :insert) { editor.goto_eol }
