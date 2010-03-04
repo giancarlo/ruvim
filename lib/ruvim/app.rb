@@ -144,6 +144,9 @@ module Ruvim
 			map("l", :normal, :visual) { editor.forward }
 			map("h", :normal, :visual) { editor.back }
 
+			map(">>", :normal) { editor.indent }
+			map("<<", :normal) { editor.unindent }
+
 			map(Curses::Key::NPAGE, :normal, :insert ) { page.lines.times { editor.down } }
 			map(Curses::Key::PPAGE, :normal, :insert ) { page.lines.times { editor.up } }
 

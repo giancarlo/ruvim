@@ -2,7 +2,6 @@ Ruvim
 
 --TODO--
 
-- FEATURE: Add Indent/Unindent
 - FIX: Separate Window Manager From Ruvim
 - FIX: Redraw at window Resize.
 - FEATURE: Parse command line arguments.

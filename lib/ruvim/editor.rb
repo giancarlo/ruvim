@@ -238,6 +238,23 @@ module Ruvim
 			down.goto_bol
 		end
 
+		def indent
+			pos = @buffer.index + 1
+			@buffer.goto_bol.insert("\t")
+			goto(pos)
+			redraw_line
+		end
+
+		def unindent
+			pos = @buffer.index
+			@buffer.goto_bol
+			if @buffer.char == "\t"
+				remove
+				pos -= 1				
+			end
+			goto pos
+		end
+
 	end
 
 end
