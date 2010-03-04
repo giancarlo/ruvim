@@ -150,7 +150,7 @@ module Ruvim
 			map(Curses::Key::NPAGE, :normal, :insert ) { page.lines.times { editor.down } }
 			map(Curses::Key::PPAGE, :normal, :insert ) { page.lines.times { editor.up } }
 
-			Mode::Modes[:insert].bindings.default { |k| insert(k.chr) rescue nil }
+			Mode::Modes[:insert].bindings.default { |k| insert(k.chr) }
 		end
 
 		public
@@ -204,7 +204,8 @@ module Ruvim
 			end
 
 			editor.mode.bindings.process(k)
-
+		rescue
+			message $!
 		ensure
 			update(k)
 		end

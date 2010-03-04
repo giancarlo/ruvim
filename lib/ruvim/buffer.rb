@@ -7,6 +7,7 @@ module Ruvim
 	class Buffer
 		
 		attr_reader :data, :index
+		attr_accessor :readonly
 
 		def initialize(initial_data=nil)
 			@data  = ''
@@ -163,6 +164,7 @@ module Ruvim
 
 		# Insert what into buffer
 		def insert(what)
+			raise "Buffer is READ-ONLY" if readonly
 			@data.insert(@index, what)
 			touch
 			self

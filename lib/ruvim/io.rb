@@ -45,6 +45,7 @@ module Ruvim
 			if File.exists? @file then
 				if File.directory? @file then
 					filedata = read_directory @file
+					buffer.readonly = true
 				else
 					f = File.new(@file)
 					close
