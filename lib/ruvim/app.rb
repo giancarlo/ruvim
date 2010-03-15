@@ -21,6 +21,10 @@ require 'ruvim/movement'
 require 'ruvim/message'
 require 'ruvim/api'
 
+# External Libraries
+require 'coderay' # Syntax Highglighting
+require 'coderay/helpers/file_type'
+
 module Ruvim
 
 	class Application < Window
@@ -109,10 +113,10 @@ module Ruvim
 			#
 			# Visual Mode Default Mappings
 			#
-			vmap(Curses::Key::UP) { editor.up.selection.update }
-			vmap(Curses::Key::DOWN) { editor.down.selection.update }
-			vmap(Curses::Key::LEFT) { editor.back.selection.update }
-			vmap(Curses::Key::RIGHT) { editor.forward.selection.update }
+			vmap('k') { editor.up.selection.update }
+			vmap('j') { editor.down.selection.update }
+			vmap('h') { editor.back.selection.update }
+			vmap('l') { editor.forward.selection.update }
 
 			vmap("d") { cut selection; mode :normal }
 			vmap("y") { copy selection; mode :normal }
@@ -135,14 +139,16 @@ module Ruvim
 			map(Curses::Key::HOME, :normal, :insert) { editor.goto_bol }
 			map(Curses::Key::END, :normal, :insert) { editor.goto_eol }
 
+=begin
 			map(Curses::Key::UP, :normal, :insert) 	{ editor.up }
 			map(Curses::Key::LEFT, :normal, :insert) { editor.back }
 			map(Curses::Key::RIGHT, :normal, :insert){ editor.forward }
 			map(Curses::Key::DOWN, :normal, :insert) { editor.down }
-			map("j", :normal, :visual) { editor.down }
-			map("k", :normal, :visual) { editor.up }
-			map("l", :normal, :visual) { editor.forward }
-			map("h", :normal, :visual) { editor.back }
+=end
+			map("j", :normal) { editor.down }
+			map("k", :normal) { editor.up }
+			map("l", :normal) { editor.forward }
+			map("h", :normal) { editor.back }
 
 			map(">>", :normal) { editor.indent }
 			map("<<", :normal) { editor.unindent }

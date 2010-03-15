@@ -40,8 +40,8 @@ module Ruvim
 			cy = $ruvim.editor.cursor.y
 			sel= $ruvim.editor.selection
 
-			print 1, "Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c})"
-			print 2, "Line #: #{ln}/#{lc}\tPage: (#{ps}-#{pe})\tCursor: #{cx}, #{cy}"
+			print 1, "Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c}) Line #: #{ln}/#{lc}\tPage: (#{ps}-#{pe})\tCursor: #{cx}, #{cy}"
+			print 2, "Syntax: " + CodeRay.scan($ruvim.editor.buffer.line, $ruvim.editor.filetype).to_a.to_s
 			print 3, "Current Line: " + $ruvim.editor.buffer.line
 			print 4, "Selection: " + sel.to_str
 			print 5, "$stderr: " + $stderr.string rescue nil

@@ -15,7 +15,7 @@ module Ruvim
 		attr_reader :buffer, :file, :selection, :modes, :page, :plugins
 		attr_reader :event, :options
 		# Input Timeout in millisecond for mappings
-		attr_accessor :timeout
+		attr_accessor :timeout, :filetype
 		
 		Plugins = Hash.new
 	private
@@ -115,9 +115,13 @@ module Ruvim
 			else
 				l = @buffer.line.index(@page.start + line)
 				@window.setpos(line, 0)
-				@window.addstr(l)
+				print l
 				@window.clrtoeol
 			end
+		end
+
+		def print text
+			@window.addstr(text)
 		end
 
 		#
