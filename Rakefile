@@ -22,6 +22,7 @@ spec = Gem::Specification.new do |s|
 	s.email  = "giancarlo.bellido@gmail.com"
 	s.homepage= "http://cpb.coaxialhost.com"
 	s.rubyforge_project = "ruvim"
+	s.add_dependency('coderay')
 end
 
 desc "Build Ruby Extension"
