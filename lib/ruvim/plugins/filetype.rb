@@ -41,14 +41,6 @@ module Ruvim
 
 	end
 
-	class Editor
-		
-		def filetype
-			FileType.by_filename(File.basename(file)) || FileType.by_extension(File.extname(file))
-		end
-
-	end
-
 	module API
 
 		$ruvim.events.map(:open) do

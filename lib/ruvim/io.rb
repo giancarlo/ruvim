@@ -48,6 +48,7 @@ module Ruvim
 					buffer.readonly = true
 				else
 					f = File.new(@file)
+					@filetype = CodeRay::FileType[@file]
 					close
 					filedata = f.read
 				end
