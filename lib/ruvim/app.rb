@@ -96,6 +96,7 @@ module Ruvim
 			nmap('gf') { editor.open_file_at_cursor }
 			nmap('$') { editor.goto_eol }
 			nmap('w') { editor.goto_next_word }
+			nmap('b') { editor.goto_previous_word }
 
 			nmap('dd') { cut editor.line }
 			nmap('dw') { cut editor.word }

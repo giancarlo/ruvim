@@ -6,6 +6,8 @@ module Ruvim
 
 	class Editor < Ruvim::Window
 
+	REGEX_WORD = /\w/
+
 	private
 
 		# Returns the Space occupied by the char at position s. s is optional but
@@ -170,6 +172,10 @@ module Ruvim
 
 		ensure 
 			goto(buffer.index)
+		end
+
+		def goto_previous_word
+			buffer.back while(buffer.char.match(REGEX_WORD))
 		end
 
 	end
