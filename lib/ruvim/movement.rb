@@ -7,6 +7,7 @@ module Ruvim
 	class Editor < Ruvim::Window
 
 	REGEX_WORD = /\w/
+	REGEX_SPACE = /\s/
 
 	private
 
@@ -166,16 +167,28 @@ module Ruvim
 		end
 
 		def goto_next_word
-			buffer.forward while (buffer.char.match(/\w/))
-			buffer.forward until (buffer.char.match(/\w/))
-		rescue Exception
+			if buffer.char && buffer.char.match(REGEX_WORD)
+				buffer.forward
+				buffer.forward while buffer.char.match REGEX_WORD
+			else
+				buffer.forward
+			end
 
-		ensure 
+			buffer.forward while buffer.char && buffer.char.match(REGEX_SPACE)
 			goto(buffer.index)
 		end
 
 		def goto_previous_word
-			buffer.back while(buffer.char.match(REGEX_WORD))
+			if buffer.char && buffer.char.match(REGEX_WORD)
+				buffer.back
+				buffer.back while (buffer.char.match(REGEX_WORD))
+			else
+				buffer.back
+			end
+			buffer.back while buffer.char.match REGEX_SPACE
+			buffer.back while (buffer.char.match(REGEX_WORD))
+
+			goto buffer.index
 		end
 
 	end
