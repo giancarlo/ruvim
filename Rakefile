@@ -31,7 +31,13 @@ task :ruvimc do
 		ruby 'extconf.rb'
 		sh "#{MAKE}"
 	end
-	cp 'ext/ruvim/ruvimc.so', 'lib/ruvim'
+end
+
+desc "Install Ruby Extension"
+task :ruvimc_install => [ :ruvimc ] do
+	Dir.chdir('ext/ruvim') do
+		sh "#{MAKE} install"
+	end
 end
 
 Rake::TestTask.new do |t|
@@ -54,7 +60,7 @@ desc "Default Action"
 task :default => [ :test ]
 
 desc "Install #{spec.name}-#{spec.version}"
-task :install => [:package] do
+task :install => [:ruvimc_install, :package] do
 	sh "#{RUBY} -S gem install --local pkg/#{spec.name}-#{spec.version} --no-update-sources"
 	sh "#{RUBY} bin/install.rb"
 end

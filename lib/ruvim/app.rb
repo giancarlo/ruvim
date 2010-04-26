@@ -110,6 +110,7 @@ module Ruvim
 				mode :visual
 				selection.set(buffer.index, buffer.index)
 			end
+			nmap('cw') { cut editor.word; mode :insert }
 
 			#
 			# Visual Mode Default Mappings

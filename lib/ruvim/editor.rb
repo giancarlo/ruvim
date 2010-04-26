@@ -87,7 +87,7 @@ module Ruvim
 		# Redraws screen
 		def redraw
 			Curses.TABSIZE= tabsize
-			redraw_line(0...@height)
+			redraw_line(0...height)
 		end
 
 		# Set cursor and buffer position to 0
@@ -99,12 +99,10 @@ module Ruvim
 
 		# Sets Current Attribute executes block then returns to normal
 		def attr(attrib)
-			case attrib
-			when :selection
-				Curses.attron(Curses.color_pair Curses::COLORS[:selection])
-				yield
-				Curses.attroff(Curses.color_pair Curses::COLORS[:selection])
-			end
+			pair = Curses.color_pair Curses::COLORS[attrib]
+			@window.attron(pair)
+			yield
+			@window.attroff(pair)
 		end
 
 		# Takes ranges.

@@ -6,6 +6,9 @@ module Ruvim
 
 	class Debug < Ruvim::Window
 
+		$stderr = File.new("ruvim.log", "w")
+		$stderr.puts "Starting Debug\n"
+
 		def initialize
 			@lastkey = ''
 			super
@@ -13,8 +16,11 @@ module Ruvim
 			@height = 14
 			self.alignment= :bottom
 
-			# Log $stderr
-			$stderr = File.new("ruvim.log", "w")
+			$debug = self
+		end
+
+		def log(what)
+			$stderr.puts what
 		end
 
 		def redraw
