@@ -140,7 +140,7 @@ module Ruvim
 			
 			page.start= ln unless page.range.include? ln
 			
-			@cursor.move(line_space(index), ln - page.start)
+			@cursor.move(line_space(index), ln - page.start).restore
 
 			self
 		end

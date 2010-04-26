@@ -101,10 +101,10 @@ module Ruvim
 		def attr(attrib)
 			case attrib
 			when :selection
-				Curses.attron(Curses::A_REVERSE)
+				Curses.attron(Curses.color_pair Curses::COLORS[:selection])
 				yield
+				Curses.attroff(Curses.color_pair Curses::COLORS[:selection])
 			end
-			Curses.standend
 		end
 
 		# Takes ranges.
@@ -257,6 +257,10 @@ module Ruvim
 				pos -= 1				
 			end
 			goto pos
+		end
+
+		def position
+			return @buffer.index
 		end
 
 	end

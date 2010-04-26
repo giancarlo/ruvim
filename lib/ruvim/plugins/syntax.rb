@@ -63,17 +63,15 @@ module Ruvim
 			:tag_fat => 134,
 			:tag_special => 6,
 			:type => 134,
-			:variable => 34
-					
+			:variable => 34,
+			:selection => 7
 		}
 
 		def apply_color type
-
 			color = 0 unless color = SYNTAX_COLORS[type]
 			@window.attron Curses.color_pair color
 			yield
 			@window.attroff Curses.color_pair color
-
 		end
 
 		def print(text)

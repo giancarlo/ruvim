@@ -6,34 +6,31 @@ module Ruvim
 
 	class Segment
 		
+
+		attr_reader :start, :end
+
 		def initialize(editor, start, last)
 			@editor = editor
-			@highlight = false
+			@highlight = true
 			@start  = start
 			@end   = last
-		end
-
-		def start
-			@start
-		end
-
-		def end
-			@end
 		end
 
 		# Updates Selection end to Current Editor Index
 		def update
 			@end   = @editor.buffer.index
-
 			highlight if @highlight
 		end
 
-		def highlight(value=true)
-			@highlight = value
+		def highlight
+			position = @editor.position
 			
-			@editor.attr(:selection) do
-				@editor.print(range)
+			@editor.goto(@start).attr(:selection) do
+				@editor.print to_str
+				Curses.refresh
 			end
+
+			@editor.goto position
 		end
 
 		def space

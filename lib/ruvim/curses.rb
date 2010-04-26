@@ -18,11 +18,16 @@ Curses.start_color
 Curses.use_default_colors if Curses.methods.include? :use_default_colors
 
 Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
+Curses.init_pair(7, Curses::COLOR_BLACK, Curses::COLOR_WHITE)
 Curses.refresh
 
 # Make Sure getch always returns a goddamn INTEGER!
 
 module Curses
+
+	COLORS= {
+		:selection => 7
+	}
 
 	unless Curses.respond_to? 'TABSIZE'
 	
