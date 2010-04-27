@@ -21,4 +21,17 @@ module Ruvim
 			:visual  => Mode.new("Visual")
 		}
 	end
+
+	class Editor < Ruvim::Window
+
+		def mode=(newmode)
+			raise ArgumentError.new("Invalid Mode: #{newmode}") unless @modes.include? newmode
+			@mode = newmode
+		end
+
+		def mode
+			@modes[@mode]
+		end
+
+	end
 end

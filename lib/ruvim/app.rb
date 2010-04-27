@@ -102,8 +102,10 @@ module Ruvim
 			nmap('w') { editor.goto_next_word }
 			nmap('b') { editor.goto_previous_word }
 
+			# Delete
 			nmap('dd') { cut editor.line }
 			nmap('dw') { cut editor.word }
+
 			nmap('yy') { copy editor.line }
 			nmap('p') { paste }
 			nmap('v') do

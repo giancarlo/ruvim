@@ -66,15 +66,6 @@ module Ruvim
 			initialize_options
 		end
 
-		def mode=(newmode)
-			raise ArgumentError.new("Invalid Mode: #{newmode}") unless @modes.include? newmode
-			@mode = newmode
-		end
-
-		def mode
-			@modes[@mode]
-		end
-
 		def tabsize
 			@tabsize
 		end
@@ -167,8 +158,8 @@ module Ruvim
 		# Returns Index for End of Word.
 		def find_eow
 			i = buffer.index
-			i = i + 1 while ((buffer[i] != nil) && buffer[i].match(/\w/))
-			return i
+			i += 1 while ((buffer[i] != nil) && buffer[i].match(/\w/))
+			return i-1
 		end
 
 		# Returns Segment of current word.
