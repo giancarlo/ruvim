@@ -84,4 +84,6 @@ module Ruvim
 
 	end
 
+	$ruvim.editor.redraw
+
 end
