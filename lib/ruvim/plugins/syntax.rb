@@ -7,7 +7,8 @@ module Ruvim
 
 	class Editor
 
-		SYNTAX_COLORS = {
+		# We extend curses colors table to use attr function of Editor class.
+		Curses::COLORS = {
 		
 			:attribute_name => 1,
 			:attribute_name_fat => 1,
@@ -19,7 +20,9 @@ module Ruvim
 			:class_variable => 1,
 			:color => 1,
 			:comment => 6,
+			:content => 4,
 			:constant => 2,
+			:delimiter => 1,
 			:definition => 1,
 			:directive => 3,
 			:doc => 1,
@@ -32,6 +35,7 @@ module Ruvim
 			:global_variable => 1,
 			:hex => 1,
 			:include => 1,
+			:inline_delimiter =>1,
 			:integer => 1,
 			:interpreted => 1,
 			:ident => 2,
@@ -39,6 +43,8 @@ module Ruvim
 			:local_variable => 1,
 			:oct => 1,
 			:operator_name => 1,
+			:operator => 0,
+			:plain => 0,
 			:pre_constant => 5,
 			:pre_type => 1,
 			:predefined => 5, 
@@ -51,7 +57,9 @@ module Ruvim
 			#},
 			:reserved => 3,
 			:shell => 1, # {:self => 1, :content => 1},
+			:space => 0,
 			:string => 1,
+			:method => 1,
 			:symbol => 4,
 			:tag => 1,
 			:tag_fat => 1,
@@ -61,21 +69,13 @@ module Ruvim
 			:selection => 7
 		}
 
-		def apply_color type
-			color = 0 unless color = SYNTAX_COLORS[type]
-
-			@window.attron Curses.color_pair color
-			yield
-			@window.attroff Curses.color_pair color
-		end
-
 		def print(text)
 
 			scan = CodeRay.scan(text, filetype)
 			scan.each do |code|
 				case code[0] 	
 				when String
-					apply_color code[1] { @window.addstr code[0] }
+					attr code[1] { @window.addstr code[0] }
 				when :open
 				when :close
 				end

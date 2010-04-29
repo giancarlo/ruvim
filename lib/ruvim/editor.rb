@@ -15,7 +15,7 @@ module Ruvim
 		attr_reader :buffer, :file, :selection, :modes, :page, :plugins
 		attr_reader :event, :options
 		# Input Timeout in millisecond for mappings
-		attr_accessor :timeout, :filetype
+		attr_accessor :timeout
 		
 		Plugins = Hash.new
 	private
@@ -90,7 +90,10 @@ module Ruvim
 
 		# Sets Current Attribute executes block then returns to normal
 		def attr(attrib)
-			pair = Curses.color_pair Curses::COLORS[attrib]
+			cp = Curses::COLORS[attrib]
+			raise "Invalid Attribute: #{attrib}" if cp.nil?
+
+			pair = Curses.color_pair cp
 			@window.attron(pair)
 			yield
 			@window.attroff(pair)

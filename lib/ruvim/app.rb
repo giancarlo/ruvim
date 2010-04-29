@@ -21,9 +21,6 @@ require 'ruvim/movement'
 require 'ruvim/message'
 require 'ruvim/api'
 
-# External Libraries
-require 'coderay' # Syntax Highglighting
-require 'coderay/helpers/file_type'
 
 module Ruvim
 

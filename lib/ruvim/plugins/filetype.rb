@@ -2,7 +2,19 @@
 # Enables filetype for Editor. It detects the file type based on its extension, name or content.
 #
 
+# External Libraries
+require 'coderay' # Syntax Highglighting
+require 'coderay/helpers/file_type'
+
 module Ruvim
+
+	class Editor
+
+		def filetype
+			CodeRay::FileType[@file]
+		end
+
+	end
 
 	module FileType
 
@@ -43,6 +55,7 @@ module Ruvim
 
 	module API
 
+		# Load Plugins associated with current filetype
 		$ruvim.events.map(:open) do
 			ft = $ruvim.editor.filetype
 

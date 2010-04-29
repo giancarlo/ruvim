@@ -37,7 +37,7 @@ module Ruvim
 			end
 			result
 		end
-		
+
 		# Opens a file raises if file was not found
 		def open(file='')
 			@file = File.expand_path(file)
@@ -48,7 +48,6 @@ module Ruvim
 					buffer.readonly = true
 				else
 					f = File.new(@file)
-					@filetype = CodeRay::FileType[@file]
 					close
 					filedata = f.read
 				end
@@ -66,7 +65,10 @@ module Ruvim
 
 		def write(file=@file)
 			@file = file
+			raise "No file name." if file.nil?
+
 			f = File.new(file, 'w')
+			raise "Could not open file." if f.nil?
 			buffer.write(f)
 		ensure
 			f.close if f
