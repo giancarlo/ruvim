@@ -3,6 +3,8 @@
 # Uses Coderay
 #
 
+require 'coderay' # Syntax Highglighting
+
 module Ruvim
 
 	class Editor
@@ -44,7 +46,7 @@ module Ruvim
 			:oct => 1,
 			:operator_name => 1,
 			:operator => 0,
-			:plain => 0,
+			:plain => 1,
 			:pre_constant => 5,
 			:pre_type => 1,
 			:predefined => 5, 
@@ -68,6 +70,10 @@ module Ruvim
 			:variable => 1,
 			:selection => 7
 		}
+
+		$ruvim.events.map(:open) do
+			scan = CodeRay.scan(buffer, $ruvim.editor.filetype)
+		end
 
 		def print(text)
 

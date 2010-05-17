@@ -3,7 +3,6 @@
 #
 
 # External Libraries
-require 'coderay' # Syntax Highglighting
 require 'coderay/helpers/file_type'
 
 module Ruvim
@@ -11,7 +10,7 @@ module Ruvim
 	class Editor
 
 		def filetype
-			CodeRay::FileType[@file]
+			@file ? CodeRay::FileType[@file] : :ruby
 		end
 
 	end

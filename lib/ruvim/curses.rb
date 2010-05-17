@@ -18,13 +18,9 @@ Curses.ESCDELAY= 50 if Curses.respond_to? :ESCDELAY=
 Curses.start_color
 Curses.use_default_colors # if Curses.methods.include? :use_default_colors
 
-Curses.init_pair(1, Curses::A_BOLD | Curses::COLOR_RED, -1)
-Curses.init_pair(2, Curses::A_BOLD | Curses::COLOR_BLUE, -1)
-Curses.init_pair(3, Curses::COLOR_YELLOW, -1)
-Curses.init_pair(4, Curses::COLOR_MAGENTA, -1)
-Curses.init_pair(5, Curses::COLOR_RED, -1)
-Curses.init_pair(6, Curses::COLOR_GREEN, -1)
-Curses.init_pair(7, Curses::COLOR_BLACK, Curses::COLOR_WHITE)
+Curses.colors.times do |clr|
+	Curses.init_pair(clr, clr, -1)
+end
 Curses.refresh
 
 # Make Sure getch always returns a goddamn INTEGER!
