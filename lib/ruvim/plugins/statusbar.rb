@@ -96,8 +96,10 @@ module Ruvim
 
 	class Application
 		
-		def message(msg)
-			statusbar.panels[:default].display(msg)
+		def message(msg, color=:plain)
+			message_setup color, statusbar.window do
+				statusbar.panels[:default].display(msg)
+			end
 		end
 
 		def reset_client

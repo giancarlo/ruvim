@@ -30,7 +30,7 @@ module Ruvim
 			:doc => 1,
 			:doc_string => 4,
 			:entity => 1,
-			:error => 5,
+			:error => 9,
 			:exception => 1,
 			:float => 1,
 			:function => 1,
@@ -46,7 +46,7 @@ module Ruvim
 			:oct => 1,
 			:operator_name => 1,
 			:operator => 0,
-			:plain => 1,
+			:plain => 7,
 			:pre_constant => 5,
 			:pre_type => 1,
 			:predefined => 5, 
@@ -72,7 +72,7 @@ module Ruvim
 		}
 
 		$ruvim.events.map(:open) do
-			scan = CodeRay.scan(buffer, $ruvim.editor.filetype)
+			scan = CodeRay.scan($ruvim.editor.buffer, $ruvim.editor.filetype)
 		end
 
 		def print(text)

@@ -212,7 +212,7 @@ module Ruvim
 
 			editor.mode.bindings.process(k)
 		rescue
-			message $!
+			error $!
 		ensure
 			update(k)
 		end
@@ -238,12 +238,26 @@ module Ruvim
 			Curses.close_screen
 		end
 
+		def message_setup color, win=@window
+			cp = Curses.color_pair(Curses::COLORS[color])
+			win.attron cp
+			yield
+			win.attroff cp
+		end
+
 		# This will print a message at the bottom of the screen
 		# NOTE Statusbar overrides this function
-		def message(what)
-			@window.setpos(Curses.lines-1, 0)
-			@window.addstr(what.to_s) unless what.nil?
-			@window.clrtoeol
+		def message(what, color=:plain)
+			message_setup color do
+				@window.setpos(Curses.lines-1, 0)
+				@window.addstr(what.to_s) unless what.nil?
+				@window.clrtoeol
+			end
+		end
+
+		# displays error and logs it if in debug mode
+		def error(what)
+			message 'ERROR: ' + what.to_s, :error
 		end
 
 		# Gets input

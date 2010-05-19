@@ -6,9 +6,6 @@ module Ruvim
 
 	class Debug < Ruvim::Window
 
-		$stderr = File.new("ruvim.log", "w")
-		$stderr.puts "Starting Debug\n"
-
 		def initialize
 			@lastkey = ''
 			super
@@ -55,6 +52,23 @@ module Ruvim
 			print 4, "Selection: (#{sel.start}-#{sel.end})" + sel.to_str
 
 			@lastkey = k
+		end
+
+	end
+
+	class Application
+
+		def error(exception)
+			log = File.new("ruvim.log", "a")
+
+			msg = 'ERROR: ' + exception.to_s
+			message msg, :error
+
+			log.puts exception.to_s 
+			exception.backtrace.each do |c|
+				log.puts c
+			end
+			log.close
 		end
 
 	end

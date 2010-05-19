@@ -27,27 +27,31 @@ module Ruvim
 
 		# Exits Application and Closes Screen
 		def exit
+			editors.each do |ed|
+				quit ed
+			end
 			@continue = false
 		end
 		alias_method :qa, :exit
 
 		# Quits current editor even if it was not saved. 
-		def quit_force
+		def quit_force(e=editor)
 			editor.close
 			editors.delete_at @current_editor
 			return self.exit if editors.size == 0
 			editor_goto((@current_editor >= editors.size) ? @current_editor = editors.size-1 : @current_editor)
+			nil
 		end
 		alias_method :q!, :quit_force
 
 		# Quits current editor and removes them from editors
-		def quit
-			if editor.changed? then
+		def quit(e=editor)
+			if e.changed? then
 				$ruvim.message "No write since last change (add ! to override)"
 				return
 			end
 
-			quit_force
+			quit_force e
 		end
 		alias_method :q, :quit
 

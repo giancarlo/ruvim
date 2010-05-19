@@ -124,7 +124,7 @@ module Ruvim
 			@editor.write(file)
 			Ruvim::Message::FILE_WRITTEN % [file, @editor.buffer.size]
 		rescue
-			Ruvim::Message::ERROR_FILE_WRITE % $!
+			raise Ruvim::Message::ERROR_FILE_WRITE % $!
 		end
 
 		alias_method :w, :write

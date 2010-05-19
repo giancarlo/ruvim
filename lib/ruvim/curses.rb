@@ -28,6 +28,8 @@ Curses.refresh
 module Curses
 
 	COLORS= {
+		:plain =>  7,
+		:error => 9,
 		:selection => 7
 	}
 
