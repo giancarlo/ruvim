@@ -31,14 +31,23 @@ module Ruvim
 		end
 		alias_method :qa, :exit
 
-		# Quits current editor and removes them from editors
-		def quit
+		# Quits current editor even if it was not saved. 
+		def quit_force
 			editor.close
 			editors.delete_at @current_editor
-
 			return self.exit if editors.size == 0
-
 			editor_goto((@current_editor >= editors.size) ? @current_editor = editors.size-1 : @current_editor)
+		end
+		alias_method :q!, :quit_force
+
+		# Quits current editor and removes them from editors
+		def quit
+			if editor.changed? then
+				$ruvim.message "No write since last change (add ! to override)"
+				return
+			end
+
+			quit_force
 		end
 		alias_method :q, :quit
 

@@ -12,10 +12,6 @@ module Ruvim
 
 		# Closes Editor and asks to save file if changed.
 		def close
-			if changed? then
-				write if $ruvim.confirm("File was modified. Save")
-			end
-
 			self
 		end
 
