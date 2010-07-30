@@ -5,29 +5,28 @@
 module Ruvim
 
 	class Segment
-		
 
 		attr_reader :start, :end
 
 		def initialize(editor, start, last)
 			@editor = editor
 			@highlight = true
-			@start  = start
-			@end   = last
+			set(start, last)
 		end
 
 		# Updates Selection end to Current Editor Index
 		def update
-			@end   = @editor.buffer.index
+			self.set(@start, @editor.buffer.index)
 			highlight if @highlight
 		end
 
 		def highlight
 			position = @editor.position
 			
-			@editor.goto(@start).attr(:selection) do
-				@editor.print to_str
-				Curses.refresh
+			@editor.redraw
+			@editor.goto(start).attr(:selection) do
+				#@editor.print to_str
+				@editor.window.addstr to_str
 			end
 
 			@editor.goto position
@@ -42,10 +41,22 @@ module Ruvim
 			s
 		end
 
+		# NOTE Review these two methods
+
+		def start
+			@start < @end ? @start : @end
+		end
+
+		def end
+			@start > @end ? @start : @end
+		end
+
 		# Sets position of segment and returns self
 		def set(segment_start, segment_end=@end)
+
 			@start = segment_start
 			@end = segment_end
+
 			self
 		end
 
@@ -70,7 +81,8 @@ module Ruvim
 
 		# Returns Selection as A Range of the buffer indexes.
 		def range
-			(@end > @start) ? (@start .. @end) : (@end .. @start)
+			#(@end > @start) ? (@start .. @end) : (@end .. @start)
+			(start .. self.end)
 		end
 
 		# Removes segment from buffer and editor and sets cursor 

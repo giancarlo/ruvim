@@ -68,7 +68,7 @@ module Ruvim
 			:tag_special => 6,
 			:type => 1,
 			:variable => 1,
-			:selection => 7
+			:selection => 254
 		}
 
 		$ruvim.events.map(:open) do

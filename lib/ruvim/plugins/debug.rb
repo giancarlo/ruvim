@@ -16,10 +16,6 @@ module Ruvim
 			$debug = self
 		end
 
-		def log(what)
-			$stderr.puts what
-		end
-
 		def redraw
 			update(@lastkey)
 			super
@@ -59,16 +55,20 @@ module Ruvim
 	class Application
 
 		def error(exception)
-			log = File.new("ruvim.log", "a")
 
 			msg = 'ERROR: ' + exception.to_s
 			message msg, :error
+			self.log exception
 
-			log.puts exception.to_s 
 			exception.backtrace.each do |c|
-				log.puts c
+				self.log c
 			end
-			log.close
+		end
+
+		def log(message)
+			logf = File.new("ruvim.log", "a")
+			logf.puts message
+			logf.close
 		end
 
 	end

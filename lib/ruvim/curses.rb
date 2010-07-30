@@ -21,6 +21,8 @@ Curses.use_default_colors # if Curses.methods.include? :use_default_colors
 Curses.colors.times do |clr|
 	Curses.init_pair(clr, clr, -1)
 end
+
+# Special selection color
 Curses.refresh
 
 # Make Sure getch always returns a goddamn INTEGER!
@@ -30,8 +32,10 @@ module Curses
 	COLORS= {
 		:plain =>  7,
 		:error => 9,
-		:selection => 7
+		:selection => 254
 	}
+
+	Curses.init_pair(COLORS[:selection], 0, 7)
 
 	unless Curses.respond_to? 'TABSIZE'
 	
