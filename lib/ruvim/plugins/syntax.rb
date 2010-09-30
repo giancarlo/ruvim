@@ -41,6 +41,8 @@ module Ruvim
 			:integer => 1,
 			:interpreted => 1,
 			:ident => 2,
+			:key => 2,
+			:keyword => 3,
 			:label => 1,
 			:local_variable => 1,
 			:oct => 1,
