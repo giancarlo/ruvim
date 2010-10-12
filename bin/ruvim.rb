@@ -11,7 +11,6 @@ begin
 	require 'ruvim/plugins/command'
 	require 'ruvim/plugins/lines'
 	require 'ruvim/plugins/filetype'
-	require 'ruvim/plugins/syntax'
 	
 	$ruvim.start
 rescue Exception

@@ -260,6 +260,9 @@ module Ruvim
 			message 'ERROR: ' + what.to_s, :error
 		end
 
+		def log(what)
+		end
+
 		# Gets input
 		# You may override this function
 		def input(prompt='?')

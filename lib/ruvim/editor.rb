@@ -7,6 +7,7 @@ require 'ruvim/bindings'
 require 'ruvim/buffer'
 require 'ruvim/page'
 require 'ruvim/segment'
+require 'ruvim/history'
 
 module Ruvim
 	
@@ -57,6 +58,7 @@ module Ruvim
 			@event = Bindings.new
 			@event.map(:origin) {}
 			@options = {}
+			@history = History.new(self)
 			
 			super
 			self.alignment=(:client)
@@ -99,16 +101,25 @@ module Ruvim
 			@window.attroff(pair)
 		end
 
+		def get_line_text(line)
+			@buffer.line.index(@page.start + line)
+		end
+
+		def redraw_one_line(line)
+			l = get_line_text(line)
+			$ruvim.log(line)
+			@window.setpos(line, 0)
+			print l
+			@window.clrtoeol
+		end
+
 		# Takes ranges.
 		# @param line Number of line relative to screen.
 		def redraw_line(line=@cursor.y)
 			if line.respond_to? :each then
-				line.each { |r| redraw_line(r) }
+				line.each { |r| redraw_one_line(r) }
 			else
-				l = @buffer.line.index(@page.start + line)
-				@window.setpos(line, 0)
-				print l
-				@window.clrtoeol
+				redraw_one_line(line)
 			end
 		end
 

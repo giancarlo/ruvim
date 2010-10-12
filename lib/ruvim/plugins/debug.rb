@@ -43,7 +43,7 @@ module Ruvim
 			sel= $ruvim.editor.selection
 
 			print 1, "Key: #{k}(#{kc}); LastKey: #{@lastkey}(#{lkc}) #{i}/#{le}/#{fs} (#{c}) Line #: #{ln}/#{lc}\tPage: (#{ps}-#{pe})\tCursor: #{cx}, #{cy}"
-			print 2, "Syntax: " + CodeRay.scan($ruvim.editor.buffer.line, $ruvim.editor.filetype).to_a.to_s
+			print 2, "Syntax: " + $ruvim.editor.syntax[$ruvim.editor.line_number].to_a.to_s if $ruvim.editor.respond_to? :syntax
 			print 3, "Current Line: " + $ruvim.editor.buffer.line
 			print 4, "Selection: (#{sel.start}-#{sel.end})" + sel.to_str
 

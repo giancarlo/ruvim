@@ -6,7 +6,7 @@
 require 'rbconfig'
 require 'fileutils'
 
-include Config
+include RbConfig
 
 def install_bin
 

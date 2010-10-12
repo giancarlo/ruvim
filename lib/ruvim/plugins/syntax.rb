@@ -9,6 +9,8 @@ module Ruvim
 
 	class Editor
 
+		attr_reader :syntax
+
 		# We extend curses colors table to use attr function of Editor class.
 		Curses::COLORS = {
 		
@@ -74,20 +76,53 @@ module Ruvim
 		}
 
 		$ruvim.events.map(:open) do
-			scan = CodeRay.scan($ruvim.editor.buffer, $ruvim.editor.filetype)
+			
 		end
 
-		def print(text)
+		def get_line_text(line)
+			@syntax[@page.start + line]
+		end
 
-			scan = CodeRay.scan(text, filetype)
+		alias :redraw_line_old :redraw_line
+
+		def redraw_line(line=@cursor.y)
+			rebuild_syntax
+			redraw_line_old(line)
+		end
+
+		def print(scan)
 			scan.each do |code|
-				case code[0] 	
+				case code[0]	
+				when "\n"
+					
 				when String
 					attr code[1] { @window.addstr code[0] }
 				when :open
 				when :close
 				end
 			end
+		end
+
+	private
+		
+		# We will rebuild the syntax info from the beginning of the file to the end of the current line
+		def rebuild_syntax
+			text = buffer.data
+			synt = []
+			text.each_line do |line|
+				synt.push CodeRay.scan(line, filetype)
+			end
+
+			@syntax = synt
+			#$ruvim.input text
+=begin
+			if @syntax then
+				@syntax.slice!(0, line_number)
+				@syntax = synt.concat(@syntax)
+			else
+				@syntax = synt
+			end
+=end
 		end
 
 	end
