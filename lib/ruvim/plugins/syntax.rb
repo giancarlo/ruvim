@@ -113,7 +113,7 @@ module Ruvim
 				 
 			CodeRay.scan_stream(text, filetype) do |k, a|
 				
-				if a==:space then
+				if a==:space || a==:plain then
 					k.each_char do |c|
 						if c=="\n" then
 							line.push [current, :space] if current
