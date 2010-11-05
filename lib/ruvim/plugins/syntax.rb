@@ -91,6 +91,8 @@ module Ruvim
 		end
 
 		def print(scan)
+			return if scan.nil?
+
 			scan.each do |code|
 				case code[0]	
 				when String
@@ -128,6 +130,7 @@ module Ruvim
 				else
 					line.push [k, a]
 				end
+
 				if current then
 					line.push [current, :space]
 					current =''
