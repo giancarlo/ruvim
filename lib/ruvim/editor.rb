@@ -107,7 +107,6 @@ module Ruvim
 
 		def redraw_one_line(line)
 			l = get_line_text(line)
-			$ruvim.log(line)
 			@window.setpos(line, 0)
 			print l
 			@window.clrtoeol

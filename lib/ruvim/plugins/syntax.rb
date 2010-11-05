@@ -93,8 +93,6 @@ module Ruvim
 		def print(scan)
 			scan.each do |code|
 				case code[0]	
-				when "\n"
-					
 				when String
 					attr code[1] { @window.addstr code[0] }
 				when :open
@@ -106,23 +104,35 @@ module Ruvim
 	private
 		
 		# We will rebuild the syntax info from the beginning of the file to the end of the current line
+		# TODO This will be extremely slow find a better way
 		def rebuild_syntax
+			@syntax  = []
+			line    = []
+			current = ''
 			text = buffer.data
-			synt = []
-			text.each_line do |line|
-				synt.push CodeRay.scan(line, filetype)
-			end
+				 
+			CodeRay.scan_stream(text, filetype) do |k, a|
+				
+				if a==:space then
+					k.each_char do |c|
+						if c=="\n" then
+							line.push [current, :space] if current
+							syntax.push line
 
-			@syntax = synt
-			#$ruvim.input text
-=begin
-			if @syntax then
-				@syntax.slice!(0, line_number)
-				@syntax = synt.concat(@syntax)
-			else
-				@syntax = synt
+							line = []
+							current = ''
+						else
+							current += c
+						end
+					end
+				else
+					line.push [k, a]
+				end
+				if current then
+					line.push [current, :space]
+					current =''
+				end
 			end
-=end
 		end
 
 	end
