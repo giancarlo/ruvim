@@ -4,8 +4,13 @@
 #
 
 require 'coderay' # Syntax Highglighting
+	
+class String
+	attr_accessor :symbol_type
+end
 
 module Ruvim
+
 
 	class Editor
 
@@ -83,11 +88,11 @@ module Ruvim
 			return if scan.nil?
 
 			scan.each do |code|
-				case code[0]	
-				when String
-					attr code[1] { @window.addstr code[0] }
+				case code.symbol_type	
 				when :open
 				when :close
+				else
+					attr(code.symbol_type) { @window.addstr code }
 				end
 			end
 		end
@@ -116,25 +121,30 @@ module Ruvim
 			text = buffer.data
 				 
 			CodeRay.scan_stream(text, filetype) do |k, a|
-				
 				if a==:space || a==:plain || a==:content then
 					k.each_char do |c|
 						if c=="\n" then
-							line.push [current, a] unless current.empty?
+							unless current.empty? then
+								current.symbol_type = a
+								line.push current 
+							end
 							@syntax.push line
 
 							line = []
 							current = ''
+							current.symbol_type = a
 						else
 							current += c
 						end
 					end
 				else
-					line.push [k, a]
+					k.symbol_type = a
+					line.push k
 				end
 
 				if !current.empty? then
-					line.push [current, a]
+					current.symbol_type = a
+					line.push current
 					current =''
 				end
 			end
