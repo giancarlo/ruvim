@@ -134,9 +134,11 @@ module Ruvim
 							current = ''
 							current.symbol_type = a
 						else
-							current += c
+							current << c
 						end
 					end
+				elsif k==:open || k==:close
+					
 				else
 					k.symbol_type = a
 					line.push k
