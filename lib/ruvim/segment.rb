@@ -25,7 +25,6 @@ module Ruvim
 			
 			@editor.redraw
 			@editor.goto(start).attr(:selection) do
-				#@editor.print to_str
 				@editor.window.addstr to_str
 			end
 

@@ -44,17 +44,24 @@ module Ruvim
 			@options[:isfname] = /[A-Za-z0-9]\.?/ 
 		end
 
+		# Segments are created at construction to speed up and conserve memory
+		def initialize_segments
+			@line 	= Segment.new(self, 0, 0)
+			@word   = Segment.new(self, 0, 0)
+			@selection = Segment.new(self, 0, 0)
+		end
+
 	public
 
 		def initialize(parent)
 			initialize_modes
 			@buffer = Buffer.new
 			@page 	= Page.new(self)
-			@line 	= Segment.new(self, 0, 0)
-			@word   = Segment.new(self, 0, 0)
+			# Timeout is used by Application.getch
 			@timeout  = 1000
-			@tabsize = Curses.TABSIZE
-			@selection = Segment.new(self, 0, 0)
+
+			initialize_segments
+
 			@event = Bindings.new
 			@event.map(:origin) {}
 			@options = {}
@@ -69,17 +76,16 @@ module Ruvim
 		end
 
 		def tabsize
-			@tabsize
+			Curses.TABSIZE
 		end
 
 		def tabsize=(value)
-			@tabsize = value
+			Curses.TABSIZE = value
 			redraw
 		end
 
 		# Redraws screen
 		def redraw
-			Curses.TABSIZE= tabsize
 			redraw_line(0...height)
 		end
 
@@ -141,7 +147,6 @@ module Ruvim
 			if k == Ruvim::API::CR then
 				cr
 			else
-				@window.addch k
 				@buffer.insert k
 				forward
 				redraw_line

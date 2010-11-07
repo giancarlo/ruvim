@@ -77,8 +77,6 @@ module Ruvim
 				$ruvim.instance_eval(ruvimrc.read)
 				ruvimrc.close
 			end
-		rescue
-			raise "Error Loading Resource File: #{path}\n#{$!}"
 		end
 
 		def initialize_mappings

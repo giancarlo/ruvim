@@ -57,7 +57,7 @@ Rake::RDocTask.new do |r|
 end
 
 desc "Default Action"
-task :default => [ :test ]
+task :default => [ :ruvimc ]
 
 desc "Install #{spec.name}-#{spec.version}"
 task :install => [:ruvimc_install, :package] do

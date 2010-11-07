@@ -75,19 +75,8 @@ module Ruvim
 			:selection => 254
 		}
 
-		$ruvim.events.map(:open) do
-			
-		end
-
 		def get_line_text(line)
 			@syntax[@page.start + line]
-		end
-
-		alias :redraw_line_old :redraw_line
-
-		def redraw_line(line=@cursor.y)
-			rebuild_syntax
-			redraw_line_old(line)
 		end
 
 		def print(scan)
@@ -103,6 +92,19 @@ module Ruvim
 			end
 		end
 
+		alias :old_redraw_line :redraw_line
+		alias :old_redraw :redraw
+
+		def redraw_line(line=@cursor.y)
+			rebuild_syntax if buffer.changed?
+			old_redraw_line(line)
+		end
+
+		def redraw
+			rebuild_syntax
+			old_redraw
+		end
+
 	private
 		
 		# We will rebuild the syntax info from the beginning of the file to the end of the current line
@@ -115,11 +117,11 @@ module Ruvim
 				 
 			CodeRay.scan_stream(text, filetype) do |k, a|
 				
-				if a==:space || a==:plain then
+				if a==:space || a==:plain || a==:content then
 					k.each_char do |c|
 						if c=="\n" then
-							line.push [current, :space] if current
-							syntax.push line
+							line.push [current, a] unless current.empty?
+							@syntax.push line
 
 							line = []
 							current = ''
@@ -131,11 +133,14 @@ module Ruvim
 					line.push [k, a]
 				end
 
-				if current then
-					line.push [current, :space]
+				if !current.empty? then
+					line.push [current, a]
 					current =''
 				end
 			end
+
+			@syntax.push line unless line.empty?
+
 		end
 
 	end

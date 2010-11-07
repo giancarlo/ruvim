@@ -67,7 +67,7 @@ module Ruvim
 
 		# Returns EOF index
 		def eof
-			@data.size-1
+			@data.size
 		end
 
 		# Returns string from index to end of line.
