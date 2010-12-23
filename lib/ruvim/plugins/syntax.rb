@@ -28,10 +28,10 @@ module Ruvim
 			:class => 2,
 			:class_variable => 1,
 			:color => 1,
-			:comment => 6,
-			:content => 4,
+			:comment => 8,
+			:content => 11,
 			:constant => 2,
-			:delimiter => 1,
+			:delimiter => 11,
 			:definition => 1,
 			:directive => 3,
 			:doc => 1,
@@ -47,9 +47,9 @@ module Ruvim
 			:inline_delimiter =>1,
 			:integer => 1,
 			:interpreted => 1,
-			:ident => 2,
+			:ident => 7,
 			:key => 2,
-			:keyword => 3,
+			:keyword => 15,
 			:label => 1,
 			:local_variable => 1,
 			:oct => 1,
@@ -69,7 +69,7 @@ module Ruvim
 			:reserved => 3,
 			:shell => 1, # {:self => 1, :content => 1},
 			:space => 0,
-			:string => 1,
+			:string => 3,
 			:method => 1,
 			:symbol => 4,
 			:tag => 1,
@@ -121,7 +121,7 @@ module Ruvim
 			text = buffer.data
 				 
 			CodeRay.scan_stream(text, filetype) do |k, a|
-				if a==:space || a==:plain || a==:content then
+				if a==:space || a==:plain || a==:content || a==:comment then
 					k.each_char do |c|
 						if c=="\n" then
 							unless current.empty? then

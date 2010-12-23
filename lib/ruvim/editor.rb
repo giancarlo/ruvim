@@ -99,7 +99,8 @@ module Ruvim
 		# Sets Current Attribute executes block then returns to normal
 		def attr(attrib)
 			cp = Curses::COLORS[attrib]
-			raise "Invalid Attribute: #{attrib}" if cp.nil?
+			#raise "Invalid Attribute: #{attrib}" if cp.nil?
+			cp = Curses::COLORS[:plain] if cp.nil?
 
 			pair = Curses.color_pair cp
 			@window.attron(pair)
